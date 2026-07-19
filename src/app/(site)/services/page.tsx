@@ -169,7 +169,61 @@ export default function ServicesPage() {
             </svg>
           </a>
         </div>
-      </section>
-    </>
-  );
-}
+        </section>
+
+        {/* ─── Pricing Summary ─── */}
+        <section className="py-20 lg:py-28 bg-cream">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-2xl mb-12">
+            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent-500 mb-4">
+              Pricing
+            </p>
+            <h2 className="heading-2 text-stone-900">Estimasi Harga</h2>
+            <p className="text-sm text-stone-500 mt-4 leading-relaxed">
+              Harga bisa berbeda tergantung kebutuhan spesifik project kamu.
+              Ini estimasi untuk referensi awal.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 max-w-3xl">
+            {[
+              { name: "Landing Page", price: "Rp 1,5 - 3 jt", time: "1-2 minggu" },
+              { name: "Company Profile", price: "Rp 3 - 6 jt", time: "2-3 minggu" },
+              { name: "E-commerce", price: "Rp 5 - 12 jt", time: "4-8 minggu" },
+              { name: "Web Application", price: "Rp 8 - 20 jt+", time: "6-16 minggu" },
+              { name: "UI/UX Design", price: "Rp 2,5 - 8 jt", time: "2-6 minggu" },
+              { name: "Brand Identity", price: "Rp 1,5 - 4 jt", time: "1-3 minggu" },
+            ].map((item) => (
+              <div
+                key={item.name}
+                className="flex items-center justify-between bg-white rounded-xl border border-stone-100 p-5 hover:border-accent-100 hover:bg-accent-50/20 transition-all"
+              >
+                <div>
+                  <p className="font-heading font-semibold text-stone-900 text-sm">
+                    {item.name}
+                  </p>
+                  <p className="text-xs text-stone-400 mt-0.5">{item.time}</p>
+                </div>
+                <p className="font-heading text-sm font-semibold text-accent-500">
+                  {item.price}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 max-w-3xl">
+            <a
+              href="/pricing"
+              className="inline-flex items-center gap-2 text-sm font-medium text-accent-500 hover:text-accent-600 transition-colors"
+            >
+              Lihat detail pricing & FAQ
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7h8m0 0l-3-3m3 3l-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        </section>
+        </>
+        );
+        }
