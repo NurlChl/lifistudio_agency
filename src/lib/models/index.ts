@@ -13,5 +13,8 @@ export type { IContact } from "./Contact";
 export { Role, ALL_PERMISSIONS } from "./Role";
 export type { IRole, Permission } from "./Role";
 
+export { Pricing } from "./Pricing";
+export type { IPricing } from "./Pricing";
+
 export { SiteSettings } from "./SiteSettings";
 export type { ISiteSettings } from "./SiteSettings";

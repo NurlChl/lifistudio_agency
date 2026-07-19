@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Check, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo";
+import PricingClient from "./pricing-client";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -13,81 +14,6 @@ export const metadata: Metadata = {
       "Harga layanan digital yang transparan. Sesuai budget, tanpa biaya tersembunyi.",
   },
 };
-
-const plans = [
-  {
-    name: "Web Development",
-    tagline: "Dari landing page sampai marketplace",
-    price: "3,5",
-    unit: "jt",
-    description:
-      "Website company profile hingga e-commerce custom dengan teknologi modern.",
-    features: [
-      "Next.js / WordPress / Laravel",
-      "Responsive semua device",
-      "SEO optimized + schema markup",
-      "Admin panel (CMS)",
-      "Hosting setup assistance",
-      "1 bulan support gratis",
-    ],
-    cta: "Konsultasi Gratis",
-    popular: false,
-  },
-  {
-    name: "UI/UX Design",
-    tagline: "Desain yang ngundang konversi",
-    price: "2,5",
-    unit: "jt",
-    description:
-      "Wireframe, prototype interaktif, sampai design system yang siap diimplementasi.",
-    features: [
-      "User research & wireframe",
-      "Hi-fi prototype (Figma)",
-      "Design system components",
-      "Responsive design",
-      "3x revisi major",
-      "Handoff file siap code",
-    ],
-    cta: "Konsultasi Gratis",
-    popular: true,
-  },
-  {
-    name: "Graphic Design",
-    tagline: "Brand identity yang memorable",
-    price: "1,5",
-    unit: "jt",
-    description:
-      "Logo, brand identity, konten sosial media — visual yang bikin brand kamu standout.",
-    features: [
-      "Logo + brand guidelines",
-      "Business card",
-      "Social media templates (3 set)",
-      "Color palette + typography",
-      "Source file (AI/PSD/Figma)",
-      "2x revisi",
-    ],
-    cta: "Konsultasi Gratis",
-    popular: false,
-  },
-  {
-    name: "Automation",
-    tagline: "Biar kerjaan rutin beres otomatis",
-    price: "4",
-    unit: "jt",
-    description:
-      "Otomatisasi workflow pakai n8n, GHL, dan integrasi AI — hemat puluhan jam per bulan.",
-    features: [
-      "Workflow audit & mapping",
-      "n8n / GHL setup",
-      "AI integration (GPT, dll)",
-      "CRM automation",
-      "Email marketing pipeline",
-      "1 bulan monitoring",
-    ],
-    cta: "Konsultasi Gratis",
-    popular: false,
-  },
-];
 
 const faqItems = [
   {
@@ -153,77 +79,8 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* ─── Pricing Cards ─── */}
-      <section className="py-20 lg:py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {plans.map((plan, i) => (
-              <div
-                key={plan.name}
-                className={`relative rounded-2xl border p-8 flex flex-col transition-all duration-500 hover:shadow-lg ${
-                  plan.popular
-                    ? "border-accent-300 bg-accent-50/20 shadow-md"
-                    : "border-stone-100 bg-white hover:border-stone-200"
-                }`}
-              >
-                {plan.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-accent-500 text-white text-xs font-semibold">
-                    Most Requested
-                  </span>
-                )}
-
-                <div className="mb-6">
-                  <h2 className="font-heading text-lg font-semibold text-stone-900 mb-1">
-                    {plan.name}
-                  </h2>
-                  <p className="text-xs text-stone-400">{plan.tagline}</p>
-                </div>
-
-                <div className="mb-6">
-                  <span className="font-heading text-4xl font-bold text-stone-900">
-                    Rp{plan.price}
-                  </span>
-                  <span className="text-sm text-stone-400 ml-1">
-                    {plan.unit}
-                  </span>
-                  <p className="text-xs text-stone-400 mt-1 leading-relaxed">
-                    {plan.description}
-                  </p>
-                </div>
-
-                <ul className="space-y-3 mb-8 flex-1" role="list">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-sm text-stone-600">
-                      <Check
-                        size={16}
-                        className="mt-0.5 shrink-0 text-accent-500"
-                        aria-hidden="true"
-                      />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href="/contact"
-                  className={`group inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 ${
-                    plan.popular
-                      ? "bg-accent-500 text-white hover:bg-accent-600"
-                      : "bg-stone-900 text-white hover:bg-stone-700"
-                  }`}
-                >
-                  {plan.cta}
-                  <ArrowRight
-                    size={16}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                    aria-hidden="true"
-                  />
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ─── Pricing Cards (Client) ─── */}
+      <PricingClient />
 
       {/* ─── Note ─── */}
       <section className="pb-20 lg:pb-28 bg-white">

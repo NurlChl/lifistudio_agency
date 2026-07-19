@@ -8,12 +8,6 @@ import {
   Sparkles,
   Zap,
   ArrowRight,
-  CheckCircle2,
-  Code2,
-  LayoutDashboard,
-  ShoppingCart,
-  Smartphone,
-  BarChart3,
   Globe,
   Users,
   Clock,
@@ -44,15 +38,6 @@ export default function HomeClient({ faqItems }: { faqItems: FaqItem[] }) {
     <>
       {/* ═══════════════ HERO ═══════════════ */}
       <section className="relative min-h-screen flex items-center bg-cream overflow-hidden">
-        {/* Gambar latar dekoratif */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')",
-          }}
-          aria-hidden="true"
-        />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent-50 via-cream to-transparent opacity-70" />
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-32 lg:py-40 w-full">
@@ -124,38 +109,81 @@ export default function HomeClient({ faqItems }: { faqItems: FaqItem[] }) {
               </motion.div>
             </motion.div>
 
-            {/* Visual Hero */}
+            {/* Visual Hero - Animated Geometric Elements */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="hidden lg:block relative"
+              className="hidden lg:block relative h-[500px] w-full"
             >
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80"
-                  alt="Workspace coding setup"
-                  className="w-full h-full object-cover"
-                  loading="eager"
+              {/* Subtle grid pattern */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 1px 1px, rgba(120,113,108,0.18) 1px, transparent 0)",
+                  backgroundSize: "32px 32px",
+                }}
+                aria-hidden="true"
+              />
+
+              {/* Floating geometric shapes */}
+              <div className="absolute inset-0" aria-hidden="true">
+                <motion.div
+                  className="absolute w-28 h-28 rounded-full border-2 border-accent-100 bg-accent-50"
+                  style={{ top: "28%", left: "22%" }}
+                  animate={{ y: [0, -24, 0] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                <motion.div
+                  className="absolute w-24 h-24 rounded-2xl border-2 border-stone-200 bg-stone-100"
+                  style={{ top: "12%", right: "20%" }}
+                  animate={{ y: [0, -16, 0], rotate: [0, 8, 0] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                  className="absolute w-28 h-28 bg-accent-50 border-2 border-accent-100"
+                  style={{
+                    bottom: "25%",
+                    left: "30%",
+                    clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
+                  }}
+                  animate={{ y: [0, -28, 0] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                  className="absolute w-16 h-16 rounded-full border-2 border-accent-100 bg-accent-50/60"
+                  style={{ bottom: "35%", right: "15%" }}
+                  animate={{ y: [0, -20, 0], scale: [1, 1.12, 1] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                  className="absolute w-14 h-14 rounded-lg border-2 border-stone-200 bg-stone-100"
+                  style={{ top: "45%", right: "38%" }}
+                  animate={{ y: [0, -14, 0], rotate: [0, -12, 0] }}
+                  transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                  className="absolute w-20 h-20 bg-accent-50/40 border-2 border-accent-100"
+                  style={{
+                    top: "8%",
+                    left: "50%",
+                    clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
+                  }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                />
               </div>
 
-              {/* Floating card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20, x: 20 }}
-                animate={{ opacity: 1, y: 0, x: 0 }}
-                transition={{ delay: 0.8, duration: 0.6 }}
-                className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg p-4 flex items-center gap-3"
-              >
-                <div className="w-10 h-10 rounded-lg bg-accent-50 flex items-center justify-center">
-                  <CheckCircle2 size={20} className="text-accent-500" />
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-stone-900">Quality Guaranteed</p>
-                  <p className="text-[11px] text-stone-400">100% satisfaction</p>
-                </div>
-              </motion.div>
+              {/* Gradient accent overlay */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at 60% 40%, rgba(208,96,58,0.06) 0%, transparent 60%)",
+                }}
+                aria-hidden="true"
+              />
             </motion.div>
           </div>
         </div>

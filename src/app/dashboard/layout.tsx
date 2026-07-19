@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SessionProvider, useSession, signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   FolderKanban,
@@ -15,6 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  Banknote,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +24,7 @@ const sidebarLinks = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/dashboard/portfolio", label: "Portfolio", icon: FolderKanban },
   { href: "/dashboard/blog", label: "Blog", icon: FileText },
+  { href: "/dashboard/pricing", label: "Pricing", icon: Banknote },
   { href: "/dashboard/contacts", label: "Contacts", icon: MessageSquare },
   { href: "/dashboard/media", label: "Media", icon: Image },
   { href: "/dashboard/users", label: "Users", icon: Users },
@@ -29,50 +32,36 @@ const sidebarLinks = [
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const { data: session } = useSession();
 
-  // If on login page, render without sidebar
   if (pathname === "/dashboard/login") {
     return <>{children}</>;
   }
 
   return (
     <div className="flex min-h-screen bg-stone-50">
-      {/* Sidebar */}
       <aside
         className={cn(
           "fixed lg:sticky top-0 left-0 z-40 h-screen bg-stone-900 text-stone-300 flex flex-col transition-all duration-300",
           collapsed ? "w-16" : "w-64"
         )}
       >
-        {/* Logo */}
         <div className="h-16 flex items-center px-4 border-b border-stone-800">
           <Link
             href="/dashboard"
-            className={cn(
-              "font-heading text-lg font-semibold text-white",
-              collapsed && "hidden"
-            )}
+            className={cn("font-heading text-lg font-semibold text-white", collapsed && "hidden")}
           >
             lifi<span className="text-accent-400">.</span>
-            <span className="text-xs text-stone-500 ml-2 font-body font-normal">
-              CMS
-            </span>
+            <span className="text-xs text-stone-500 ml-2 font-body font-normal">CMS</span>
           </Link>
           {collapsed && (
-            <Link href="/dashboard" className="font-heading text-lg font-semibold text-white mx-auto">
-              L
-            </Link>
+            <Link href="/dashboard" className="font-heading text-lg font-semibold text-white mx-auto">L</Link>
           )}
         </div>
 
-        {/* Nav */}
         <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto">
           {sidebarLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -94,7 +83,13 @@ export default function DashboardLayout({
           })}
         </nav>
 
-        {/* Collapse toggle */}
+        {session?.user && !collapsed && (
+          <div className="px-4 py-3 border-t border-stone-800">
+            <p className="text-xs font-medium text-stone-400 truncate">{session.user.name || session.user.email}</p>
+            <p className="text-xs text-stone-600 truncate">{(session.user as any)?.role || "admin"}</p>
+          </div>
+        )}
+
         <div className="p-2 border-t border-stone-800">
           <button
             onClick={() => setCollapsed(!collapsed)}
@@ -105,22 +100,28 @@ export default function DashboardLayout({
           </button>
         </div>
 
-        {/* Logout */}
         <div className="p-2 border-t border-stone-800">
-          <a
-            href="/dashboard/login"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-stone-500 hover:text-red-400 hover:bg-stone-800 transition-all"
+          <button
+            onClick={() => signOut({ callbackUrl: "/dashboard/login" })}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-stone-500 hover:text-red-400 hover:bg-stone-800 transition-all"
           >
             <LogOut size={20} />
             {!collapsed && <span>Logout</span>}
-          </a>
+          </button>
         </div>
       </aside>
 
-      {/* Main content */}
       <div className={cn("flex-1 transition-all duration-300", collapsed ? "ml-16" : "ml-64 lg:ml-0")}>
         {children}
       </div>
     </div>
+  );
+}
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <SessionProvider>
+      <DashboardShell>{children}</DashboardShell>
+    </SessionProvider>
   );
 }
