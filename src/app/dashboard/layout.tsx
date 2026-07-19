@@ -35,10 +35,31 @@ const sidebarLinks = [
 function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
+  // Login page → no sidebar, no loading gate
   if (pathname === "/dashboard/login") {
     return <>{children}</>;
+  }
+
+  // Loading state while session resolves — prevent flash of unprotected UI
+  if (status === "loading") {
+    return (
+      <div className="flex min-h-screen bg-stone-50">
+        <aside className="w-64 h-screen bg-stone-900 animate-pulse" />
+        <main className="flex-1 p-6 lg:p-10">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 w-48 bg-stone-200 rounded" />
+            <div className="h-4 w-32 bg-stone-100 rounded" />
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-32 bg-stone-100 rounded-xl" />
+              ))}
+            </div>
+          </div>
+        </main>
+      </div>
+    );
   }
 
   return (

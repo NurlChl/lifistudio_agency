@@ -6,7 +6,12 @@ import { ArrowLeft, ExternalLink, Quote } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const projects = {
+const projects: Record<string, {
+  title: string; category: string; description: string; fullDescription: string;
+  tech: string[]; results: { metric: string; value: string }[];
+  gradient: string; testimonial: { text: string; author: string; role: string };
+  coverImage: string | null; images: { url: string | null; caption: string }[];
+}> = {
   "toko-online": {
     title: "TokoOnline.id", category: "Web Development",
     description: "E-commerce platform dengan Next.js, integrasi payment gateway Midtrans, dan dashboard real-time.",
@@ -15,6 +20,8 @@ const projects = {
     results: [{ metric: "Page Load", value: "< 1.5s" }, { metric: "Conversion Rate", value: "+35%" }, { metric: "Bounce Rate", value: "-22%" }],
     gradient: "from-stone-100 to-stone-50",
     testimonial: { text: "Lifi Studio bener-bener paham kebutuhan kita. Hasilnya di luar ekspektasi — loading super cepat, dashboard-nya intuitif, dan conversion rate naik signifikan sejak migrasi.", author: "Rina Wijaya", role: "CEO, TokoOnline.id" },
+    coverImage: null,
+    images: [],
   },
   "sicantik-app": {
     title: "SiCantik App", category: "UI/UX Design",
@@ -24,6 +31,8 @@ const projects = {
     results: [{ metric: "Booking Conversion", value: "+40%" }, { metric: "User Satisfaction", value: "4.8/5" }, { metric: "Task Completion", value: "+28%" }],
     gradient: "from-accent-100 to-accent-50",
     testimonial: { text: "Tim Lifi Studio berhasil bikin aplikasi kami jauh lebih mudah dipakai. Booking jadi lebih cepat, pelanggan puas, dan yang penting — pendapatan naik drastis.", author: "Dian Permata", role: "Founder, SiCantik" },
+    coverImage: null,
+    images: [],
   },
   "warung-digital": {
     title: "WarungDigital", category: "Web Development",
@@ -33,6 +42,8 @@ const projects = {
     results: [{ metric: "Stock Accuracy", value: "99%" }, { metric: "Time Saved", value: "15 jam/minggu" }],
     gradient: "from-stone-100 to-cream",
     testimonial: { text: "Sebelum pakai WarungDigital, stok sering kacau dan laporan manual makan waktu berjam-jam. Sekarang semuanya otomatis. Ini game changer buat bisnis kecil kayak kami.", author: "Budi Santoso", role: "Pemilik Toko, WarungDigital" },
+    coverImage: null,
+    images: [],
   },
   "hijab-style": {
     title: "HijabStyle", category: "Graphic Design",
@@ -42,6 +53,8 @@ const projects = {
     results: [{ metric: "Brand Recall", value: "+60%" }, { metric: "Sales Increase", value: "+25%" }],
     gradient: "from-accent-200 to-accent-100",
     testimonial: { text: "Brand HijabStyle jadi jauh lebih dikenal setelah rebranding sama Lifi Studio. Desainnya elegant dan bener-bener beda dari kompetitor.", author: "Siti Nurhaliza", role: "Owner, HijabStyle" },
+    coverImage: null,
+    images: [],
   },
   "travel-kita": {
     title: "TravelKita", category: "Web Development",
@@ -51,6 +64,8 @@ const projects = {
     results: [{ metric: "Vendors Onboarded", value: "200+" }, { metric: "Booking Growth", value: "+150%" }],
     gradient: "from-stone-100 to-stone-50",
     testimonial: { text: "Platform yang dibangun Lifi Studio sangat scalable. Dari 50 vendor awal, sekarang sudah 200+ dan semuanya berjalan mulus.", author: "Andi Pratama", role: "CTO, TravelKita" },
+    coverImage: null,
+    images: [],
   },
   "klinik-sehat": {
     title: "KlinikSehat", category: "UI/UX Design",
@@ -60,6 +75,8 @@ const projects = {
     results: [{ metric: "Registration Rate", value: "+55%" }, { metric: "Staff Efficiency", value: "+30%" }],
     gradient: "from-accent-100 to-accent-50",
     testimonial: { text: "Pasien sekarang bisa daftar online dengan mudah tanpa bantuan staf. Staf klinik juga jauh lebih efisien. Redesign ini benar-benar mengubah cara kami beroperasi.", author: "dr. Fitriani", role: "Direktur, KlinikSehat" },
+    coverImage: null,
+    images: [],
   },
   "autolead-crm": {
     title: "AutoLead CRM", category: "Automation",
@@ -69,6 +86,8 @@ const projects = {
     results: [{ metric: "Lead Response Time", value: "< 1 min" }, { metric: "Automation Rate", value: "85%" }, { metric: "Team Efficiency", value: "+200%" }],
     gradient: "from-stone-200 to-cream",
     testimonial: { text: "Dulu tim sales kami kewalahan handle leads. Sekarang semuanya otomatis — dari capture sampe follow-up. Waktu respon turun dari 1 jam jadi < 1 menit!", author: "Fajar Hidayat", role: "Sales Director, AutoLead" },
+    coverImage: null,
+    images: [],
   },
   "kopi-kita": {
     title: "KopiKita", category: "UI/UX Design",
@@ -78,6 +97,8 @@ const projects = {
     results: [{ metric: "Pre-order Rate", value: "45%" }, { metric: "App Rating", value: "4.9/5" }],
     gradient: "from-accent-100 to-accent-50",
     testimonial: { text: "Aplikasi KopiKita langsung disukai pelanggan. Rating 4.9 di Play Store! Fitur pre-order-nya yang paling banyak dipake — apalagi jam sibuk pagi hari.", author: "Raka Adrianto", role: "Founder, KopiKita" },
+    coverImage: null,
+    images: [],
   },
 };
 
@@ -107,24 +128,32 @@ function AnimatedCounter({ value, label }: { value: string; label: string }) {
 export default function PortfolioDetailContent() {
   const params = useParams();
   const slug = params.slug as string;
-  const project = projects[slug as keyof typeof projects];
+  const project = projects[slug];
   if (!project) notFound();
 
   const relatedSlugs = relatedMap[slug] || [];
-  const relatedProjects = relatedSlugs.map((s) => projects[s as keyof typeof projects]).filter(Boolean).slice(0, 3);
+  const relatedProjects = relatedSlugs.map((s) => projects[s]).filter(Boolean).slice(0, 3);
 
   return (
     <>
+      {/* Hero */}
       <section className="relative pt-32 pb-16 lg:pt-40 lg:pb-20 overflow-hidden">
-        <div className={cn("absolute inset-0 bg-gradient-to-br", project.gradient)}>
-          <div className="absolute inset-0 opacity-30">
-            <div className="absolute top-10 left-10 w-64 h-64 border border-stone-900/5 rounded-full" />
-            <div className="absolute -top-20 -right-20 w-96 h-96 border border-stone-900/5 rounded-full" />
-            <div className="absolute bottom-20 left-1/3 w-48 h-48 border border-stone-900/5 rotate-45" />
-            <div className="bg-[repeating-linear-gradient(0deg,transparent,transparent_40px,rgba(0,0,0,0.02)_40px,rgba(0,0,0,0.02)_41px),repeating-linear-gradient(90deg,transparent,transparent_40px,rgba(0,0,0,0.02)_40px,rgba(0,0,0,0.02)_41px)] absolute inset-0" />
+        {project.coverImage ? (
+          <div className="absolute inset-0">
+            <img src={project.coverImage} alt={project.title} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/60 to-transparent" />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
-        </div>
+        ) : (
+          <div className={cn("absolute inset-0 bg-gradient-to-br", project.gradient)}>
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-10 left-10 w-64 h-64 border border-stone-900/5 rounded-full" />
+              <div className="absolute -top-20 -right-20 w-96 h-96 border border-stone-900/5 rounded-full" />
+              <div className="absolute bottom-20 left-1/3 w-48 h-48 border border-stone-900/5 rotate-45" />
+              <div className="bg-[repeating-linear-gradient(0deg,transparent,transparent_40px,rgba(0,0,0,0.02)_40px,rgba(0,0,0,0.02)_41px),repeating-linear-gradient(90deg,transparent,transparent_40px,rgba(0,0,0,0.02)_40px,rgba(0,0,0,0.02)_41px)] absolute inset-0" />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+          </div>
+        )}
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <Link href="/portfolio" className="inline-flex items-center gap-2 text-sm text-stone-400 hover:text-stone-600 transition-colors mb-8">
@@ -144,6 +173,7 @@ export default function PortfolioDetailContent() {
         </div>
       </section>
 
+      {/* Main content */}
       <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-12 lg:gap-20">
@@ -177,6 +207,29 @@ export default function PortfolioDetailContent() {
                       <p className="text-xs text-stone-400">{project.testimonial.role}</p>
                     </footer>
                   </blockquote>
+                </motion.div>
+              )}
+
+              {/* Image gallery */}
+              {project.images && project.images.length > 0 && (
+                <motion.div className="space-y-4"
+                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <h3 className="font-heading text-lg font-semibold text-stone-900">Galeri Project</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    {project.images.map((img, i) => (
+                      <div key={i} className="relative aspect-video rounded-xl overflow-hidden bg-stone-50">
+                        {img.url ? (
+                          <img src={img.url} alt={img.caption} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-accent-100 to-accent-50 flex items-center justify-center">
+                            <p className="text-xs text-stone-400 italic px-4 text-center">{img.caption}</p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </motion.div>
               )}
             </div>
@@ -241,9 +294,13 @@ export default function PortfolioDetailContent() {
                       className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-lg transition-all duration-500 hover:-translate-y-1"
                     >
                       <div className="relative aspect-[16/10] overflow-hidden">
-                        <div className={cn("absolute inset-0 bg-gradient-to-br transition-transform duration-700 group-hover:scale-105", rp.gradient)}>
-                          <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_12px,rgba(0,0,0,0.03)_12px,rgba(0,0,0,0.03)_24px)] opacity-30" />
-                        </div>
+                        {rp.coverImage ? (
+                          <img src={rp.coverImage} alt={rp.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        ) : (
+                          <div className={cn("absolute inset-0 bg-gradient-to-br transition-transform duration-700 group-hover:scale-105", rp.gradient)}>
+                            <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_12px,rgba(0,0,0,0.03)_12px,rgba(0,0,0,0.03)_24px)] opacity-30" />
+                          </div>
+                        )}
                       </div>
                       <div className="p-5">
                         <span className="text-[11px] font-semibold uppercase tracking-wider text-accent-500">{rp.category}</span>

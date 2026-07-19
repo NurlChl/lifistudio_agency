@@ -9,11 +9,11 @@ import { cn } from "@/lib/utils";
 const categories = ["All", "Web Development", "Automation", "UI/UX", "Graphic Design"];
 
 const posts = [
-  { title: "Cara Memilih Tech Stack yang Tepat di 2026", slug: "memilih-tech-stack-2026", excerpt: "Bingung milih Next.js, WordPress, atau Laravel? Simak panduan lengkap memilih teknologi yang sesuai project kamu.", category: "Web Development", date: "15 Jul 2026", readTime: "5 min", gradient: "from-accent-100 to-accent-50", pattern: "diagonal-lines" },
-  { title: "Cara Otomatisasi CRM dengan n8n", slug: "otomatisasi-crm-n8n", excerpt: "Integrasikan CRM kamu dengan n8n tanpa coding. Workflow otomatis yang hemat puluhan jam per bulan.", category: "Automation", date: "10 Jul 2026", readTime: "7 min", gradient: "from-stone-200 to-stone-100", pattern: "dots" },
-  { title: "7 Tips Desain Website Profesional", slug: "tips-desain-website-profesional", excerpt: "Bikin website yang engaging dan konversi tinggi dengan prinsip desain yang terbukti efektif.", category: "UI/UX", date: "28 Jun 2026", readTime: "4 min", gradient: "from-accent-200 to-accent-50", pattern: "grid" },
-  { title: "Brand Identity untuk UMKM: Panduan Lengkap", slug: "brand-identity-umkm", excerpt: "Mulai dari logo sampai guidelines — panduan membangun identitas brand yang kuat untuk UMKM.", category: "Graphic Design", date: "20 Jun 2026", readTime: "6 min", gradient: "from-stone-100 to-cream", pattern: "diagonal-lines" },
-  { title: "Next.js vs WordPress: Pilih Mana di 2026?", slug: "nextjs-vs-wordpress-2026", excerpt: "Perbandingan lengkap antara Next.js dan WordPress untuk berbagai jenis project website.", category: "Web Development", date: "12 Jun 2026", readTime: "8 min", gradient: "from-accent-100 to-accent-50", pattern: "grid" },
+  { title: "Cara Memilih Tech Stack yang Tepat di 2026", slug: "memilih-tech-stack-2026", excerpt: "Bingung milih Next.js, WordPress, atau Laravel? Simak panduan lengkap memilih teknologi yang sesuai project kamu.", category: "Web Development", date: "15 Jul 2026", readTime: "5 min", gradient: "from-accent-100 to-accent-50", pattern: "diagonal-lines", coverImage: null },
+  { title: "Cara Otomatisasi CRM dengan n8n", slug: "otomatisasi-crm-n8n", excerpt: "Integrasikan CRM kamu dengan n8n tanpa coding. Workflow otomatis yang hemat puluhan jam per bulan.", category: "Automation", date: "10 Jul 2026", readTime: "7 min", gradient: "from-stone-200 to-stone-100", pattern: "dots", coverImage: null },
+  { title: "7 Tips Desain Website Profesional", slug: "tips-desain-website-profesional", excerpt: "Bikin website yang engaging dan konversi tinggi dengan prinsip desain yang terbukti efektif.", category: "UI/UX", date: "28 Jun 2026", readTime: "4 min", gradient: "from-accent-200 to-accent-50", pattern: "grid", coverImage: null },
+  { title: "Brand Identity untuk UMKM: Panduan Lengkap", slug: "brand-identity-umkm", excerpt: "Mulai dari logo sampai guidelines — panduan membangun identitas brand yang kuat untuk UMKM.", category: "Graphic Design", date: "20 Jun 2026", readTime: "6 min", gradient: "from-stone-100 to-cream", pattern: "diagonal-lines", coverImage: null },
+  { title: "Next.js vs WordPress: Pilih Mana di 2026?", slug: "nextjs-vs-wordpress-2026", excerpt: "Perbandingan lengkap antara Next.js dan WordPress untuk berbagai jenis project website.", category: "Web Development", date: "12 Jun 2026", readTime: "8 min", gradient: "from-accent-100 to-accent-50", pattern: "grid", coverImage: null },
 ];
 
 function PatternBg({ pattern, gradient }: { pattern: string; gradient: string }) {
@@ -75,7 +75,11 @@ export default function BlogContent() {
                   className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
                 >
                   <div className="relative aspect-[16/9] overflow-hidden bg-stone-50">
-                    <PatternBg pattern={post.pattern} gradient={post.gradient} />
+                    {post.coverImage ? (
+                      <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    ) : (
+                      <PatternBg pattern={post.pattern} gradient={post.gradient} />
+                    )}
                   </div>
                   <div className="p-6">
                     <div className="flex items-center gap-3 text-xs text-stone-400 mb-3">

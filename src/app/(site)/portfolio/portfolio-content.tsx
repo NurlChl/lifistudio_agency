@@ -6,14 +6,14 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const projects = [
-  { title: "TokoOnline.id", slug: "toko-online", category: "Web Development", desc: "E-commerce platform dengan Next.js, integrasi payment gateway dan manajemen stok real-time.", tech: ["Next.js", "MongoDB", "Midtrans"], color: "stone", gradient: "from-stone-100 to-stone-50", pattern: "grid" },
-  { title: "SiCantik App", slug: "sicantik-app", category: "UI/UX Design", desc: "Aplikasi booking salon dengan pengalaman pengguna yang seamless dan sistem manajemen jadwal.", tech: ["Figma", "Prototyping", "Design System"], color: "accent", gradient: "from-accent-100 to-accent-50", pattern: "dots" },
-  { title: "WarungDigital", slug: "warung-digital", category: "Web Development", desc: "Dashboard analytics untuk UMKM dengan visualisasi data real-time dari berbagai sources.", tech: ["Next.js", "Chart.js", "Firebase"], color: "stone", gradient: "from-stone-100 to-stone-50", pattern: "diagonal-lines" },
-  { title: "HijabStyle", slug: "hijab-style", category: "Graphic Design", desc: "Brand identity lengkap untuk fashion brand muslimah — dari logo sampai social media templates.", tech: ["Illustrator", "Photoshop", "Figma"], color: "purple", gradient: "from-accent-200 to-accent-100", pattern: "diagonal-lines" },
-  { title: "TravelKita", slug: "travel-kita", category: "Web Development", desc: "Platform booking travel dengan multi-vendor, sistem pembayaran, dan itinerary builder.", tech: ["Laravel", "Vue.js", "MySQL"], color: "stone", gradient: "from-stone-100 to-stone-50", pattern: "grid" },
-  { title: "KlinikSehat", slug: "klinik-sehat", category: "UI/UX Design", desc: "Redesign aplikasi klinik dengan fokus pada kemudahan pasien daftar online dan telekonsultasi.", tech: ["Figma", "Usability Testing", "Accessibility"], color: "accent", gradient: "from-accent-100 to-accent-50", pattern: "dots" },
-  { title: "AutoLead CRM", slug: "autolead-crm", category: "Automation", desc: "Otomatisasi CRM dengan n8n: integrasi WhatsApp, email marketing, dan Google Sheets.", tech: ["n8n", "GHL", "WhatsApp API"], color: "teal", gradient: "from-stone-200 to-cream", pattern: "dots" },
-  { title: "KopiKita", slug: "kopi-kita", category: "UI/UX Design", desc: "Website & mobile app untuk brand coffee shop dengan sistem pre-order dan loyalty program.", tech: ["Figma", "Flutter", "Firebase"], color: "accent", gradient: "from-accent-100 to-accent-50", pattern: "grid" },
+  { title: "TokoOnline.id", slug: "toko-online", category: "Web Development", desc: "E-commerce platform dengan Next.js, integrasi payment gateway dan manajemen stok real-time.", tech: ["Next.js", "MongoDB", "Midtrans"], color: "stone", gradient: "from-stone-100 to-stone-50", pattern: "grid", coverImage: null },
+  { title: "SiCantik App", slug: "sicantik-app", category: "UI/UX Design", desc: "Aplikasi booking salon dengan pengalaman pengguna yang seamless dan sistem manajemen jadwal.", tech: ["Figma", "Prototyping", "Design System"], color: "accent", gradient: "from-accent-100 to-accent-50", pattern: "dots", coverImage: null },
+  { title: "WarungDigital", slug: "warung-digital", category: "Web Development", desc: "Dashboard analytics untuk UMKM dengan visualisasi data real-time dari berbagai sources.", tech: ["Next.js", "Chart.js", "Firebase"], color: "stone", gradient: "from-stone-100 to-stone-50", pattern: "diagonal-lines", coverImage: null },
+  { title: "HijabStyle", slug: "hijab-style", category: "Graphic Design", desc: "Brand identity lengkap untuk fashion brand muslimah — dari logo sampai social media templates.", tech: ["Illustrator", "Photoshop", "Figma"], color: "purple", gradient: "from-accent-200 to-accent-100", pattern: "diagonal-lines", coverImage: null },
+  { title: "TravelKita", slug: "travel-kita", category: "Web Development", desc: "Platform booking travel dengan multi-vendor, sistem pembayaran, dan itinerary builder.", tech: ["Laravel", "Vue.js", "MySQL"], color: "stone", gradient: "from-stone-100 to-stone-50", pattern: "grid", coverImage: null },
+  { title: "KlinikSehat", slug: "klinik-sehat", category: "UI/UX Design", desc: "Redesign aplikasi klinik dengan fokus pada kemudahan pasien daftar online dan telekonsultasi.", tech: ["Figma", "Usability Testing", "Accessibility"], color: "accent", gradient: "from-accent-100 to-accent-50", pattern: "dots", coverImage: null },
+  { title: "AutoLead CRM", slug: "autolead-crm", category: "Automation", desc: "Otomatisasi CRM dengan n8n: integrasi WhatsApp, email marketing, dan Google Sheets.", tech: ["n8n", "GHL", "WhatsApp API"], color: "teal", gradient: "from-stone-200 to-cream", pattern: "dots", coverImage: null },
+  { title: "KopiKita", slug: "kopi-kita", category: "UI/UX Design", desc: "Website & mobile app untuk brand coffee shop dengan sistem pre-order dan loyalty program.", tech: ["Figma", "Flutter", "Firebase"], color: "accent", gradient: "from-accent-100 to-accent-50", pattern: "grid", coverImage: null },
 ];
 
 function CategoryIcon({ category }: { category: string }) {
@@ -26,15 +26,19 @@ function CategoryIcon({ category }: { category: string }) {
 function ProjectThumb({ project }: { project: typeof projects[number] }) {
   return (
     <div className="relative aspect-[16/10] overflow-hidden bg-stone-50">
-      <div className={cn("absolute inset-0 bg-gradient-to-br transition-all duration-700 group-hover:scale-105", project.gradient)}>
-        <div className={cn("absolute inset-0 opacity-30 transition-opacity duration-500 group-hover:opacity-10",
-          project.pattern === "grid" && "bg-[repeating-linear-gradient(0deg,transparent,transparent_24px,rgba(0,0,0,0.04)_24px,rgba(0,0,0,0.04)_25px),repeating-linear-gradient(90deg,transparent,transparent_24px,rgba(0,0,0,0.04)_24px,rgba(0,0,0,0.04)_25px)]",
-          project.pattern === "dots" && "bg-[radial-gradient(rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[length:16px_16px]",
-          project.pattern === "diagonal-lines" && "bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(0,0,0,0.05)_10px,rgba(0,0,0,0.05)_20px)]"
-        )} />
-        <div className="absolute -bottom-8 -right-8 w-48 h-48 rounded-full bg-white/10" />
-        <div className="absolute -top-6 -left-6 w-32 h-32 rounded-full bg-white/5" />
-      </div>
+      {project.coverImage ? (
+        <img src={project.coverImage} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      ) : (
+        <div className={cn("absolute inset-0 bg-gradient-to-br transition-all duration-700 group-hover:scale-105", project.gradient)}>
+          <div className={cn("absolute inset-0 opacity-30 transition-opacity duration-500 group-hover:opacity-10",
+            project.pattern === "grid" && "bg-[repeating-linear-gradient(0deg,transparent,transparent_24px,rgba(0,0,0,0.04)_24px,rgba(0,0,0,0.04)_25px),repeating-linear-gradient(90deg,transparent,transparent_24px,rgba(0,0,0,0.04)_24px,rgba(0,0,0,0.04)_25px)]",
+            project.pattern === "dots" && "bg-[radial-gradient(rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[length:16px_16px]",
+            project.pattern === "diagonal-lines" && "bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(0,0,0,0.05)_10px,rgba(0,0,0,0.05)_20px)]"
+          )} />
+          <div className="absolute -bottom-8 -right-8 w-48 h-48 rounded-full bg-white/10" />
+          <div className="absolute -top-6 -left-6 w-32 h-32 rounded-full bg-white/5" />
+        </div>
+      )}
       <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/60 transition-all duration-500 flex items-center justify-center">
         <span className="text-white font-heading font-semibold text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">Lihat Detail</span>
       </div>

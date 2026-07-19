@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import ThreeBackground from "@/components/ThreeBackground";
 import {
   Monitor,
   Palette,
@@ -109,7 +110,7 @@ export default function HomeClient({ faqItems }: { faqItems: FaqItem[] }) {
               </motion.div>
             </motion.div>
 
-            {/* Visual Hero - Animated Geometric Elements */}
+            {/* Visual Hero - 3D Animated Geometric Elements */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -126,62 +127,13 @@ export default function HomeClient({ faqItems }: { faqItems: FaqItem[] }) {
                 }}
                 aria-hidden="true"
               />
+              
+              {/* Three.js animated 3D shapes */}
+              <ThreeBackground />
 
-              {/* Floating geometric shapes */}
-              <div className="absolute inset-0" aria-hidden="true">
-                <motion.div
-                  className="absolute w-28 h-28 rounded-full border-2 border-accent-100 bg-accent-50"
-                  style={{ top: "28%", left: "22%" }}
-                  animate={{ y: [0, -24, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div
-                  className="absolute w-24 h-24 rounded-2xl border-2 border-stone-200 bg-stone-100"
-                  style={{ top: "12%", right: "20%" }}
-                  animate={{ y: [0, -16, 0], rotate: [0, 8, 0] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div
-                  className="absolute w-28 h-28 bg-accent-50 border-2 border-accent-100"
-                  style={{
-                    bottom: "25%",
-                    left: "30%",
-                    clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
-                  }}
-                  animate={{ y: [0, -28, 0] }}
-                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div
-                  className="absolute w-16 h-16 rounded-full border-2 border-accent-100 bg-accent-50/60"
-                  style={{ bottom: "35%", right: "15%" }}
-                  animate={{ y: [0, -20, 0], scale: [1, 1.12, 1] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div
-                  className="absolute w-14 h-14 rounded-lg border-2 border-stone-200 bg-stone-100"
-                  style={{ top: "45%", right: "38%" }}
-                  animate={{ y: [0, -14, 0], rotate: [0, -12, 0] }}
-                  transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div
-                  className="absolute w-20 h-20 bg-accent-50/40 border-2 border-accent-100"
-                  style={{
-                    top: "8%",
-                    left: "50%",
-                    clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
-                  }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                />
-              </div>
-
-              {/* Gradient accent overlay */}
+              {/* Warm gradient overlay at bottom */}
               <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(ellipse at 60% 40%, rgba(208,96,58,0.06) 0%, transparent 60%)",
-                }}
+                className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cream to-transparent"
                 aria-hidden="true"
               />
             </motion.div>
@@ -364,10 +316,11 @@ export default function HomeClient({ faqItems }: { faqItems: FaqItem[] }) {
       {/* ═══════════════ CTA ═══════════════ */}
       <motion.section {...fadeUp} className="py-24 lg:py-32 bg-stone-900 text-white relative overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&q=80')",
+              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.07) 1px, transparent 0)",
+            backgroundSize: "32px 32px",
           }}
           aria-hidden="true"
         />

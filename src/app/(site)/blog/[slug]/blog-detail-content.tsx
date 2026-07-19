@@ -31,6 +31,8 @@ const posts = [
     readTime: "5 min",
     author: "NurlChl",
     gradient: "from-accent-100 to-accent-50",
+    coverImage: null,
+    images: [] as { url: string | null; caption: string }[],
   },
   {
     title: "Cara Otomatisasi CRM dengan n8n",
@@ -50,6 +52,8 @@ const posts = [
     readTime: "7 min",
     author: "NurlChl",
     gradient: "from-stone-200 to-stone-100",
+    coverImage: null,
+    images: [] as { url: string | null; caption: string }[],
   },
 ];
 
@@ -128,6 +132,19 @@ export default function BlogDetailContent() {
   const toc = extractTOC(post.content);
   const related = relatedPosts[post.slug] || [];
   const paragraphs = post.content.split(/(?=<h2|<h3|<p)/).filter(Boolean);
+  const images = post.images || [];
+
+  // Interleave: para, para, image, para, para, image, ...
+  const contentBlocks: { type: "para" | "image"; html?: string; url?: string | null; caption?: string }[] = [];
+  paragraphs.forEach((para, i) => {
+    contentBlocks.push({ type: "para", html: para });
+    if (i % 2 === 1 && images.length > 0) {
+      const idx = Math.floor(i / 2);
+      if (idx < images.length && images[idx]) {
+        contentBlocks.push({ type: "image", url: images[idx].url, caption: images[idx].caption });
+      }
+    }
+  });
 
   return (
     <>
@@ -160,15 +177,32 @@ export default function BlogDetailContent() {
               >{post.title}</motion.h1>
 
               <div className="space-y-4">
-                {paragraphs.map((para, i) => (
-                  <motion.div key={i}
-                    className="prose prose-stone max-w-none prose-headings:font-heading prose-headings:text-stone-900 prose-p:text-stone-500 prose-p:leading-relaxed prose-a:text-accent-500 prose-img:rounded-xl"
-                    initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                    dangerouslySetInnerHTML={{ __html: para }}
-                  />
-                ))}
+                {contentBlocks.map((block, i) =>
+                  block.type === "para" ? (
+                    <motion.div key={i}
+                      className="prose prose-stone max-w-none prose-headings:font-heading prose-headings:text-stone-900 prose-p:text-stone-500 prose-p:leading-relaxed prose-a:text-accent-500 prose-img:rounded-xl"
+                      initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-40px" }}
+                      transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                      dangerouslySetInnerHTML={{ __html: block.html! }}
+                    />
+                  ) : (
+                    <motion.div key={i}
+                      className="relative aspect-video rounded-xl overflow-hidden bg-stone-50"
+                      initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-40px" }}
+                      transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      {block.url ? (
+                        <img src={block.url} alt={block.caption || ""} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-accent-100 to-accent-50 flex items-center justify-center">
+                          <p className="text-sm text-stone-400 italic px-4 text-center">{block.caption || "Ilustrasi konten"}</p>
+                        </div>
+                      )}
+                    </motion.div>
+                  )
+                )}
               </div>
 
               <motion.div className="mt-12 pt-8 border-t border-stone-100 flex items-center gap-4"
