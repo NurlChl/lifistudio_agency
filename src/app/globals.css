@@ -171,6 +171,15 @@ body {
   background: var(--color-stone-300);
 }
 
+/* ─── Scrollbar Hide (for horizontal filter scroll) ─── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* ─── Selection ─── */
 ::selection {
   background: var(--color-accent-200);

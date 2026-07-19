@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Calendar, ArrowRight } from "lucide-react";
+import { Search, LayoutGrid, List, Calendar, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Pagination from "@/components/ui/Pagination";
@@ -39,6 +39,15 @@ function PatternBg({ pattern, gradient }: { pattern: string; gradient: string })
 export default function BlogContent({ posts, categories, activeCategory, totalPages }: { posts: any[], categories: any[], activeCategory: string, totalPages: number }) {
   const router = useRouter();
   const catOptions = [{ name: "All", slug: "All" }, ...categories];
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredPosts = searchTerm
+    ? posts.filter((p) =>
+        p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (p.excerpt || '').toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : posts;
   
   function handleCategoryClick(catSlug: string) {
     if (catSlug === "All") {
@@ -64,27 +73,49 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
 
       <section className="py-6 bg-white border-b border-stone-50 sticky top-[72px] z-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex gap-2 overflow-x-auto flex-nowrap scrollbar-hide">
             {catOptions.map((cat) => (
               <button key={cat.slug} onClick={() => handleCategoryClick(cat.slug)}
-                className={cn("px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
+                className={cn("shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
                   activeCategory === cat.slug ? "bg-stone-900 text-white shadow-md" : "bg-stone-50 text-stone-500 hover:bg-stone-100"
                 )}>
                 {cat.name}
               </button>
             ))}
           </div>
+          <div className="flex items-center gap-3 mt-3">
+            <div className="relative flex-1 md:max-w-xs">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
+              <input type="search" placeholder="Cari artikel..."
+                value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 rounded-full bg-stone-50 text-sm text-stone-900 placeholder:text-stone-400 border border-stone-100 focus:outline-none focus:border-accent-500/30 focus:ring-2 focus:ring-accent-500/10 transition-all" />
+            </div>
+            <div className="flex items-center gap-1 bg-stone-50 rounded-lg p-0.5 shrink-0">
+              <button onClick={() => setViewMode('grid')}
+                className={cn("p-2 rounded-md transition-all", viewMode === 'grid' ? "bg-white shadow-sm text-stone-900" : "text-stone-400 hover:text-stone-600")}
+                aria-label="Tampilan grid">
+                <LayoutGrid size={16} />
+              </button>
+              <button onClick={() => setViewMode('list')}
+                className={cn("p-2 rounded-md transition-all", viewMode === 'list' ? "bg-white shadow-sm text-stone-900" : "text-stone-400 hover:text-stone-600")}
+                aria-label="Tampilan list">
+                <List size={16} />
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
       <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          {!posts?.length ? (
-            <p className="text-center text-sm text-stone-400 py-20">Belum ada artikel yang dipublikasikan.</p>
-          ) : (
+          {!filteredPosts?.length ? (
+            <p className="text-center text-sm text-stone-400 py-20">
+              {searchTerm ? `Tidak ada artikel untuk "${searchTerm}"` : 'Belum ada artikel yang dipublikasikan.'}
+            </p>
+          ) : viewMode === 'grid' ? (
             <>
               <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" layout>
-                {posts.map((post: any, i: number) => {
+                {filteredPosts.map((post: any, i: number) => {
                   const catName = categories.find((c: any) => c.slug === post.category)?.name || post.category;
                   const style = CATEGORY_STYLE[catName] || DEFAULT_STYLE;
                   return (
@@ -112,8 +143,8 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
                             <span>{post.readTime} min</span>
                           </div>
                           <h2 className="font-heading text-lg font-semibold text-stone-900 mb-2 group-hover:text-accent-500 transition-colors">{post.title}</h2>
-                          <p className="text-sm text-stone-400 leading-relaxed line-clamp-2">{post.excerpt}</p>
-                          <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-accent-500 group/link">
+                          <p className="text-sm text-stone-400 leading-relaxed line-clamp-2 mb-4">{post.excerpt}</p>
+                          <div className="flex items-center gap-1.5 text-sm font-medium text-accent-500 group/link">
                             Baca Selengkapnya
                             <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
                           </div>
@@ -123,9 +154,33 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
                   );
                 })}
               </motion.div>
-
-              <Pagination totalPages={totalPages} />
+              {!searchTerm && <Pagination totalPages={totalPages} />}
             </>
+          ) : (
+            <div className="divide-y divide-stone-100">
+              {filteredPosts.map((post: any) => {
+                const catName = categories.find((c: any) => c.slug === post.category)?.name || post.category;
+                return (
+                  <Link key={post.slug} href={`/blog/${post.slug}`}
+                    className="group flex items-start gap-6 py-6 first:pt-0 last:pb-0 transition-all hover:opacity-70"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 text-xs text-stone-400 mb-2">
+                        <span className="text-accent-500 font-medium uppercase tracking-wider">{catName}</span>
+                        <span className="w-1 h-1 rounded-full bg-stone-300" aria-hidden="true" />
+                        <span className="flex items-center gap-1"><Calendar size={12} aria-hidden="true" />{formatDate(post.publishedAt || post.createdAt)}</span>
+                      </div>
+                      <h2 className="font-heading text-lg font-semibold text-stone-900 mb-1.5 group-hover:text-accent-500 transition-colors">{post.title}</h2>
+                      <p className="text-sm text-stone-400 leading-relaxed line-clamp-2 mb-3">{post.excerpt}</p>
+                      <div className="flex items-center gap-1.5 text-sm font-medium text-accent-500">
+                        Baca Selengkapnya
+                        <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           )}
         </div>
       </section>

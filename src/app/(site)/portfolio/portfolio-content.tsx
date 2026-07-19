@@ -44,10 +44,10 @@ export default function PortfolioContent({ projects, categories, activeCategory,
 
       <section className="py-6 bg-white border-b border-stone-50 sticky top-[72px] z-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex gap-2 overflow-x-auto flex-nowrap scrollbar-hide">
             {catOptions.map((cat) => (
               <button key={cat.slug} onClick={() => handleCategoryClick(cat.slug)}
-                className={cn("px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
+                className={cn("shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
                   activeCategory === cat.slug ? "bg-stone-900 text-white shadow-md" : "bg-stone-50 text-stone-500 hover:bg-stone-100"
                 )}>
                 {cat.name}
