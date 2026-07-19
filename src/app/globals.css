@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens ─── */
+@theme inline {
+  /* Fonts */
+  --font-heading: "DM Sans", sans-serif;
+  --font-body: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Neutral — warm, not sterile */
+  --color-white: #fafaf8;
+  --color-cream: #f5f0eb;
+  --color-stone-50: #e8e2da;
+  --color-stone-100: #d4ccc2;
+  --color-stone-200: #b8afa3;
+  --color-stone-300: #9c9387;
+  --color-stone-400: #7a7268;
+  --color-stone-500: #5c554c;
+  --color-stone-600: #403a34;
+  --color-stone-700: #2c2824;
+  --color-stone-800: #1c1a17;
+  --color-stone-900: #0f0e0c;
+
+  /* Brand Accent — warm terracotta */
+  --color-accent-50: #fdf2ed;
+  --color-accent-100: #f9ddd1;
+  --color-accent-200: #f2bfa8;
+  --color-accent-300: #e89878;
+  --color-accent-400: #dd7a52;
+  --color-accent-500: #d0603a;
+  --color-accent-600: #b34c2c;
+  --color-accent-700: #953b22;
+  --color-accent-800: #7a2f1b;
+  --color-accent-900: #5e2313;
+
+  /* Gold premium */
+  --color-gold-400: #d4a853;
+  --color-gold-500: #c4953a;
+  --color-gold-600: #a87a2c;
+
+  /* Semantic */
+  --color-success: #2d7d46;
+  --color-warning: #b8860b;
+  --color-error: #b33a3a;
+  --color-info: #2c6b8a;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(15, 14, 12, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 14, 12, 0.07),
+    0 2px 4px -2px rgba(15, 14, 12, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 14, 12, 0.08),
+    0 4px 6px -4px rgba(15, 14, 12, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 14, 12, 0.1),
+    0 8px 10px -6px rgba(15, 14, 12, 0.05);
+  --shadow-2xl: 0 40px 60px -15px rgba(15, 14, 12, 0.15);
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  /* Animations */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+}
+
+/* ─── Base Styles ─── */
+:root {
+  --background: #fafaf8;
+  --foreground: #1c1a17;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f0e0c;
+    --foreground: #e8e2da;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography Utilities ─── */
+.heading-1 {
+  font-family: var(--font-heading), sans-serif;
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.heading-2 {
+  font-family: var(--font-heading), sans-serif;
+  font-size: clamp(1.875rem, 4vw, 3rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.heading-3 {
+  font-family: var(--font-heading), sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.subtitle {
+  font-family: var(--font-body), sans-serif;
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--color-stone-400);
+}
+
+.body-text {
+  font-family: var(--font-body), sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-stone-600);
+}
+
+/* ─── Animations ─── */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-stone-200);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-stone-300);
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: var(--color-accent-200);
+  color: var(--color-stone-900);
+}
