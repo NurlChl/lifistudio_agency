@@ -20,8 +20,11 @@ const projects: Record<string, {
     results: [{ metric: "Page Load", value: "< 1.5s" }, { metric: "Conversion Rate", value: "+35%" }, { metric: "Bounce Rate", value: "-22%" }],
     gradient: "from-stone-100 to-stone-50",
     testimonial: { text: "Lifi Studio bener-bener paham kebutuhan kita. Hasilnya di luar ekspektasi — loading super cepat, dashboard-nya intuitif, dan conversion rate naik signifikan sejak migrasi.", author: "Rina Wijaya", role: "CEO, TokoOnline.id" },
-    coverImage: null,
-    images: [],
+    coverImage: "https://placehold.co/1200x700/78716C/FFFFFF?text=WarungDigital",
+    images: [
+      { url: "https://placehold.co/900x600/78716C/FFFFFF?text=Dashboard+UMKM", caption: "Dashboard manajemen stok" },
+      { url: "https://placehold.co/900x600/5C8A7A/FFFFFF?text=Sales+Report", caption: "Laporan penjualan real-time" },
+    ],
   },
   "sicantik-app": {
     title: "SiCantik App", category: "UI/UX Design",
@@ -31,8 +34,11 @@ const projects: Record<string, {
     results: [{ metric: "Booking Conversion", value: "+40%" }, { metric: "User Satisfaction", value: "4.8/5" }, { metric: "Task Completion", value: "+28%" }],
     gradient: "from-accent-100 to-accent-50",
     testimonial: { text: "Tim Lifi Studio berhasil bikin aplikasi kami jauh lebih mudah dipakai. Booking jadi lebih cepat, pelanggan puas, dan yang penting — pendapatan naik drastis.", author: "Dian Permata", role: "Founder, SiCantik" },
-    coverImage: null,
-    images: [],
+    coverImage: "https://placehold.co/1200x700/D0603A/FFFFFF?text=SiCantik+App",
+    images: [
+      { url: "https://placehold.co/900x600/D0603A/FFFFFF?text=Booking+Flow", caption: "Flow booking yang disederhanakan" },
+      { url: "https://placehold.co/900x600/A8623A/FFFFFF?text=Dashboard+Salon", caption: "Dashboard manajemen jadwal salon" },
+    ],
   },
   "warung-digital": {
     title: "WarungDigital", category: "Web Development",
@@ -42,8 +48,11 @@ const projects: Record<string, {
     results: [{ metric: "Stock Accuracy", value: "99%" }, { metric: "Time Saved", value: "15 jam/minggu" }],
     gradient: "from-stone-100 to-cream",
     testimonial: { text: "Sebelum pakai WarungDigital, stok sering kacau dan laporan manual makan waktu berjam-jam. Sekarang semuanya otomatis. Ini game changer buat bisnis kecil kayak kami.", author: "Budi Santoso", role: "Pemilik Toko, WarungDigital" },
-    coverImage: null,
-    images: [],
+    coverImage: "https://placehold.co/1200x700/A8623A/FFFFFF?text=HijabStyle",
+    images: [
+      { url: "https://placehold.co/900x600/A8623A/FFFFFF?text=Brand+Identity", caption: "Logo dan brand guidelines" },
+      { url: "https://placehold.co/900x600/D0603A/FFFFFF?text=Social+Media+Templates", caption: "Template sosial media" },
+    ],
   },
   "hijab-style": {
     title: "HijabStyle", category: "Graphic Design",
@@ -53,8 +62,11 @@ const projects: Record<string, {
     results: [{ metric: "Brand Recall", value: "+60%" }, { metric: "Sales Increase", value: "+25%" }],
     gradient: "from-accent-200 to-accent-100",
     testimonial: { text: "Brand HijabStyle jadi jauh lebih dikenal setelah rebranding sama Lifi Studio. Desainnya elegant dan bener-bener beda dari kompetitor.", author: "Siti Nurhaliza", role: "Owner, HijabStyle" },
-    coverImage: null,
-    images: [],
+    coverImage: "https://placehold.co/1200x700/78716C/FFFFFF?text=TravelKita",
+    images: [
+      { url: "https://placehold.co/900x600/78716C/FFFFFF?text=Travel+Dashboard", caption: "Dashboard pemesanan travel" },
+      { url: "https://placehold.co/900x600/5C8A7A/FFFFFF?text=Itinerary+Builder", caption: "Itinerary builder interaktif" },
+    ],
   },
   "travel-kita": {
     title: "TravelKita", category: "Web Development",
@@ -64,8 +76,11 @@ const projects: Record<string, {
     results: [{ metric: "Vendors Onboarded", value: "200+" }, { metric: "Booking Growth", value: "+150%" }],
     gradient: "from-stone-100 to-stone-50",
     testimonial: { text: "Platform yang dibangun Lifi Studio sangat scalable. Dari 50 vendor awal, sekarang sudah 200+ dan semuanya berjalan mulus.", author: "Andi Pratama", role: "CTO, TravelKita" },
-    coverImage: null,
-    images: [],
+    coverImage: "https://placehold.co/1200x700/D0603A/FFFFFF?text=KlinikSehat",
+    images: [
+      { url: "https://placehold.co/900x600/D0603A/FFFFFF?text=Teleconsultation", caption: "Antarmuka telekonsultasi" },
+      { url: "https://placehold.co/900x600/A8623A/FFFFFF?text=Patient+Dashboard", caption: "Dashboard pasien" },
+    ],
   },
   "klinik-sehat": {
     title: "KlinikSehat", category: "UI/UX Design",
@@ -75,8 +90,11 @@ const projects: Record<string, {
     results: [{ metric: "Registration Rate", value: "+55%" }, { metric: "Staff Efficiency", value: "+30%" }],
     gradient: "from-accent-100 to-accent-50",
     testimonial: { text: "Pasien sekarang bisa daftar online dengan mudah tanpa bantuan staf. Staf klinik juga jauh lebih efisien. Redesign ini benar-benar mengubah cara kami beroperasi.", author: "dr. Fitriani", role: "Direktur, KlinikSehat" },
-    coverImage: null,
-    images: [],
+    coverImage: "https://placehold.co/1200x700/5C8A7A/FFFFFF?text=AutoLead+CRM",
+    images: [
+      { url: "https://placehold.co/900x600/5C8A7A/FFFFFF?text=Workflow+Automation", caption: "Flow otomatisasi lead" },
+      { url: "https://placehold.co/900x600/78716C/FFFFFF?text=CRM+Dashboard", caption: "Dashboard CRM real-time" },
+    ],
   },
   "autolead-crm": {
     title: "AutoLead CRM", category: "Automation",
@@ -86,8 +104,11 @@ const projects: Record<string, {
     results: [{ metric: "Lead Response Time", value: "< 1 min" }, { metric: "Automation Rate", value: "85%" }, { metric: "Team Efficiency", value: "+200%" }],
     gradient: "from-stone-200 to-cream",
     testimonial: { text: "Dulu tim sales kami kewalahan handle leads. Sekarang semuanya otomatis — dari capture sampe follow-up. Waktu respon turun dari 1 jam jadi < 1 menit!", author: "Fajar Hidayat", role: "Sales Director, AutoLead" },
-    coverImage: null,
-    images: [],
+    coverImage: "https://placehold.co/1200x700/D0603A/FFFFFF?text=KopiKita",
+    images: [
+      { url: "https://placehold.co/900x600/D0603A/FFFFFF?text=Pre-order+Flow", caption: "Flow pre-order kopi" },
+      { url: "https://placehold.co/900x600/A8623A/FFFFFF?text=Loyalty+Program", caption: "Program loyalty digital" },
+    ],
   },
   "kopi-kita": {
     title: "KopiKita", category: "UI/UX Design",
@@ -97,8 +118,11 @@ const projects: Record<string, {
     results: [{ metric: "Pre-order Rate", value: "45%" }, { metric: "App Rating", value: "4.9/5" }],
     gradient: "from-accent-100 to-accent-50",
     testimonial: { text: "Aplikasi KopiKita langsung disukai pelanggan. Rating 4.9 di Play Store! Fitur pre-order-nya yang paling banyak dipake — apalagi jam sibuk pagi hari.", author: "Raka Adrianto", role: "Founder, KopiKita" },
-    coverImage: null,
-    images: [],
+    coverImage: "https://placehold.co/1200x700/78716C/FFFFFF?text=TokoOnline.id",
+    images: [
+      { url: "https://placehold.co/900x600/78716C/FFFFFF?text=E-Commerce+Dashboard", caption: "Dashboard admin TokoOnline.id" },
+      { url: "https://placehold.co/900x600/5C8A7A/FFFFFF?text=Product+Page", caption: "Halaman produk dengan real-time stock" },
+    ],
   },
 };
 
@@ -140,7 +164,7 @@ export default function PortfolioDetailContent() {
       <section className="relative pt-32 pb-16 lg:pt-40 lg:pb-20 overflow-hidden">
         {project.coverImage ? (
           <div className="absolute inset-0">
-            <img src={project.coverImage} alt={project.title} className="w-full h-full object-cover" />
+            <img src={project.coverImage} alt={project.title} className="w-full h-full object-cover" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-white via-white/60 to-transparent" />
           </div>
         ) : (
@@ -221,7 +245,7 @@ export default function PortfolioDetailContent() {
                     {project.images.map((img, i) => (
                       <div key={i} className="relative aspect-video rounded-xl overflow-hidden bg-stone-50">
                         {img.url ? (
-                          <img src={img.url} alt={img.caption} className="w-full h-full object-cover" />
+                          <img src={img.url} alt={img.caption} className="w-full h-full object-cover" loading="lazy" />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-accent-100 to-accent-50 flex items-center justify-center">
                             <p className="text-xs text-stone-400 italic px-4 text-center">{img.caption}</p>
@@ -295,7 +319,7 @@ export default function PortfolioDetailContent() {
                     >
                       <div className="relative aspect-[16/10] overflow-hidden">
                         {rp.coverImage ? (
-                          <img src={rp.coverImage} alt={rp.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                          <img src={rp.coverImage} alt={rp.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
                         ) : (
                           <div className={cn("absolute inset-0 bg-gradient-to-br transition-transform duration-700 group-hover:scale-105", rp.gradient)}>
                             <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_12px,rgba(0,0,0,0.03)_12px,rgba(0,0,0,0.03)_24px)] opacity-30" />

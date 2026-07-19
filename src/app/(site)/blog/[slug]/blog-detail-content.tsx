@@ -31,8 +31,11 @@ const posts = [
     readTime: "5 min",
     author: "NurlChl",
     gradient: "from-accent-100 to-accent-50",
-    coverImage: null,
-    images: [] as { url: string | null; caption: string }[],
+    coverImage: "https://placehold.co/1200x600/D0603A/FFFFFF?text=Tech+Stack+2026",
+    images: [
+      { url: "https://placehold.co/800x500/78716C/FFFFFF?text=Perbandingan+Tech+Stack", caption: "Perbandingan popularitas tech stack 2026" },
+      { url: "https://placehold.co/800x500/D0603A/FFFFFF?text=Next.js+Architecture", caption: "Arsitektur Next.js yang scalable" },
+    ],
   },
   {
     title: "Cara Otomatisasi CRM dengan n8n",
@@ -52,8 +55,11 @@ const posts = [
     readTime: "7 min",
     author: "NurlChl",
     gradient: "from-stone-200 to-stone-100",
-    coverImage: null,
-    images: [] as { url: string | null; caption: string }[],
+    coverImage: "https://placehold.co/1200x600/78716C/FFFFFF?text=n8n+CRM+Automation",
+    images: [
+      { url: "https://placehold.co/800x500/5C8A7A/FFFFFF?text=Workflow+Automation", caption: "Flow otomatisasi CRM dengan n8n" },
+      { url: "https://placehold.co/800x500/78716C/FFFFFF?text=n8n+Dashboard", caption: "Dashboard monitoring workflow n8n" },
+    ],
   },
 ];
 
@@ -194,7 +200,7 @@ export default function BlogDetailContent() {
                       transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
                     >
                       {block.url ? (
-                        <img src={block.url} alt={block.caption || ""} className="w-full h-full object-cover" />
+                        <img src={block.url} alt={block.caption || ""} className="w-full h-full object-cover" loading="lazy" />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-accent-100 to-accent-50 flex items-center justify-center">
                           <p className="text-sm text-stone-400 italic px-4 text-center">{block.caption || "Ilustrasi konten"}</p>
