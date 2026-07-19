@@ -1,4 +1,12 @@
 import mongoose from "mongoose";
+import dns from "node:dns";
+
+// Workaround for Node.js 22+/24+ DNS resolution issue on Windows
+try {
+  dns.setServers(["1.1.1.1", "8.8.8.8"]);
+} catch (e) {
+  console.warn("Failed to set DNS servers:", e);
+}
 
 const MONGODB_URI = process.env.MONGODB_URI;
 

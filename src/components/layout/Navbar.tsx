@@ -17,13 +17,15 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ settings }: { settings?: any }) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
+    // Check immediately on mount (handles page refresh mid-scroll)
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -39,12 +41,14 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
+  const brandName = settings?.siteName || "Lifi Studio";
+
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
         scrolled
-          ? "bg-white/90 backdrop-blur-md border-b border-stone-100 shadow-sm"
+          ? "bg-white/90 backdrop-blur-md shadow-sm"
           : "bg-transparent"
       )}
       role="banner"
@@ -57,9 +61,9 @@ export default function Navbar() {
         <Link
           href="/"
           className="font-heading text-xl font-semibold tracking-tight text-stone-900"
-          aria-label="Lifi Studio — Home"
+          aria-label={`${brandName} — Home`}
         >
-          lifi<span className="text-accent-500">.</span>
+          {brandName.toLowerCase()}<span className="text-accent-500">.</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -115,39 +119,116 @@ export default function Navbar() {
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden bg-white border-b border-stone-100 overflow-hidden"
+            variants={{
+              initial: {
+                clipPath: "circle(0% at 92% 4%)",
+                opacity: 0,
+              },
+              animate: {
+                clipPath: "circle(150% at 92% 4%)",
+                opacity: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 85,
+                  damping: 20,
+                },
+              },
+              exit: {
+                clipPath: "circle(0% at 92% 4%)",
+                opacity: 0,
+                transition: {
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 24,
+                },
+              },
+            }}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="fixed inset-0 w-full h-screen bg-white z-50 md:hidden flex flex-col"
           >
-            <nav className="px-6 py-6 flex flex-col gap-4" aria-label="Mobile navigation">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href ||
-                  (link.href !== "/" && pathname.startsWith(link.href));
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "text-base font-medium py-2 transition-colors",
-                      isActive
-                        ? "text-accent-500"
-                        : "text-stone-600 hover:text-stone-900"
-                    )}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
+            {/* Overlay Header */}
+            <div className="h-18 flex items-center justify-between px-6 border-b border-stone-100/60">
               <Link
-                href="/contact"
-                className="text-center text-sm font-semibold px-5 py-3 rounded-lg bg-stone-900 text-white hover:bg-stone-700 mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500"
+                href="/"
+                onClick={() => setIsOpen(false)}
+                className="font-heading text-xl font-semibold tracking-tight text-stone-900"
               >
-                Start Project
+                lifi<span className="text-accent-500">.</span>
               </Link>
-            </nav>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="p-2 text-stone-700 hover:text-stone-900 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500"
+                aria-label="Close navigation menu"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Overlay Content */}
+            <div className="flex-1 px-8 py-10 flex flex-col justify-between overflow-y-auto">
+              <motion.nav
+                variants={{
+                  animate: {
+                    transition: {
+                      staggerChildren: 0.05,
+                      delayChildren: 0.1,
+                    },
+                  },
+                }}
+                className="flex flex-col gap-6"
+                aria-label="Mobile navigation links"
+              >
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href ||
+                    (link.href !== "/" && pathname.startsWith(link.href));
+                  return (
+                    <motion.div
+                      key={link.href}
+                      variants={{
+                        initial: { opacity: 0, x: 20 },
+                        animate: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 100, damping: 15 } },
+                        exit: { opacity: 0, x: 20 }
+                      }}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsOpen(false)}
+                        className={cn(
+                          "text-2xl font-heading font-medium tracking-tight py-1 inline-block transition-colors",
+                          isActive
+                            ? "text-accent-500"
+                            : "text-stone-800 hover:text-stone-950"
+                        )}
+                        aria-current={isActive ? "page" : undefined}
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </motion.nav>
+
+              {/* Overlay Footer Action */}
+              <motion.div
+                variants={{
+                  initial: { opacity: 0, y: 15 },
+                  animate: { opacity: 1, y: 0, transition: { delay: 0.4 } },
+                  exit: { opacity: 0, y: 15 }
+                }}
+                className="w-full pb-6"
+              >
+                <Link
+                  href="/contact"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-center text-base font-semibold px-6 py-4 rounded-xl bg-stone-900 text-white hover:bg-stone-800 transition-all duration-300 shadow-md"
+                >
+                  Start Project
+                </Link>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

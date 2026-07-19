@@ -1,8 +1,11 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
 import Link from "next/link";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo";
 import { getAllPricing } from "@/lib/actions";
+import { getFaqs } from "@/lib/actions/faq";
 import PricingClient from "./pricing-client";
 
 export const metadata: Metadata = {
@@ -16,29 +19,6 @@ export const metadata: Metadata = {
   },
 };
 
-const faqItems = [
-  {
-    question: "Apakah harga di atas sudah termasuk domain & hosting?",
-    answer:
-      "Harga di atas adalah biaya jasa pembuatan/pengembangan. Domain, hosting/ server tidak termasuk dan akan disesuaikan dengan kebutuhan project. Kami bisa bantu setup-kan dengan harga terbaik.",
-  },
-  {
-    question: "Bagaimana sistem pembayarannya?",
-    answer:
-      "Pembayaran dilakukan 2-3 tahap tergantung skala project: 50% DP di awal, 25% setelah progress 50%, 25% setelah selesai dan approval. Untuk project kecil bisa 50% DP + 50% pelunasan.",
-  },
-  {
-    question: "Ada garansi kalau websitenya error?",
-    answer:
-      "Ya! Kami memberikan garansi 1 bulan gratis setelah launch untuk perbaikan bug dan support teknis. Untuk maintenance lanjutan tersedia paket bulanan.",
-  },
-  {
-    question: "Apakah boleh minta revisi?",
-    answer:
-      "Tentu. Setiap paket sudah termasuk alokasi revisi. Revisi tambahan di luar alokasi akan dikenakan biaya sesuai kesepakatan.",
-  },
-];
-
 const CATEGORY_LABEL: Record<string, string> = {
   web: "Web Development",
   uiux: "UI/UX",
@@ -48,7 +28,10 @@ const CATEGORY_LABEL: Record<string, string> = {
 const CATEGORY_ORDER = ["web", "uiux", "graphic", "automation"];
 
 export default async function PricingPage() {
-  const dbPricing = await getAllPricing();
+  const [dbPricing, faqItems] = await Promise.all([
+    getAllPricing(),
+    getFaqs({ category: "harga" })
+  ]);
 
   // Group by category
   const grouped: Record<string, typeof dbPricing> = {};
@@ -88,7 +71,7 @@ export default async function PricingPage() {
 
       {/* ─── Hero ─── */}
       <section className="relative pt-36 pb-24 lg:pt-44 lg:pb-32 bg-cream overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-accent-50/50 via-cream to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,var(--tw-gradient-stops))] from-accent-50/50 via-cream to-transparent" />
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
           <p className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-stone-200 bg-white/50 text-xs font-medium text-stone-500 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-accent-500" />
@@ -141,23 +124,22 @@ export default async function PricingPage() {
           </div>
 
           <div className="max-w-3xl space-y-4">
-            {faqItems.map((item, i) => (
+            {faqItems.map((item: any, i: number) => (
               <details
                 key={i}
-                className="group rounded-xl border border-stone-100 bg-white p-6 open:border-accent-100 open:bg-accent-50/20 transition-all"
+                className="faq-details group"
               >
-                <summary className="flex items-center justify-between cursor-pointer font-heading font-medium text-stone-900 list-none">
-                  {item.question}
-                  <span className="text-stone-400 text-xl leading-none group-open:hidden" aria-hidden="true">
-                    +
-                  </span>
-                  <span className="text-stone-400 text-xl leading-none hidden group-open:inline" aria-hidden="true">
-                    −
-                  </span>
+                <summary className="outline-none cursor-pointer list-none select-none">
+                  <div className="flex items-center justify-between font-heading font-medium text-stone-900 p-6">
+                    <span className="text-left">{item.question}</span>
+                    <div className="flex items-center ml-4 shrink-0">
+                      <Plus className="w-5 h-5 text-stone-400 transition-transform duration-300 group-open:rotate-45" />
+                    </div>
+                  </div>
                 </summary>
-                <p className="mt-4 text-sm text-stone-500 leading-relaxed">
+                <div className="px-6 pb-6 pt-0 text-sm text-stone-500 leading-relaxed">
                   {item.answer}
-                </p>
+                </div>
               </details>
             ))}
           </div>

@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IPricing extends Document {
-  category: "web" | "uiux" | "graphic" | "automation";
+  category: string;
   name: string;
   tagline: string;
   price: string;
@@ -19,7 +19,6 @@ const PricingSchema = new Schema<IPricing>(
   {
     category: {
       type: String,
-      enum: ["web", "uiux", "graphic", "automation"],
       required: true,
     },
     name: { type: String, required: true },

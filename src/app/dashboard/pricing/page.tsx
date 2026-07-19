@@ -4,14 +4,10 @@ import { useEffect, useState } from "react";
 import { Plus, Edit, Trash2, X } from "lucide-react";
 import { getAllPricing, createPricing, updatePricing, deletePricing } from "@/lib/actions";
 import { toast } from "react-hot-toast";
+import { useConfirm } from "@/components/providers/ConfirmProvider";
 
-const categories = [
-  { value: "all", label: "All" },
-  { value: "web", label: "Web" },
-  { value: "uiux", label: "UI/UX" },
-  { value: "graphic", label: "Graphic" },
-  { value: "automation", label: "Automation" },
-];
+import { getCategories } from "@/lib/actions/categories";
+import SearchableSelect from "@/components/ui/SearchableSelect";
 
 const catColors: Record<string, string> = {
   web: "bg-blue-50 text-blue-600",
@@ -20,10 +16,12 @@ const catColors: Record<string, string> = {
   automation: "bg-cyan-50 text-cyan-600",
 };
 
-const defaultForm = { category: "web" as const, name: "", tagline: "", price: "", unit: "jt", description: "", features: "" as string, recommended: false, sortOrder: 0 };
+const defaultForm = { category: "web" as string, name: "", tagline: "", price: "", unit: "jt", description: "", features: [] as string[], recommended: false, sortOrder: 0 };
 
 export default function DashboardPricing() {
+  const confirm = useConfirm();
   const [items, setItems] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
@@ -33,8 +31,12 @@ export default function DashboardPricing() {
 
   async function load() {
     try {
-      const data = await getAllPricing();
+      const [data, cats] = await Promise.all([
+        getAllPricing(),
+        getCategories("pricing")
+      ]);
       setItems(data);
+      setCategories([{ slug: "all", name: "All" }, ...cats]);
     } catch { toast.error("Gagal memuat pricing"); }
     finally { setLoading(false); }
   }
@@ -43,14 +45,15 @@ export default function DashboardPricing() {
 
   const filtered = filter === "all" ? items : items.filter((i) => i.category === filter);
 
-  function openCreate() { setEditing(null); setForm(defaultForm); setShowModal(true); }
+  function openCreate() { setEditing(null); setForm({ ...defaultForm, features: [""] }); setShowModal(true); }
 
   function openEdit(p: any) {
     setEditing(p);
     setForm({
       category: p.category, name: p.name, tagline: p.tagline || "",
       price: p.price, unit: p.unit || "jt", description: p.description || "",
-      features: (p.features || []).join(", "), recommended: p.recommended || false,
+      features: p.features && p.features.length > 0 ? [...p.features] : [""],
+      recommended: p.recommended || false,
       sortOrder: p.sortOrder || 0,
     });
     setShowModal(true);
@@ -62,7 +65,7 @@ export default function DashboardPricing() {
     setSaving(true);
     const data = {
       ...form,
-      features: form.features.split(",").map((f: string) => f.trim()).filter(Boolean),
+      features: form.features.map((f: string) => f.trim()).filter(Boolean),
     };
     try {
       if (editing) {
@@ -79,7 +82,7 @@ export default function DashboardPricing() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Hapus paket pricing ini?")) return;
+    if (!(await confirm("Hapus paket pricing ini?"))) return;
     try { await deletePricing(id); toast.success("Pricing berhasil dihapus"); load(); }
     catch { toast.error("Gagal menghapus pricing"); }
   }
@@ -98,9 +101,9 @@ export default function DashboardPricing() {
 
       <div className="flex flex-wrap items-center gap-3 mb-6">
         {categories.map((cat) => (
-          <button key={cat.value} onClick={() => setFilter(cat.value)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${filter === cat.value ? "bg-stone-900 text-white" : "bg-white text-stone-500 border border-stone-200 hover:border-stone-400"}`}>
-            {cat.label}
+          <button key={cat.slug} onClick={() => setFilter(cat.slug)}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${filter === cat.slug ? "bg-stone-900 text-white" : "bg-white text-stone-500 border border-stone-200 hover:border-stone-400"}`}>
+            {cat.name}
           </button>
         ))}
       </div>
@@ -165,10 +168,11 @@ export default function DashboardPricing() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-stone-700 mb-2">Category</label>
-                  <select value={form.category} onChange={e => setForm({...form, category: e.target.value as any})}
-                    className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
-                    {categories.filter(c => c.value !== "all").map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
-                  </select>
+                  <SearchableSelect 
+                    options={categories.filter(c => c.slug !== "all").map(c => ({ label: c.name, value: c.slug }))}
+                    value={form.category}
+                    onChange={(val) => setForm({...form, category: val})}
+                  />
                 </div>
               </div>
               <div>
@@ -184,12 +188,15 @@ export default function DashboardPricing() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-stone-700 mb-2">Unit</label>
-                  <select value={form.unit} onChange={e => setForm({...form, unit: e.target.value})}
-                    className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
-                    <option value="jt">jt</option>
-                    <option value="rb">rb</option>
-                    <option value="jt+">jt+</option>
-                  </select>
+                  <SearchableSelect
+                    options={[
+                      { label: "jt", value: "jt" },
+                      { label: "rb", value: "rb" },
+                      { label: "jt+", value: "jt+" }
+                    ]}
+                    value={form.unit}
+                    onChange={val => setForm({...form, unit: val})}
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-stone-700 mb-2">Sort Order</label>
@@ -203,9 +210,42 @@ export default function DashboardPricing() {
                   className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">Features (comma separated)</label>
-                <input type="text" value={form.features} onChange={e => setForm({...form, features: e.target.value})}
-                  className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500" placeholder="Responsive design, SEO optimized, 1 bulan support" />
+                <label className="block text-sm font-medium text-stone-700 mb-2">Features</label>
+                <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+                  {form.features.map((feat, index) => (
+                    <div key={index} className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        value={feat}
+                        onChange={(e) => {
+                          const newFeats = [...form.features];
+                          newFeats[index] = e.target.value;
+                          setForm({ ...form, features: newFeats });
+                        }}
+                        className="flex-1 px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
+                        placeholder={`Feature #${index + 1}`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newFeats = form.features.filter((_, i) => i !== index);
+                          setForm({ ...form, features: newFeats.length > 0 ? newFeats : [""] });
+                        }}
+                        className="p-2.5 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors border border-stone-200 hover:border-stone-50"
+                        title="Delete feature"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setForm({ ...form, features: [...form.features, ""] })}
+                  className="mt-2 text-xs font-semibold text-accent-600 hover:text-accent-700 flex items-center gap-1"
+                >
+                  <Plus size={14} /> Add Feature
+                </button>
               </div>
               <label className="flex items-center gap-3 cursor-pointer">
                 <input type="checkbox" checked={form.recommended} onChange={e => setForm({...form, recommended: e.target.checked})}

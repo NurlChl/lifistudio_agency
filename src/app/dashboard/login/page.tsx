@@ -81,7 +81,7 @@ function LoginForm() {
               </label>
               <input
                 type="email" id="email" name="email" required
-                className="w-full px-4 py-3 rounded-lg border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all text-sm"
+                className="w-full px-4 py-3 rounded-lg border border-stone-200 bg-white text-stone-900 focus:outline-none focus:ring-2 focus:ring-accent-500 transition-all text-sm"
                 placeholder="admin@lifistudio.com"
               />
             </div>
@@ -92,7 +92,7 @@ function LoginForm() {
               </label>
               <input
                 type="password" id="password" name="password" required
-                className="w-full px-4 py-3 rounded-lg border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all text-sm"
+                className="w-full px-4 py-3 rounded-lg border border-stone-200 bg-white text-stone-900 focus:outline-none focus:ring-2 focus:ring-accent-500 transition-all text-sm"
                 placeholder="••••••••"
               />
             </div>

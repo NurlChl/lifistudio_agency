@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* ─── Design Tokens ─── */
 @theme inline {
@@ -174,4 +175,224 @@ body {
 ::selection {
   background: var(--color-accent-200);
   color: var(--color-stone-900);
+}
+
+/* ─── Prose Overrides ─── */
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  scroll-margin-top: 100px;
+}
+
+/* Block code — VSCode dark style with brand colors */
+.prose pre {
+  position: relative !important;
+  background-color: #1c1a17 !important; /* stone-800 */
+  color: #d4ccc2 !important;            /* stone-100 */
+  border: 1px solid #2c2824 !important; /* stone-700 */
+  border-left: 3px solid #d0603a !important; /* accent-500 */
+  border-radius: 0.5rem !important;
+  padding: 1.25rem 1.5rem !important;
+  overflow-x: auto !important;
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  font-family: var(--font-mono), 'JetBrains Mono', 'Fira Code', monospace !important;
+  font-size: 0.85rem !important;
+  line-height: 1.7 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Horizontal scrollbar subtle styling */
+.prose pre::-webkit-scrollbar {
+  height: 6px;
+}
+.prose pre::-webkit-scrollbar-track {
+  background: #2c2824;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+.prose pre::-webkit-scrollbar-thumb {
+  background: #d0603a;
+  border-radius: 3px;
+}
+
+.prose pre code {
+  background-color: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: inherit !important;
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  font-weight: 400 !important;
+}
+
+/* Inline code — warm terracotta tint */
+.prose code {
+  background-color: #fdf2ed !important; /* accent-50 */
+  color: #b34c2c !important;            /* accent-600 */
+  padding: 0.15rem 0.45rem !important;
+  border-radius: 4px !important;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace !important;
+  font-size: 0.85em !important;
+  font-weight: 500 !important;
+}
+
+/* Remove default backticks from Tailwind Typography */
+.prose code::before,
+.prose code::after {
+  content: none !important;
+}
+
+/* Blockquote — brand accent left border */
+.prose blockquote {
+  border-left: 3px solid #d0603a !important; /* accent-500 */
+  background-color: #fdf2ed !important;       /* accent-50 */
+  padding: 1rem 1.5rem !important;
+  margin: 1.5rem 0 !important;
+  font-style: italic !important;
+  color: #5c554c !important; /* stone-500 */
+}
+
+.prose blockquote p {
+  margin: 0 !important;
+  color: #5c554c !important;
+}
+
+/* ─── TipTap Editor (ProseMirror) Styles ─── */
+/* Mirrors prose styles for WYSIWYG consistency in the dashboard */
+
+.ProseMirror pre {
+  background-color: #1c1a17;
+  color: #d4ccc2;
+  border: 1px solid #2c2824;
+  border-left: 3px solid #d0603a;
+  border-radius: 0.5rem;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 1rem 0;
+}
+
+.ProseMirror pre::-webkit-scrollbar {
+  height: 6px;
+}
+.ProseMirror pre::-webkit-scrollbar-track {
+  background: #2c2824;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+.ProseMirror pre::-webkit-scrollbar-thumb {
+  background: #d0603a;
+  border-radius: 3px;
+}
+
+.ProseMirror pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  white-space: pre;
+  font-weight: 400;
+}
+
+.ProseMirror code {
+  background-color: #fdf2ed;
+  color: #b34c2c;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+.ProseMirror blockquote {
+  border-left: 3px solid #d0603a;
+  background-color: #fdf2ed;
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #5c554c;
+}
+
+.ProseMirror blockquote p {
+  margin: 0;
+  color: #5c554c;
+}
+
+/* Placeholder text */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9c9387;
+  pointer-events: none;
+  height: 0;
+}
+
+/* ── Thin scrollbar for all popups / modals ───────────────────────────── */
+/* Targets any scrollable element inside a fixed overlay (modal/popup)   */
+.fixed *::-webkit-scrollbar,
+[class*="overflow-y-auto"]::-webkit-scrollbar,
+[class*="overflow-y-scroll"]::-webkit-scrollbar,
+[class*="max-h-"]::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.fixed *::-webkit-scrollbar-track,
+[class*="overflow-y-auto"]::-webkit-scrollbar-track,
+[class*="overflow-y-scroll"]::-webkit-scrollbar-track,
+[class*="max-h-"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.fixed *::-webkit-scrollbar-thumb,
+[class*="overflow-y-auto"]::-webkit-scrollbar-thumb,
+[class*="overflow-y-scroll"]::-webkit-scrollbar-thumb,
+[class*="max-h-"]::-webkit-scrollbar-thumb {
+  background: #d4cdc6;
+  border-radius: 999px;
+}
+
+.fixed *::-webkit-scrollbar-thumb:hover,
+[class*="overflow-y-auto"]::-webkit-scrollbar-thumb:hover,
+[class*="overflow-y-scroll"]::-webkit-scrollbar-thumb:hover,
+[class*="max-h-"]::-webkit-scrollbar-thumb:hover {
+  background: #b5aca2;
+}
+
+/* Firefox */
+.fixed *,
+[class*="overflow-y-auto"],
+[class*="overflow-y-scroll"],
+[class*="max-h-"] {
+  scrollbar-width: thin;
+  scrollbar-color: #d4cdc6 transparent;
+}
+
+/* FAQ Details Custom Styling (Bypasses Tailwind properties warning lint rules) */
+.faq-details {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--color-stone-50) !important;
+  background-color: var(--color-white) !important;
+  border-radius: var(--radius-xl);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.faq-details[open] {
+  border-color: var(--color-accent-100) !important;
+  background-color: color-mix(in srgb, var(--color-accent-50) 20%, transparent) !important;
 }

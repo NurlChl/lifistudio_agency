@@ -3,6 +3,8 @@ import { DM_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { organizationSchema, localBusinessSchema } from "@/lib/seo";
+import { getSiteSettings } from "@/lib/actions";
+import { getSiteUrl } from "@/lib/utils";
 
 const dmSans = DM_Sans({
   variable: "--font-heading",
@@ -16,57 +18,72 @@ const outfit = Outfit({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://lifistudio.com"),
-  title: {
-    default: "Lifi Studio — Digital Agency | Web, Desain & Otomasi",
-    template: "%s | Lifi Studio",
-  },
-  description:
-    "Web Development, UI/UX Design, Graphic Design, dan Automation Engineering. Satu studio, semua solusi digital. Dari Mojokerto untuk Indonesia.",
-  keywords: [
-    "web development",
-    "UI/UX design",
-    "graphic design",
-    "automation",
-    "n8n",
-    "Next.js",
-    "WordPress",
-    "digital agency",
-    "Mojokerto",
-    "Lifi Studio",
-  ],
-  openGraph: {
-    type: "website",
-    locale: "id_ID",
-    siteName: "Lifi Studio",
-    title: "Lifi Studio — Digital Agency",
-    description:
-      "Web Development, UI/UX Design, Graphic Design, dan Automation Engineering.",
-    url: "https://lifistudio.com",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Lifi Studio — Digital Agency",
-    description:
-      "Web Development, UI/UX Design, Graphic Design, dan Automation Engineering.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    "max-snippet": -1,
-    "max-image-preview": "large",
-  },
-  alternates: {
-    canonical: "https://lifistudio.com",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const siteUrl = getSiteUrl();
 
-export default function RootLayout({
+  const title = settings?.seo?.title || "Lifi Studio — Digital Agency | Web, Desain & Otomasi";
+  const description = settings?.seo?.description || settings?.siteDescription || "Web Development, UI/UX Design, Graphic Design, dan Automation Engineering.";
+  const keywordsStr = settings?.seo?.keywords || "web development, UI/UX design, graphic design, automation, Mojokerto";
+  const keywords = keywordsStr.split(",").map((k: string) => k.trim());
+
+  const lat = settings?.geo?.latitude || "-7.4705";
+  const lng = settings?.geo?.longitude || "112.4401";
+  const geoRegion = settings?.geo?.region || "ID-JI";
+  const geoPlacename = settings?.geo?.placename || "Mojokerto";
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: title,
+      template: `%s | ${settings?.siteName || "Lifi Studio"}`,
+    },
+    description,
+    other: {
+      "geo.region": geoRegion,
+      "geo.placename": geoPlacename,
+      "geo.position": `${lat};${lng}`,
+      "ICBM": `${lat}, ${lng}`,
+    },
+    keywords,
+    openGraph: {
+      type: "website",
+      locale: "id_ID",
+      siteName: settings?.siteName || "Lifi Studio",
+      title,
+      description,
+      url: siteUrl,
+      images: [
+        {
+          url: settings?.seo?.ogImage ? getSiteUrl(settings.seo.ogImage) : getSiteUrl("/logo.png"),
+        }
+      ]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [settings?.seo?.ogImage ? getSiteUrl(settings.seo.ogImage) : getSiteUrl("/logo.png")],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+    },
+    alternates: {
+      canonical: siteUrl,
+    },
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+
   return (
     <html
       lang="id"
@@ -77,13 +94,13 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema()),
+            __html: JSON.stringify(organizationSchema(settings)),
           }}
         />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusinessSchema()),
+            __html: JSON.stringify(localBusinessSchema(settings)),
           }}
         />
       </head>

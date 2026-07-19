@@ -3,10 +3,42 @@ import { notFound } from "next/navigation";
 import { getPortfolioBySlug, getPortfolios } from "@/lib/actions";
 import PortfolioDetailContent from "./portfolio-detail-content";
 
-export const metadata: Metadata = {
-  title: "Portfolio Detail",
-  description: "Detail project dari Lifi Studio.",
-};
+import { getSiteUrl } from "@/lib/utils";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getPortfolioBySlug(slug);
+  if (!project) return { title: "Project Not Found" };
+
+  const categoryLabel = CATEGORY_LABEL[project.category] || project.category;
+  const ogImage = project.coverImage || getSiteUrl("/og-default.png");
+
+  return {
+    title: `${project.title} - ${categoryLabel}`,
+    description: project.description,
+    openGraph: {
+      title: `${project.title} | Lifi Studio Portfolio`,
+      description: project.description,
+      url: getSiteUrl(`/portfolio/${project.slug}`),
+      siteName: "Lifi Studio",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: project.title,
+        },
+      ],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} | Lifi Studio`,
+      description: project.description,
+      images: [ogImage],
+    },
+  };
+}
 
 const CATEGORY_LABEL: Record<string, string> = {
   web: "Web Development", uiux: "UI/UX Design", graphic: "Graphic Design", automation: "Automation",

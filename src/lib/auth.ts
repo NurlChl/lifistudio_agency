@@ -5,6 +5,7 @@ import { connectDB } from "@/lib/mongodb";
 import { User } from "@/lib/models/User";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "dev-secret-key-change-in-production",
   providers: [
     Credentials({
       name: "credentials",
@@ -17,7 +18,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         await connectDB();
 
-        const user = await User.findOne({ email: credentials.email });
+        const user = await User.findOne({ email: credentials.email }).lean();
         if (!user) return null;
 
         const isValid = await bcrypt.compare(
@@ -31,7 +32,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: user.email,
           name: user.name,
           role: user.role,
-          permissions: user.permissions,
+          permissions: Array.isArray(user.permissions) ? [...user.permissions] : [],
           image: user.image,
         };
       },

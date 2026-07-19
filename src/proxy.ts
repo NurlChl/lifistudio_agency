@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 const publicPaths = ["/dashboard/login", "/api/auth/seed"];
 
-export default auth((req) => {
+export const proxy = auth((req) => {
   const { pathname, searchParams } = req.nextUrl;
 
   // Allow public dashboard paths and API auth routes

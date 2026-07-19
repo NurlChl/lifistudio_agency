@@ -1,14 +1,13 @@
-import type { MetadataRoute } from "next";
-
-const BASE_URL = "https://lifistudio.com";
+import { MetadataRoute } from "next";
+import { getSiteUrl } from "@/lib/utils";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/dashboard/", "/api/"],
+      disallow: ["/dashboard/", "/dashboard/login"],
     },
-    sitemap: `${BASE_URL}/sitemap.xml`,
+    sitemap: getSiteUrl("/sitemap.xml"),
   };
 }

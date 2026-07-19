@@ -1,164 +1,535 @@
 "use client";
 
-import { useState } from "react";
-import { toast } from "react-hot-toast";
-import { Save } from "lucide-react";
+import { useState, useEffect } from "react";
+import { getSiteSettings, updateSiteSettings } from "@/lib/actions/settings";
+import { Info, MapPin, Globe, Loader2, Save } from "lucide-react";
 
-export default function DashboardSettings() {
+export default function SettingsPage() {
+  const [activeTab, setActiveTab] = useState<"general" | "geo" | "seo">("general");
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  const [form, setForm] = useState({
+    siteName: "",
+    siteDescription: "",
+    logo: "",
+    favicon: "",
+    contactEmail: "",
+    whatsappNumber: "",
+    openingHours: "",
+    priceRange: "",
+    address: {
+      streetAddress: "",
+      addressLocality: "",
+      addressRegion: "",
+      postalCode: "",
+      addressCountry: "",
+    },
+    geo: {
+      latitude: "",
+      longitude: "",
+      region: "",
+      placename: "",
+    },
+    socialLinks: {
+      instagram: "",
+      twitter: "",
+      github: "",
+      linkedin: "",
+      youtube: "",
+      tiktok: "",
+    },
+    seo: {
+      title: "",
+      description: "",
+      ogImage: "",
+      keywords: "",
+    },
+  });
+
+  async function load() {
+    try {
+      setLoading(true);
+      const res = await getSiteSettings();
+      if (res) {
+        setForm({
+          siteName: res.siteName || "",
+          siteDescription: res.siteDescription || "",
+          logo: res.logo || "",
+          favicon: res.favicon || "",
+          contactEmail: res.contactEmail || "",
+          whatsappNumber: res.whatsappNumber || "",
+          openingHours: res.openingHours || "",
+          priceRange: res.priceRange || "",
+          address: {
+            streetAddress: res.address?.streetAddress || "",
+            addressLocality: res.address?.addressLocality || "",
+            addressRegion: res.address?.addressRegion || "",
+            postalCode: res.address?.postalCode || "",
+            addressCountry: res.address?.addressCountry || "",
+          },
+          geo: {
+            latitude: res.geo?.latitude || "",
+            longitude: res.geo?.longitude || "",
+            region: res.geo?.region || "",
+            placename: res.geo?.placename || "",
+          },
+          socialLinks: {
+            instagram: res.socialLinks?.instagram || "",
+            twitter: res.socialLinks?.twitter || "",
+            github: res.socialLinks?.github || "",
+            linkedin: res.socialLinks?.linkedin || "",
+            youtube: res.socialLinks?.youtube || "",
+            tiktok: res.socialLinks?.tiktok || "",
+          },
+          seo: {
+            title: res.seo?.title || "",
+            description: res.seo?.description || "",
+            ogImage: res.seo?.ogImage || "",
+            keywords: res.seo?.keywords || "",
+          },
+        });
+      }
+    } catch (e) {
+      console.error("Failed to load settings:", e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    setSaving(true);
-    // Simulate save
-    await new Promise((r) => setTimeout(r, 1000));
-    toast.success("Settings saved successfully!");
-    setSaving(false);
+    try {
+      setSaving(true);
+      setMessage(null);
+      await updateSiteSettings(form);
+      setMessage({ type: "success", text: "Settings berhasil disimpan!" });
+    } catch (e: any) {
+      setMessage({ type: "error", text: e.message || "Gagal menyimpan settings." });
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="p-6 lg:p-10 space-y-6">
+        <div className="h-8 w-48 bg-stone-50 rounded-lg animate-pulse" />
+        <div className="h-64 bg-stone-50 rounded-2xl animate-pulse" />
+      </div>
+    );
   }
 
   return (
     <div className="p-6 lg:p-10">
       <div className="mb-8">
         <h1 className="font-heading text-2xl font-semibold text-stone-900">Settings</h1>
-        <p className="text-sm text-stone-400 mt-1">Manage site settings and account preferences</p>
+        <p className="text-sm text-stone-400 mt-1">Kelola informasi situs, alamat lokal, SEO, dan media sosial</p>
       </div>
 
-      <div className="max-w-2xl space-y-8">
-        {/* Site Settings */}
-        <section className="bg-white rounded-xl border border-stone-100 p-8">
-          <h2 className="font-heading text-lg font-semibold text-stone-900 mb-6">Site Information</h2>
-          <form onSubmit={handleSave} className="space-y-5">
+      {/* Tabs */}
+      <div className="flex gap-2 border-b border-stone-100 mb-8">
+        <button
+          onClick={() => setActiveTab("general")}
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all cursor-pointer ${
+            activeTab === "general"
+              ? "border-stone-900 text-stone-900"
+              : "border-transparent text-stone-400 hover:text-stone-600"
+          }`}
+        >
+          <Info size={16} /> Informasi Situs
+        </button>
+        <button
+          onClick={() => setActiveTab("geo")}
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all cursor-pointer ${
+            activeTab === "geo"
+              ? "border-stone-900 text-stone-900"
+              : "border-transparent text-stone-400 hover:text-stone-600"
+          }`}
+        >
+          <MapPin size={16} /> Alamat & GEO (Local SEO)
+        </button>
+        <button
+          onClick={() => setActiveTab("seo")}
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all cursor-pointer ${
+            activeTab === "seo"
+              ? "border-stone-900 text-stone-900"
+              : "border-transparent text-stone-400 hover:text-stone-600"
+          }`}
+        >
+          <Globe size={16} /> SEO & Media Sosial
+        </button>
+      </div>
+
+      <form onSubmit={handleSave} className="max-w-3xl">
+        {activeTab === "general" && (
+          <div className="bg-white rounded-xl border border-stone-100 p-8 space-y-6">
+            <h3 className="font-heading text-base font-semibold text-stone-900 border-b border-stone-100 pb-3">Informasi Umum</h3>
+            
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">Site Name</label>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Nama Situs (Site Name)</label>
                 <input
                   type="text"
-                  defaultValue="Lifi Studio"
-                  className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
+                  value={form.siteName}
+                  onChange={(e) => setForm({ ...form, siteName: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="Lifi Studio"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">WhatsApp Number</label>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Nomor WhatsApp (Contact & Footer)</label>
                 <input
                   type="text"
-                  defaultValue="+6281234567890"
-                  className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
+                  value={form.whatsappNumber}
+                  onChange={(e) => setForm({ ...form, whatsappNumber: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="+6281234567890"
                 />
               </div>
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-stone-700 mb-2">Site Description</label>
+              <label className="block text-sm font-medium text-stone-700 mb-2">Deskripsi Singkat Situs</label>
               <textarea
                 rows={3}
-                defaultValue="Web Development, UI/UX Design, Graphic Design, dan Automation Engineering — satu studio, semua solusi digital."
-                className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500 resize-none"
+                value={form.siteDescription}
+                onChange={(e) => setForm({ ...form, siteDescription: e.target.value })}
+                className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800 resize-none"
+                placeholder="Digital Agency..."
               />
             </div>
+
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">Contact Email</label>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Email Kontak</label>
                 <input
                   type="email"
-                  defaultValue="hello@lifistudio.com"
-                  className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
+                  value={form.contactEmail}
+                  onChange={(e) => setForm({ ...form, contactEmail: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="hello@lifistudio.com"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">SEO Title</label>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Jam Kerja (Opening Hours)</label>
                 <input
                   type="text"
-                  defaultValue="Lifi Studio — Digital Agency"
-                  className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
+                  value={form.openingHours}
+                  onChange={(e) => setForm({ ...form, openingHours: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="Sen - Sab, 08:00 - 17:00 WIB"
                 />
               </div>
             </div>
-            <button
-              type="submit"
-              disabled={saving}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-stone-900 text-white text-sm font-semibold hover:bg-stone-700 disabled:opacity-50 transition-all"
-            >
-              <Save size={18} />
-              {saving ? "Saving..." : "Save Settings"}
-            </button>
-          </form>
-        </section>
 
-        {/* Account Settings */}
-        <section className="bg-white rounded-xl border border-stone-100 p-8">
-          <h2 className="font-heading text-lg font-semibold text-stone-900 mb-6">Account Settings</h2>
-          <div className="space-y-5">
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">New Email</label>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Rentang Harga (Price Range / Local SEO)</label>
                 <input
-                  type="email"
-                  placeholder="newemail@example.com"
-                  className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
+                  type="text"
+                  value={form.priceRange}
+                  onChange={(e) => setForm({ ...form, priceRange: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="e.g. $$, IDR, atau Rp 1.5jt - Rp 20jt"
+                />
+                <p className="text-[11px] text-stone-400 mt-1">Indikator harga relatif untuk Google & AI (misal: $$ atau range harga dalam IDR)</p>
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-5 pt-2">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Logo URL</label>
+                <input
+                  type="text"
+                  value={form.logo}
+                  onChange={(e) => setForm({ ...form, logo: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="/logo.png"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">New Password</label>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Favicon URL</label>
                 <input
-                  type="password"
-                  placeholder="Leave blank to keep current"
-                  className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
+                  type="text"
+                  value={form.favicon}
+                  onChange={(e) => setForm({ ...form, favicon: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="/favicon.ico"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "geo" && (
+          <div className="bg-white rounded-xl border border-stone-100 p-8 space-y-6">
+            <h3 className="font-heading text-base font-semibold text-stone-900 border-b border-stone-100 pb-3">Alamat Fisik & GEO Tagging</h3>
+            
+            <div>
+              <label className="block text-sm font-medium text-stone-700 mb-2">Alamat Jalan (Street Address)</label>
+              <input
+                type="text"
+                value={form.address.streetAddress}
+                onChange={(e) => setForm({ ...form, address: { ...form.address, streetAddress: e.target.value } })}
+                className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                placeholder="Jl. Gajah Mada No. 12"
+              />
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Kota / Kabupaten (Locality)</label>
+                <input
+                  type="text"
+                  value={form.address.addressLocality}
+                  onChange={(e) => setForm({ ...form, address: { ...form.address, addressLocality: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="Mojokerto"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Provinsi (Region)</label>
+                <input
+                  type="text"
+                  value={form.address.addressRegion}
+                  onChange={(e) => setForm({ ...form, address: { ...form.address, addressRegion: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="Jawa Timur"
                 />
               </div>
             </div>
 
-            {/* SMTP Settings */}
-            <div className="pt-6 border-t border-stone-100">
-              <h3 className="font-heading text-base font-semibold text-stone-900 mb-4">SMTP Configuration</h3>
-              <p className="text-xs text-stone-400 mb-4">
-                Used for email verification, password reset, and notifications.
-              </p>
-              <div className="grid sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-medium text-stone-700 mb-2">SMTP Host</label>
-                  <input
-                    type="text"
-                    placeholder="smtp.gmail.com"
-                    className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-stone-700 mb-2">SMTP Port</label>
-                  <input
-                    type="text"
-                    placeholder="587"
-                    className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-stone-700 mb-2">SMTP Email</label>
-                  <input
-                    type="email"
-                    placeholder="noreply@lifistudio.com"
-                    className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-stone-700 mb-2">SMTP Password</label>
-                  <input
-                    type="password"
-                    placeholder="App password"
-                    className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
-                  />
-                </div>
+            <div className="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Kode Pos (Postal Code)</label>
+                <input
+                  type="text"
+                  value={form.address.postalCode}
+                  onChange={(e) => setForm({ ...form, address: { ...form.address, postalCode: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="61311"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Negara (Country Code)</label>
+                <input
+                  type="text"
+                  value={form.address.addressCountry}
+                  onChange={(e) => setForm({ ...form, address: { ...form.address, addressCountry: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="ID"
+                />
               </div>
             </div>
 
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-stone-900 text-white text-sm font-semibold hover:bg-stone-700 disabled:opacity-50 transition-all"
-            >
-              <Save size={18} />
-              {saving ? "Saving..." : "Update Account"}
-            </button>
+            <h3 className="font-heading text-base font-semibold text-stone-900 border-b border-stone-100 pb-3 pt-4">Koordinat & Wilayah (SEO / AI Metadata)</h3>
+
+            <div className="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Latitude GPS</label>
+                <input
+                  type="text"
+                  value={form.geo.latitude}
+                  onChange={(e) => setForm({ ...form, geo: { ...form.geo, latitude: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="-7.4705"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Longitude GPS</label>
+                <input
+                  type="text"
+                  value={form.geo.longitude}
+                  onChange={(e) => setForm({ ...form, geo: { ...form.geo, longitude: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="112.4401"
+                />
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Nama Wilayah (GEO Placename)</label>
+                <input
+                  type="text"
+                  value={form.geo.placename}
+                  onChange={(e) => setForm({ ...form, geo: { ...form.geo, placename: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="Mojokerto"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Kode Region (GEO Region)</label>
+                <input
+                  type="text"
+                  value={form.geo.region}
+                  onChange={(e) => setForm({ ...form, geo: { ...form.geo, region: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="ID-JI"
+                />
+              </div>
+            </div>
           </div>
-        </section>
-      </div>
+        )}
+
+        {activeTab === "seo" && (
+          <div className="bg-white rounded-xl border border-stone-100 p-8 space-y-6">
+            <h3 className="font-heading text-base font-semibold text-stone-900 border-b border-stone-100 pb-3">Global SEO Settings</h3>
+            
+            <div>
+              <label className="block text-sm font-medium text-stone-700 mb-2">Default Meta Title</label>
+              <input
+                type="text"
+                value={form.seo.title}
+                onChange={(e) => setForm({ ...form, seo: { ...form.seo, title: e.target.value } })}
+                className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                placeholder="Lifi Studio — Premium Digital Agency"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-stone-700 mb-2">Default Meta Description</label>
+              <textarea
+                rows={3}
+                value={form.seo.description}
+                onChange={(e) => setForm({ ...form, seo: { ...form.seo, description: e.target.value } })}
+                className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800 resize-none"
+                placeholder="Deskripsi untuk penelusuran search engine..."
+              />
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Meta Keywords (pisahkan dengan koma)</label>
+                <input
+                  type="text"
+                  value={form.seo.keywords}
+                  onChange={(e) => setForm({ ...form, seo: { ...form.seo, keywords: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="web design, agency, n8n, automation"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Default Share OG Image URL</label>
+                <input
+                  type="text"
+                  value={form.seo.ogImage}
+                  onChange={(e) => setForm({ ...form, seo: { ...form.seo, ogImage: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="/og-image.png"
+                />
+              </div>
+            </div>
+
+            <h3 className="font-heading text-base font-semibold text-stone-900 border-b border-stone-100 pb-3 pt-4">Tautan Media Sosial</h3>
+
+            <div className="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Instagram URL</label>
+                <input
+                  type="text"
+                  value={form.socialLinks.instagram}
+                  onChange={(e) => setForm({ ...form, socialLinks: { ...form.socialLinks, instagram: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="https://instagram.com/lifistudio"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Github URL</label>
+                <input
+                  type="text"
+                  value={form.socialLinks.github}
+                  onChange={(e) => setForm({ ...form, socialLinks: { ...form.socialLinks, github: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="https://github.com/lifistudio"
+                />
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">Twitter / X URL</label>
+                <input
+                  type="text"
+                  value={form.socialLinks.twitter}
+                  onChange={(e) => setForm({ ...form, socialLinks: { ...form.socialLinks, twitter: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="https://x.com/lifistudio"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">LinkedIn URL</label>
+                <input
+                  type="text"
+                  value={form.socialLinks.linkedin}
+                  onChange={(e) => setForm({ ...form, socialLinks: { ...form.socialLinks, linkedin: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="https://linkedin.com/company/lifistudio"
+                />
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">YouTube URL</label>
+                <input
+                  type="text"
+                  value={form.socialLinks.youtube}
+                  onChange={(e) => setForm({ ...form, socialLinks: { ...form.socialLinks, youtube: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="https://youtube.com/@lifistudio"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">TikTok URL</label>
+                <input
+                  type="text"
+                  value={form.socialLinks.tiktok}
+                  onChange={(e) => setForm({ ...form, socialLinks: { ...form.socialLinks, tiktok: e.target.value } })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
+                  placeholder="https://tiktok.com/@lifistudio"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {message && (
+          <div
+            className={`mt-6 p-4 rounded-lg text-sm font-medium ${
+              message.type === "success"
+                ? "bg-success/10 text-success border border-success/20"
+                : "bg-error/10 text-error border border-error/20"
+            }`}
+          >
+            {message.text}
+          </div>
+        )}
+
+        <div className="mt-8 flex justify-end">
+          <button
+            type="submit"
+            disabled={saving}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-stone-900 text-white text-sm font-semibold hover:bg-stone-700 transition-all cursor-pointer disabled:opacity-50"
+          >
+            {saving ? (
+              <>
+                <Loader2 size={16} className="animate-spin" /> Menyimpan...
+              </>
+            ) : (
+              <>
+                <Save size={16} /> Simpan Perubahan
+              </>
+            )}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import { Plus, Edit, Trash2, Shield, X } from "lucide-react";
 import { getUsers, createUser, updateUser, deleteUser } from "@/lib/actions";
 import { toast } from "react-hot-toast";
+import { useConfirm } from "@/components/providers/ConfirmProvider";
+import SearchableSelect from "@/components/ui/SearchableSelect";
 
-const defaultForm = { name: "", email: "", password: "", role: "admin" as const };
+const defaultForm = { name: "", email: "", password: "", role: "admin" as "admin" | "superadmin" };
 
 export default function DashboardUsers() {
+  const confirm = useConfirm();
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -53,7 +56,7 @@ export default function DashboardUsers() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Hapus user ini?")) return;
+    if (!(await confirm("Hapus user ini?"))) return;
     try { await deleteUser(id); toast.success("User berhasil dihapus"); load(); }
     catch { toast.error("Gagal menghapus user"); }
   }
@@ -138,11 +141,14 @@ export default function DashboardUsers() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-stone-700 mb-2">Role</label>
-                <select value={form.role} onChange={e => setForm({...form, role: e.target.value as any})}
-                  className="w-full px-4 py-3 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
-                  <option value="admin">Admin</option>
-                  <option value="superadmin">Superadmin</option>
-                </select>
+                <SearchableSelect
+                  options={[
+                    { label: "Admin", value: "admin" },
+                    { label: "Superadmin", value: "superadmin" }
+                  ]}
+                  value={form.role}
+                  onChange={val => setForm({...form, role: val as "admin" | "superadmin"})}
+                />
               </div>
               <div className="flex justify-end gap-3 pt-2">
                 <button type="button" onClick={() => setShowModal(false)} className="px-6 py-2.5 rounded-lg border border-stone-200 text-sm font-medium text-stone-600 hover:bg-stone-50 transition-all">Cancel</button>

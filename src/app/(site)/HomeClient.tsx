@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import ThreeBackground from "@/components/ThreeBackground";
+import Counter from "@/components/ui/Counter";
 import {
   Monitor,
   Palette,
@@ -13,20 +14,21 @@ import {
   Users,
   Clock,
   Shield,
+  Plus,
 } from "lucide-react";
 
 const fadeUp = {
   initial: { opacity: 0, y: 40 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-80px" },
-  transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+  transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
 };
 
 const stagger = {
   initial: { opacity: 0, y: 30 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+  transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
 };
 
 interface FaqItem {
@@ -47,7 +49,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
     <>
       {/* ═══════════════ HERO ═══════════════ */}
       <section className="relative min-h-screen flex items-center bg-cream overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent-50 via-cream to-transparent opacity-70" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-accent-50 via-cream to-transparent opacity-70" />
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-32 lg:py-40 w-full">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -101,13 +103,13 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
               >
                 <div className="grid grid-cols-3 gap-8">
                   {[
-                    { num: "30+", label: "Klien Puas" },
-                    { num: "100+", label: "Proyek Selesai" },
-                    { num: "4+", label: "Tahun Experience" },
+                    { num: 30, label: "Klien Puas", suffix: "+" },
+                    { num: 100, label: "Proyek Selesai", suffix: "+" },
+                    { num: 4, label: "Tahun Experience", suffix: "+" },
                   ].map((stat) => (
                     <div key={stat.label}>
                       <p className="font-heading text-3xl lg:text-4xl font-semibold text-stone-900">
-                        {stat.num}
+                        <Counter value={stat.num} suffix={stat.suffix} />
                       </p>
                       <p className="text-xs text-stone-400 mt-1 font-medium uppercase tracking-wider">
                         {stat.label}
@@ -141,7 +143,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
 
               {/* Warm gradient overlay at bottom */}
               <div
-                className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cream to-transparent"
+                className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-cream to-transparent"
                 aria-hidden="true"
               />
             </motion.div>
@@ -260,7 +262,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                   href={`/portfolio/${p.slug}`}
                   className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-lg transition-all duration-500"
                 >
-                  <div className="aspect-[16/10] overflow-hidden bg-stone-50">
+                  <div className="aspect-16/10 overflow-hidden bg-stone-50">
                     {p.coverImage ? (
                       <img
                         src={p.coverImage as string}
@@ -269,7 +271,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-accent-100 to-accent-50" />
+                      <div className="w-full h-full bg-linear-to-br from-accent-100 to-accent-50" />
                     )}
                   </div>
                   <div className="p-6">
@@ -300,7 +302,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
             <h2 className="heading-2 text-stone-900">Pertanyaan Umum</h2>
           </motion.div>
 
-          <div className="max-w-3xl mx-auto space-y-4">
+          <div className="max-w-3xl space-y-4">
             {faqItems.map((item, i) => (
               <motion.div
                 key={i}
@@ -309,15 +311,18 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
               >
-                <details className="group rounded-xl border border-stone-100 bg-white p-6 open:border-accent-100 open:bg-accent-50/20 transition-all cursor-pointer">
-                  <summary className="flex items-center justify-between font-heading font-medium text-stone-900 list-none">
-                    {item.question}
-                    <span className="text-stone-400 text-xl leading-none group-open:hidden">+</span>
-                    <span className="text-stone-400 text-xl leading-none hidden group-open:inline">−</span>
+                <details className="faq-details group">
+                  <summary className="outline-none cursor-pointer list-none select-none">
+                    <div className="flex items-center justify-between font-heading font-medium text-stone-900 p-6">
+                      <span className="text-left">{item.question}</span>
+                      <div className="flex items-center ml-4 shrink-0">
+                        <Plus className="w-5 h-5 text-stone-400 transition-transform duration-300 group-open:rotate-45" />
+                      </div>
+                    </div>
                   </summary>
-                  <p className="mt-4 text-sm text-stone-500 leading-relaxed">
+                  <div className="px-6 pb-6 pt-0 text-sm text-stone-500 leading-relaxed">
                     {item.answer}
-                  </p>
+                  </div>
                 </details>
               </motion.div>
             ))}

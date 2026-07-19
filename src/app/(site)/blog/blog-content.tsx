@@ -2,9 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Calendar, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import Pagination from "@/components/ui/Pagination";
 
 const CATEGORY_STYLE: Record<string, { gradient: string; pattern: string }> = {
   "Web Development": { gradient: "from-accent-100 to-accent-50", pattern: "diagonal-lines" },
@@ -21,21 +24,29 @@ function formatDate(d: string | Date) {
 
 function PatternBg({ pattern, gradient }: { pattern: string; gradient: string }) {
   return (
-    <div className={cn("absolute inset-0 bg-gradient-to-br transition-transform duration-700 group-hover:scale-105", gradient)}>
+    <div className={cn("absolute inset-0 bg-linear-to-br transition-transform duration-700 group-hover:scale-105", gradient)}>
       <div className={cn(
         "absolute inset-0 opacity-20",
         pattern === "diagonal-lines" && "bg-[repeating-linear-gradient(45deg,transparent,transparent_8px,rgba(0,0,0,0.04)_8px,rgba(0,0,0,0.04)_16px)]",
-        pattern === "dots" && "bg-[radial-gradient(rgba(0,0,0,0.06)_1px,transparent_1px)] bg-[length:16px_16px]",
+        pattern === "dots" && "bg-[radial-gradient(rgba(0,0,0,0.06)_1px,transparent_1px)] bg-size-[16px_16px]",
         pattern === "grid" && "bg-[repeating-linear-gradient(0deg,transparent,transparent_24px,rgba(0,0,0,0.03)_24px,rgba(0,0,0,0.03)_25px),repeating-linear-gradient(90deg,transparent,transparent_24px,rgba(0,0,0,0.03)_24px,rgba(0,0,0,0.03)_25px)]"
       )} />
+
     </div>
   );
 }
 
-export default function BlogContent({ posts }: { posts: any[] }) {
-  const categories = ["All", ...new Set(posts.map((p: any) => p.category))];
-  const [activeCategory, setActiveCategory] = useState("All");
-  const filtered = activeCategory === "All" ? posts : posts.filter((p: any) => p.category === activeCategory);
+export default function BlogContent({ posts, categories, activeCategory, totalPages }: { posts: any[], categories: any[], activeCategory: string, totalPages: number }) {
+  const router = useRouter();
+  const catOptions = [{ name: "All", slug: "All" }, ...categories];
+  
+  function handleCategoryClick(catSlug: string) {
+    if (catSlug === "All") {
+      router.push("/blog", { scroll: false });
+    } else {
+      router.push(`/blog?category=${catSlug}`, { scroll: false });
+    }
+  }
 
   return (
     <>
@@ -51,15 +62,15 @@ export default function BlogContent({ posts }: { posts: any[] }) {
         </div>
       </section>
 
-      <section className="py-6 bg-white border-b border-stone-50 sticky top-0 z-20">
+      <section className="py-6 bg-white border-b border-stone-50 sticky top-[72px] z-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-wrap gap-2">
-            {categories.map((cat) => (
-              <button key={cat} onClick={() => setActiveCategory(cat)}
+            {catOptions.map((cat) => (
+              <button key={cat.slug} onClick={() => handleCategoryClick(cat.slug)}
                 className={cn("px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                  activeCategory === cat ? "bg-stone-900 text-white shadow-md" : "bg-stone-50 text-stone-500 hover:bg-stone-100"
+                  activeCategory === cat.slug ? "bg-stone-900 text-white shadow-md" : "bg-stone-50 text-stone-500 hover:bg-stone-100"
                 )}>
-                {cat}
+                {cat.name}
               </button>
             ))}
           </div>
@@ -68,48 +79,53 @@ export default function BlogContent({ posts }: { posts: any[] }) {
 
       <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          {!filtered?.length ? (
+          {!posts?.length ? (
             <p className="text-center text-sm text-stone-400 py-20">Belum ada artikel yang dipublikasikan.</p>
           ) : (
-            <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" layout>
-              {filtered.map((post: any, i: number) => {
-                const style = CATEGORY_STYLE[post.category] || DEFAULT_STYLE;
-                return (
-                  <motion.div key={post.slug} layout
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    <Link href={`/blog/${post.slug}`}
-                      className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+            <>
+              <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" layout>
+                {posts.map((post: any, i: number) => {
+                  const catName = categories.find((c: any) => c.slug === post.category)?.name || post.category;
+                  const style = CATEGORY_STYLE[catName] || DEFAULT_STYLE;
+                  return (
+                    <motion.div key={post.slug} layout
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      <div className="relative aspect-[16/9] overflow-hidden bg-stone-50">
-                        {post.coverImage ? (
-                          <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                        ) : (
-                          <PatternBg pattern={style.pattern} gradient={style.gradient} />
-                        )}
-                      </div>
-                      <div className="p-6">
-                        <div className="flex items-center gap-3 text-xs text-stone-400 mb-3">
-                          <span className="text-accent-500 font-medium uppercase tracking-wider">{post.category}</span>
-                          <span className="w-1 h-1 rounded-full bg-stone-300" aria-hidden="true" />
-                          <span className="flex items-center gap-1"><Calendar size={12} aria-hidden="true" />{formatDate(post.publishedAt || post.createdAt)}</span>
-                          <span className="w-1 h-1 rounded-full bg-stone-300" aria-hidden="true" />
-                          <span>{post.readTime} min</span>
+                      <Link href={`/blog/${post.slug}`}
+                        className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+                      >
+                        <div className="relative aspect-video overflow-hidden bg-stone-50">
+                          {post.coverImage ? (
+                            <Image src={post.coverImage} alt={post.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+                          ) : (
+                            <PatternBg pattern={style.pattern} gradient={style.gradient} />
+                          )}
                         </div>
-                        <h2 className="font-heading text-lg font-semibold text-stone-900 mb-2 group-hover:text-accent-500 transition-colors">{post.title}</h2>
-                        <p className="text-sm text-stone-400 leading-relaxed line-clamp-2">{post.excerpt}</p>
-                        <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-accent-500 group/link">
-                          Baca Selengkapnya
-                          <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
+                        <div className="p-6">
+                          <div className="flex items-center gap-3 text-xs text-stone-400 mb-3">
+                            <span className="text-accent-500 font-medium uppercase tracking-wider">{catName}</span>
+                            <span className="w-1 h-1 rounded-full bg-stone-300" aria-hidden="true" />
+                            <span className="flex items-center gap-1"><Calendar size={12} aria-hidden="true" />{formatDate(post.publishedAt || post.createdAt)}</span>
+                            <span className="w-1 h-1 rounded-full bg-stone-300" aria-hidden="true" />
+                            <span>{post.readTime} min</span>
+                          </div>
+                          <h2 className="font-heading text-lg font-semibold text-stone-900 mb-2 group-hover:text-accent-500 transition-colors">{post.title}</h2>
+                          <p className="text-sm text-stone-400 leading-relaxed line-clamp-2">{post.excerpt}</p>
+                          <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-accent-500 group/link">
+                            Baca Selengkapnya
+                            <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+
+              <Pagination totalPages={totalPages} />
+            </>
           )}
         </div>
       </section>

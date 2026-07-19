@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { MailOpen, Trash2, Eye, X } from "lucide-react";
 import { getContacts, markContactRead, deleteContact } from "@/lib/actions";
 import { toast } from "react-hot-toast";
+import { useConfirm } from "@/components/providers/ConfirmProvider";
 
 export default function DashboardContacts() {
+  const confirm = useConfirm();
   const [contacts, setContacts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<any>(null);
@@ -29,7 +31,7 @@ export default function DashboardContacts() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Hapus pesan ini?")) return;
+    if (!(await confirm("Hapus pesan ini?"))) return;
     try {
       await deleteContact(id);
       toast.success("Pesan berhasil dihapus");

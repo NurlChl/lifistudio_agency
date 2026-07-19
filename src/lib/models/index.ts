@@ -18,3 +18,15 @@ export type { IPricing } from "./Pricing";
 
 export { SiteSettings } from "./SiteSettings";
 export type { ISiteSettings } from "./SiteSettings";
+
+export { Category } from "./Category";
+export type { ICategory } from "./Category";
+
+export { Service } from "./Service";
+export type { IService } from "./Service";
+
+export { Media } from "./Media";
+export type { IMedia } from "./Media";
+
+export { Faq } from "./Faq";
+export type { IFaq } from "./Faq";

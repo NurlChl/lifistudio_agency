@@ -41,6 +41,13 @@ export async function getBlogBySlug(slug: string) {
   return JSON.parse(JSON.stringify(post));
 }
 
+export async function getBlogById(id: string) {
+  await connectDB();
+  const post = await Blog.findById(id).lean();
+  if (!post) return null;
+  return JSON.parse(JSON.stringify(post));
+}
+
 export async function getRelatedPosts(slug: string, category: string, limit = 3) {
   await connectDB();
   const posts = await Blog.find({
@@ -54,18 +61,31 @@ export async function getRelatedPosts(slug: string, category: string, limit = 3)
   return JSON.parse(JSON.stringify(posts));
 }
 
+async function generateUniqueSlug(Model: any, baseSlug: string, excludeId?: string) {
+  let slug = baseSlug;
+  let counter = 1;
+  while (true) {
+    const query: any = { slug };
+    if (excludeId) query._id = { $ne: excludeId };
+    const exists = await Model.findOne(query).select("_id").lean();
+    if (!exists) return slug;
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+}
+
 export async function createBlog(data: {
   title: string;
   content: string;
   excerpt?: string;
   category: string;
   coverImage?: string;
-  tags?: string[];
+  slug?: string;
   author?: string;
   status?: "published" | "draft";
 }) {
   await requireAdmin();
-  const slug = slugify(data.title);
+  const slug = await generateUniqueSlug(Blog, data.slug || slugify(data.title));
   const post = await Blog.create({
     ...data,
     slug,
@@ -79,12 +99,16 @@ export async function createBlog(data: {
 }
 
 export async function updateBlog(id: string, data: Partial<{
-  title: string; content: string; excerpt: string; category: string;
+  title: string; slug: string; content: string; excerpt: string; category: string;
   coverImage: string; tags: string[]; status: "published" | "draft";
 }>) {
   await requireAdmin();
   const update: any = { ...data };
-  if (data.title) update.slug = slugify(data.title);
+  if (data.slug) {
+    update.slug = await generateUniqueSlug(Blog, data.slug, id);
+  } else if (data.title && !update.slug) {
+    update.slug = await generateUniqueSlug(Blog, slugify(data.title), id);
+  }
   if (data.status === "published") update.publishedAt = new Date();
   const post = await Blog.findByIdAndUpdate(id, update, { new: true });
   revalidatePath("/blog");
@@ -130,16 +154,23 @@ export async function getPortfolioBySlug(slug: string) {
   return JSON.parse(JSON.stringify(project));
 }
 
+export async function getPortfolioById(id: string) {
+  await connectDB();
+  const project = await Portfolio.findById(id).lean();
+  if (!project) return null;
+  return JSON.parse(JSON.stringify(project));
+}
+
 export async function createPortfolio(data: {
-  title: string; description: string; fullDescription?: string;
-  category: "web" | "uiux" | "graphic" | "automation";
+  title: string; slug?: string; description: string; fullDescription?: string;
+  category: string;
   technologies: string[]; coverImage: string; images?: string[];
   liveUrl?: string; clientName?: string; featured?: boolean;
   results?: { metric: string; value: string }[];
   testimonial?: { text: string; client: string; role?: string };
 }) {
   await requireAdmin();
-  const slug = slugify(data.title);
+  const slug = await generateUniqueSlug(Portfolio, data.slug || slugify(data.title));
   const project = await Portfolio.create({ ...data, slug });
   revalidatePath("/portfolio");
   revalidatePath("/dashboard/portfolio");
@@ -147,7 +178,7 @@ export async function createPortfolio(data: {
 }
 
 export async function updatePortfolio(id: string, data: Partial<{
-  title: string; description: string; fullDescription: string;
+  title: string; slug: string; description: string; fullDescription: string;
   category: string; technologies: string[]; coverImage: string;
   images: string[]; liveUrl: string; clientName: string;
   featured: boolean; status: string;
@@ -156,7 +187,11 @@ export async function updatePortfolio(id: string, data: Partial<{
 }>) {
   await requireAdmin();
   const update: any = { ...data };
-  if (data.title) update.slug = slugify(data.title);
+  if (data.slug) {
+    update.slug = await generateUniqueSlug(Portfolio, data.slug, id);
+  } else if (data.title && !update.slug) {
+    update.slug = await generateUniqueSlug(Portfolio, slugify(data.title), id);
+  }
   const project = await Portfolio.findByIdAndUpdate(id, update, { new: true });
   revalidatePath("/portfolio");
   revalidatePath("/dashboard/portfolio");
@@ -345,4 +380,32 @@ export async function seedDefaultPricing() {
   await Pricing.insertMany(defaults);
   revalidatePath("/pricing");
   return { seeded: true, count: defaults.length };
+}
+
+/* ─────────── FAQ ACTIONS ─────────── */
+
+import * as faqActions from "./faq";
+
+export async function getFaqs(options?: { category?: "umum" | "harga" }) {
+  return faqActions.getFaqs(options);
+}
+export async function createFaq(data: { question: string; answer: string; category: "umum" | "harga"; sortOrder?: number }) {
+  return faqActions.createFaq(data);
+}
+export async function updateFaq(id: string, data: any) {
+  return faqActions.updateFaq(id, data);
+}
+export async function deleteFaq(id: string) {
+  return faqActions.deleteFaq(id);
+}
+
+/* ─────────── SETTINGS ACTIONS ─────────── */
+
+import * as settingsActions from "./settings";
+
+export async function getSiteSettings() {
+  return settingsActions.getSiteSettings();
+}
+export async function updateSiteSettings(data: any) {
+  return settingsActions.updateSiteSettings(data);
 }

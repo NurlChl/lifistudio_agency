@@ -1,39 +1,56 @@
-import type { MetadataRoute } from "next";
+import { MetadataRoute } from "next";
+import { connectDB } from "@/lib/mongodb";
+import { Portfolio, Blog } from "@/lib/models";
+import { getSiteUrl } from "@/lib/utils";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://lifistudio.com";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = getSiteUrl();
+
+  // Fetch blogs
+  let blogs: any[] = [];
+  try {
+    await connectDB();
+    blogs = await Blog.find({ status: "published" }).select("slug updatedAt").lean();
+  } catch (e) {
+    console.error("Failed to fetch blogs for sitemap", e);
+  }
+
+  // Fetch portfolios
+  let portfolios: any[] = [];
+  try {
+    portfolios = await Portfolio.find({ status: "published" }).select("slug updatedAt").lean();
+  } catch (e) {
+    console.error("Failed to fetch portfolios for sitemap", e);
+  }
 
   const staticPages = [
-    { url: baseUrl, priority: 1.0, changeFrequency: "weekly" as const },
-    { url: `${baseUrl}/about`, priority: 0.8, changeFrequency: "monthly" as const },
-    { url: `${baseUrl}/services`, priority: 0.9, changeFrequency: "monthly" as const },
-    { url: `${baseUrl}/portfolio`, priority: 0.9, changeFrequency: "weekly" as const },
-    { url: `${baseUrl}/blog`, priority: 0.8, changeFrequency: "weekly" as const },
-    { url: `${baseUrl}/contact`, priority: 0.7, changeFrequency: "monthly" as const },
-  ];
-
-  // Portfolio pages
-  const portfolioSlugs = [
-    "toko-online", "sicantik-app", "warung-digital",
-    "nusantara-brand", "autolead-crm", "kopi-kita",
-  ];
-  const portfolioPages = portfolioSlugs.map((slug) => ({
-    url: `${baseUrl}/portfolio/${slug}`,
-    priority: 0.7,
-    changeFrequency: "monthly" as const,
+    "",
+    "/services",
+    "/portfolio",
+    "/blog",
+    "/about",
+    "/contact",
+    "/pricing",
+  ].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: route === "" ? 1.0 : 0.8,
   }));
 
-  // Blog posts
-  const blogSlugs = [
-    "memilih-tech-stack-2026", "otomatisasi-crm-n8n",
-    "tips-desain-website-profesional", "brand-identity-umkm",
-    "nextjs-vs-wordpress-2026",
-  ];
-  const blogPages = blogSlugs.map((slug) => ({
-    url: `${baseUrl}/blog/${slug}`,
+  const blogPages = blogs.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(),
+    changeFrequency: "monthly" as const,
     priority: 0.6,
-    changeFrequency: "monthly" as const,
   }));
 
-  return [...staticPages, ...portfolioPages, ...blogPages];
+  const portfolioPages = portfolios.map((project) => ({
+    url: `${baseUrl}/portfolio/${project.slug}`,
+    lastModified: project.updatedAt ? new Date(project.updatedAt) : new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...blogPages, ...portfolioPages];
 }

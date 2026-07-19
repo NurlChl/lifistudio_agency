@@ -5,7 +5,7 @@ export interface IPortfolio extends Document {
   slug: string;
   description: string;
   fullDescription?: string;
-  category: "web" | "uiux" | "graphic" | "automation";
+  category: string;
   technologies: string[];
   images: string[];
   coverImage: string;
@@ -35,7 +35,6 @@ const PortfolioSchema = new Schema<IPortfolio>(
     fullDescription: { type: String },
     category: {
       type: String,
-      enum: ["web", "uiux", "graphic", "automation"],
       required: true,
     },
     technologies: [{ type: String }],
@@ -66,7 +65,6 @@ const PortfolioSchema = new Schema<IPortfolio>(
 );
 
 PortfolioSchema.index({ category: 1, status: 1, featured: 1 });
-PortfolioSchema.index({ slug: 1 });
 
 export const Portfolio =
   mongoose.models.Portfolio ||

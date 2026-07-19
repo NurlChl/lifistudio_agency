@@ -1,6 +1,9 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo";
 import { getPortfolios } from "@/lib/actions";
+import { getFaqs } from "@/lib/actions/faq";
 import HomeClient from "./HomeClient";
 
 export const metadata: Metadata = {
@@ -14,27 +17,11 @@ export const metadata: Metadata = {
   },
 };
 
-const faqItems = [
-  {
-    question: "Apa saja layanan yang ditawarkan Lifi Studio?",
-    answer: "Kami menawarkan 4 layanan utama: Web Development (WordPress, Next.js, Laravel), UI/UX Design (Figma, prototyping), Graphic Design (brand identity, logo), dan Automation Engineering (n8n, GHL, AI integration).",
-  },
-  {
-    question: "Berapa lama waktu pengerjaan sebuah website?",
-    answer: "Tergantung kompleksitas. Website company profile biasanya 1-2 minggu, e-commerce 3-6 minggu, dan web application custom 4-12 minggu. Kami selalu memberikan timeline yang jelas di awal.",
-  },
-  {
-    question: "Apakah Lifi Studio menerima project dari luar kota?",
-    answer: "Tentu! Kami berbasis di Mojokerto, Jawa Timur, tapi 90% klien kami dari luar kota. Semua koordinasi dilakukan secara online via WhatsApp, Zoom, atau Google Meet.",
-  },
-  {
-    question: "Berapa biaya untuk membuat website?",
-    answer: "Biaya bervariasi tergantung kebutuhan. Mulai dari Rp1,5jt untuk landing page sederhana hingga Rp10jt+ untuk web app custom. Konsultasi awal gratis tanpa kewajiban.",
-  },
-];
-
 export default async function HomePage() {
-  const { items: featured } = await getPortfolios({ status: "published", featured: true, limit: 3 });
+  const [{ items: featured }, faqItems] = await Promise.all([
+    getPortfolios({ status: "published", featured: true, limit: 3 }),
+    getFaqs({ category: "umum" })
+  ]);
 
   return (
     <>
