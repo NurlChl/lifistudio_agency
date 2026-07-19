@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getBlogs } from "@/lib/actions";
 import BlogContent from "./blog-content";
 
 export const metadata: Metadata = {
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
     "Artikel dan insight seputar web development, desain, dan automation dari Lifi Studio.",
 };
 
-export default function BlogPage() {
-  return <BlogContent />;
+export default async function BlogPage() {
+  const { items } = await getBlogs({ status: "published" });
+  return <BlogContent posts={items} />;
 }

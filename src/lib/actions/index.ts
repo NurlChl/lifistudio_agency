@@ -1,10 +1,16 @@
 "use server";
 
 import { connectDB } from "@/lib/mongodb";
+import { auth } from "@/lib/auth";
 import { Blog, Portfolio, Contact, Pricing, SiteSettings, User } from "@/lib/models";
 import { revalidatePath } from "next/cache";
 import { slugify } from "@/lib/utils";
 import bcrypt from "bcryptjs";
+
+async function requireAdmin() {
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized — login diperlukan");
+}
 
 /* ─────────── BLOG ACTIONS ─────────── */
 
@@ -58,7 +64,7 @@ export async function createBlog(data: {
   author?: string;
   status?: "published" | "draft";
 }) {
-  await connectDB();
+  await requireAdmin();
   const slug = slugify(data.title);
   const post = await Blog.create({
     ...data,
@@ -76,7 +82,7 @@ export async function updateBlog(id: string, data: Partial<{
   title: string; content: string; excerpt: string; category: string;
   coverImage: string; tags: string[]; status: "published" | "draft";
 }>) {
-  await connectDB();
+  await requireAdmin();
   const update: any = { ...data };
   if (data.title) update.slug = slugify(data.title);
   if (data.status === "published") update.publishedAt = new Date();
@@ -87,7 +93,7 @@ export async function updateBlog(id: string, data: Partial<{
 }
 
 export async function deleteBlog(id: string) {
-  await connectDB();
+  await requireAdmin();
   await Blog.findByIdAndDelete(id);
   revalidatePath("/blog");
   revalidatePath("/dashboard/blog");
@@ -132,7 +138,7 @@ export async function createPortfolio(data: {
   results?: { metric: string; value: string }[];
   testimonial?: { text: string; client: string; role?: string };
 }) {
-  await connectDB();
+  await requireAdmin();
   const slug = slugify(data.title);
   const project = await Portfolio.create({ ...data, slug });
   revalidatePath("/portfolio");
@@ -148,7 +154,7 @@ export async function updatePortfolio(id: string, data: Partial<{
   results: { metric: string; value: string }[];
   testimonial: { text: string; client: string; role?: string };
 }>) {
-  await connectDB();
+  await requireAdmin();
   const update: any = { ...data };
   if (data.title) update.slug = slugify(data.title);
   const project = await Portfolio.findByIdAndUpdate(id, update, { new: true });
@@ -158,7 +164,7 @@ export async function updatePortfolio(id: string, data: Partial<{
 }
 
 export async function deletePortfolio(id: string) {
-  await connectDB();
+  await requireAdmin();
   await Portfolio.findByIdAndDelete(id);
   revalidatePath("/portfolio");
   revalidatePath("/dashboard/portfolio");
@@ -181,13 +187,13 @@ export async function getContacts(options?: { isRead?: boolean; page?: number; l
 }
 
 export async function markContactRead(id: string) {
-  await connectDB();
+  await requireAdmin();
   await Contact.findByIdAndUpdate(id, { isRead: true });
   revalidatePath("/dashboard/contacts");
 }
 
 export async function deleteContact(id: string) {
-  await connectDB();
+  await requireAdmin();
   await Contact.findByIdAndDelete(id);
   revalidatePath("/dashboard/contacts");
 }
@@ -214,7 +220,7 @@ export async function createPricing(data: {
   description: string; features: string[]; recommended?: boolean;
   sortOrder?: number;
 }) {
-  await connectDB();
+  await requireAdmin();
   const item = await Pricing.create(data);
   revalidatePath("/pricing");
   revalidatePath("/dashboard");
@@ -226,7 +232,7 @@ export async function updatePricing(id: string, data: Partial<{
   description: string; features: string[]; recommended: boolean;
   category: string; sortOrder: number;
 }>) {
-  await connectDB();
+  await requireAdmin();
   const item = await Pricing.findByIdAndUpdate(id, data, { new: true });
   revalidatePath("/pricing");
   revalidatePath("/dashboard");
@@ -234,7 +240,7 @@ export async function updatePricing(id: string, data: Partial<{
 }
 
 export async function deletePricing(id: string) {
-  await connectDB();
+  await requireAdmin();
   await Pricing.findByIdAndDelete(id);
   revalidatePath("/pricing");
   revalidatePath("/dashboard");
@@ -270,7 +276,7 @@ export async function createUser(data: {
   password: string;
   role?: "superadmin" | "admin";
 }) {
-  await connectDB();
+  await requireAdmin();
   const hashedPassword = await bcrypt.hash(data.password, 12);
   const user = await User.create({
     name: data.name,
@@ -290,7 +296,7 @@ export async function updateUser(id: string, data: Partial<{
   password: string;
   role: "superadmin" | "admin";
 }>) {
-  await connectDB();
+  await requireAdmin();
   const update: any = { ...data };
   if (data.password) {
     update.password = await bcrypt.hash(data.password, 12);
@@ -304,7 +310,7 @@ export async function updateUser(id: string, data: Partial<{
 }
 
 export async function deleteUser(id: string) {
-  await connectDB();
+  await requireAdmin();
   await User.findByIdAndDelete(id);
   revalidatePath("/dashboard/users");
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo";
+import { getAllPricing } from "@/lib/actions";
 import PricingClient from "./pricing-client";
 
 export const metadata: Metadata = {
@@ -38,7 +39,32 @@ const faqItems = [
   },
 ];
 
-export default function PricingPage() {
+const CATEGORY_LABEL: Record<string, string> = {
+  web: "Web Development",
+  uiux: "UI/UX",
+  graphic: "Graphic Design",
+  automation: "Automation",
+};
+const CATEGORY_ORDER = ["web", "uiux", "graphic", "automation"];
+
+export default async function PricingPage() {
+  const dbPricing = await getAllPricing();
+
+  // Group by category
+  const grouped: Record<string, typeof dbPricing> = {};
+  for (const item of dbPricing) {
+    const label = CATEGORY_LABEL[item.category] || item.category;
+    if (!grouped[label]) grouped[label] = [];
+    grouped[label].push(item);
+  }
+
+  // Reorder
+  const ordered: Record<string, typeof dbPricing> = {};
+  for (const key of CATEGORY_ORDER) {
+    const label = CATEGORY_LABEL[key];
+    if (grouped[label]) ordered[label] = grouped[label];
+  }
+
   return (
     <>
       {/* JSON-LD */}
@@ -80,7 +106,7 @@ export default function PricingPage() {
       </section>
 
       {/* ─── Pricing Cards (Client) ─── */}
-      <PricingClient />
+      <PricingClient pricingData={ordered} categoryKeys={Object.keys(ordered) as any} />
 
       {/* ─── Note ─── */}
       <section className="pb-20 lg:pb-28 bg-white">

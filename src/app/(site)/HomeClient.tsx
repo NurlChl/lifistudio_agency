@@ -30,11 +30,19 @@ const stagger = {
 };
 
 interface FaqItem {
-  q: string;
-  a: string;
+  question: string;
+  answer: string;
 }
 
-export default function HomeClient({ faqItems }: { faqItems: FaqItem[] }) {
+interface FeaturedProject {
+  title: string;
+  slug: string;
+  coverImage: string | null;
+  category: string;
+  description: string;
+}
+
+export default function HomeClient({ faqItems, featuredProjects }: { faqItems: FaqItem[]; featuredProjects: FeaturedProject[] }) {
   return (
     <>
       {/* ═══════════════ HERO ═══════════════ */}
@@ -253,12 +261,16 @@ export default function HomeClient({ faqItems }: { faqItems: FaqItem[] }) {
                   className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-lg transition-all duration-500"
                 >
                   <div className="aspect-[16/10] overflow-hidden bg-stone-50">
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
-                    />
+                    {p.coverImage ? (
+                      <img
+                        src={p.coverImage as string}
+                        alt={p.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-accent-100 to-accent-50" />
+                    )}
                   </div>
                   <div className="p-6">
                     <span className="text-xs font-medium text-accent-500 uppercase tracking-wider">
@@ -268,7 +280,7 @@ export default function HomeClient({ faqItems }: { faqItems: FaqItem[] }) {
                       {p.title}
                     </h3>
                     <p className="text-sm text-stone-400 mt-1.5 line-clamp-2">
-                      {p.desc}
+                      {p.description}
                     </p>
                   </div>
                 </Link>
@@ -299,12 +311,12 @@ export default function HomeClient({ faqItems }: { faqItems: FaqItem[] }) {
               >
                 <details className="group rounded-xl border border-stone-100 bg-white p-6 open:border-accent-100 open:bg-accent-50/20 transition-all cursor-pointer">
                   <summary className="flex items-center justify-between font-heading font-medium text-stone-900 list-none">
-                    {item.q}
+                    {item.question}
                     <span className="text-stone-400 text-xl leading-none group-open:hidden">+</span>
                     <span className="text-stone-400 text-xl leading-none hidden group-open:inline">−</span>
                   </summary>
                   <p className="mt-4 text-sm text-stone-500 leading-relaxed">
-                    {item.a}
+                    {item.answer}
                   </p>
                 </details>
               </motion.div>
@@ -396,32 +408,5 @@ const reasons = [
     icon: Users,
     title: "Local Understanding",
     desc: "Paham pasar Indonesia, kualitas global. Strategi yang tepat untuk brand kamu.",
-  },
-];
-
-const featuredProjects = [
-  {
-    title: "TokoOnline.id",
-    slug: "toko-online",
-    category: "Web",
-    image:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80",
-    desc: "E-commerce platform dengan Next.js dan integrasi payment gateway.",
-  },
-  {
-    title: "SiCantik App",
-    slug: "sicantik-app",
-    category: "UI/UX",
-    image:
-      "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600&q=80",
-    desc: "Aplikasi booking salon dengan pengalaman pengguna yang mulus.",
-  },
-  {
-    title: "WarungDigital",
-    slug: "warung-digital",
-    category: "Web",
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
-    desc: "Dashboard analytics untuk UMKM dengan visualisasi data real-time.",
   },
 ];

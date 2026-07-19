@@ -6,15 +6,18 @@ import { Calendar, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const categories = ["All", "Web Development", "Automation", "UI/UX", "Graphic Design"];
+const CATEGORY_STYLE: Record<string, { gradient: string; pattern: string }> = {
+  "Web Development": { gradient: "from-accent-100 to-accent-50", pattern: "diagonal-lines" },
+  "UI/UX": { gradient: "from-accent-200 to-accent-50", pattern: "grid" },
+  "Graphic Design": { gradient: "from-stone-100 to-cream", pattern: "diagonal-lines" },
+  Automation: { gradient: "from-stone-200 to-stone-100", pattern: "dots" },
+};
+const DEFAULT_STYLE = { gradient: "from-stone-100 to-cream", pattern: "grid" };
 
-const posts = [
-  { title: "Cara Memilih Tech Stack yang Tepat di 2026", slug: "memilih-tech-stack-2026", excerpt: "Bingung milih Next.js, WordPress, atau Laravel? Simak panduan lengkap memilih teknologi yang sesuai project kamu.", category: "Web Development", date: "15 Jul 2026", readTime: "5 min", gradient: "from-accent-100 to-accent-50", pattern: "diagonal-lines", coverImage: "https://placehold.co/800x450/D0603A/FFFFFF?text=Tech+Stack+2026" },
-  { title: "Cara Otomatisasi CRM dengan n8n", slug: "otomatisasi-crm-n8n", excerpt: "Integrasikan CRM kamu dengan n8n tanpa coding. Workflow otomatis yang hemat puluhan jam per bulan.", category: "Automation", date: "10 Jul 2026", readTime: "7 min", gradient: "from-stone-200 to-stone-100", pattern: "dots", coverImage: "https://placehold.co/800x450/78716C/FFFFFF?text=CRM+n8n+Automation" },
-  { title: "7 Tips Desain Website Profesional", slug: "tips-desain-website-profesional", excerpt: "Bikin website yang engaging dan konversi tinggi dengan prinsip desain yang terbukti efektif.", category: "UI/UX", date: "28 Jun 2026", readTime: "4 min", gradient: "from-accent-200 to-accent-50", pattern: "grid", coverImage: "https://placehold.co/800x450/A8623A/FFFFFF?text=Desain+Website" },
-  { title: "Brand Identity untuk UMKM: Panduan Lengkap", slug: "brand-identity-umkm", excerpt: "Mulai dari logo sampai guidelines — panduan membangun identitas brand yang kuat untuk UMKM.", category: "Graphic Design", date: "20 Jun 2026", readTime: "6 min", gradient: "from-stone-100 to-cream", pattern: "diagonal-lines", coverImage: "https://placehold.co/800x450/D0603A/FFFFFF?text=Brand+Identity+UMKM" },
-  { title: "Next.js vs WordPress: Pilih Mana di 2026?", slug: "nextjs-vs-wordpress-2026", excerpt: "Perbandingan lengkap antara Next.js dan WordPress untuk berbagai jenis project website.", category: "Web Development", date: "12 Jun 2026", readTime: "8 min", gradient: "from-accent-100 to-accent-50", pattern: "grid", coverImage: "https://placehold.co/800x450/78716C/FFFFFF?text=Next.js+vs+WordPress" },
-];
+function formatDate(d: string | Date) {
+  const date = new Date(d);
+  return date.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+}
 
 function PatternBg({ pattern, gradient }: { pattern: string; gradient: string }) {
   return (
@@ -29,9 +32,10 @@ function PatternBg({ pattern, gradient }: { pattern: string; gradient: string })
   );
 }
 
-export default function BlogContent() {
+export default function BlogContent({ posts }: { posts: any[] }) {
+  const categories = ["All", ...new Set(posts.map((p: any) => p.category))];
   const [activeCategory, setActiveCategory] = useState("All");
-  const filtered = activeCategory === "All" ? posts : posts.filter((p) => p.category === activeCategory);
+  const filtered = activeCategory === "All" ? posts : posts.filter((p: any) => p.category === activeCategory);
 
   return (
     <>
@@ -64,42 +68,49 @@ export default function BlogContent() {
 
       <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" layout>
-            {filtered.map((post, i) => (
-              <motion.div key={post.slug} layout
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Link href={`/blog/${post.slug}`}
-                  className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
-                >
-                  <div className="relative aspect-[16/9] overflow-hidden bg-stone-50">
-                    {post.coverImage ? (
-                      <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                    ) : (
-                      <PatternBg pattern={post.pattern} gradient={post.gradient} />
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 text-xs text-stone-400 mb-3">
-                      <span className="text-accent-500 font-medium uppercase tracking-wider">{post.category}</span>
-                      <span className="w-1 h-1 rounded-full bg-stone-300" aria-hidden="true" />
-                      <span className="flex items-center gap-1"><Calendar size={12} aria-hidden="true" />{post.date}</span>
-                      <span className="w-1 h-1 rounded-full bg-stone-300" aria-hidden="true" />
-                      <span>{post.readTime}</span>
-                    </div>
-                    <h2 className="font-heading text-lg font-semibold text-stone-900 mb-2 group-hover:text-accent-500 transition-colors">{post.title}</h2>
-                    <p className="text-sm text-stone-400 leading-relaxed line-clamp-2">{post.excerpt}</p>
-                    <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-accent-500 group/link">
-                      Baca Selengkapnya
-                      <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
+          {!filtered?.length ? (
+            <p className="text-center text-sm text-stone-400 py-20">Belum ada artikel yang dipublikasikan.</p>
+          ) : (
+            <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" layout>
+              {filtered.map((post: any, i: number) => {
+                const style = CATEGORY_STYLE[post.category] || DEFAULT_STYLE;
+                return (
+                  <motion.div key={post.slug} layout
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Link href={`/blog/${post.slug}`}
+                      className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+                    >
+                      <div className="relative aspect-[16/9] overflow-hidden bg-stone-50">
+                        {post.coverImage ? (
+                          <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+                        ) : (
+                          <PatternBg pattern={style.pattern} gradient={style.gradient} />
+                        )}
+                      </div>
+                      <div className="p-6">
+                        <div className="flex items-center gap-3 text-xs text-stone-400 mb-3">
+                          <span className="text-accent-500 font-medium uppercase tracking-wider">{post.category}</span>
+                          <span className="w-1 h-1 rounded-full bg-stone-300" aria-hidden="true" />
+                          <span className="flex items-center gap-1"><Calendar size={12} aria-hidden="true" />{formatDate(post.publishedAt || post.createdAt)}</span>
+                          <span className="w-1 h-1 rounded-full bg-stone-300" aria-hidden="true" />
+                          <span>{post.readTime} min</span>
+                        </div>
+                        <h2 className="font-heading text-lg font-semibold text-stone-900 mb-2 group-hover:text-accent-500 transition-colors">{post.title}</h2>
+                        <p className="text-sm text-stone-400 leading-relaxed line-clamp-2">{post.excerpt}</p>
+                        <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-accent-500 group/link">
+                          Baca Selengkapnya
+                          <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          )}
         </div>
       </section>
     </>

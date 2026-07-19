@@ -1,78 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { notFound, useParams } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, Link2, ExternalLink, MessageCircle, ArrowUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const posts = [
-  {
-    title: "Cara Memilih Tech Stack yang Tepat di 2026",
-    slug: "memilih-tech-stack-2026",
-    excerpt: "Bingung milih Next.js, WordPress, atau Laravel? Simak panduan lengkap memilih teknologi yang sesuai project kamu.",
-    content: `
-      <p>Memilih tech stack yang tepat adalah salah satu keputusan paling penting dalam pengembangan website. Pilihan yang salah bisa bikin biaya membengkak, timeline molor, dan hasil akhir nggak sesuai ekspektasi.</p>
-      <h2>Kenali Kebutuhan Project</h2>
-      <p>Sebelum milih teknologi, pastikan kamu paham dulu apa yang project kamu butuhkan. Apakah ini company profile sederhana? E-commerce? Atau web application dengan fitur kompleks?</p>
-      <h3>Company Profile / Landing Page</h3>
-      <p>Untuk jenis ini, WordPress atau Next.js dengan static generation sudah lebih dari cukup. Cepat, murah, dan mudah dikelola.</p>
-      <h3>E-commerce / Marketplace</h3>
-      <p>Butuh scalability, manajemen produk, dan integrasi payment. Next.js + Headless CMS atau Laravel jadi pilihan tepat.</p>
-      <h3>Web Application Custom</h3>
-      <p>Untuk project dengan fitur kompleks, Next.js full-stack atau Laravel + Vue.js adalah pilihan yang solid.</p>
-      <h2>Timeline & Budget</h2>
-      <p>WordPress bisa launching dalam 1-2 minggu. Next.js butuh 2-6 minggu tergantung kompleksitas. Laravel untuk aplikasi custom bisa 4-12 minggu. Sesuaikan dengan budget dan deadline kamu.</p>
-      <h2>Kesimpulan</h2>
-      <p>Nggak ada tech stack yang "paling baik" — yang ada adalah yang paling sesuai dengan kebutuhan project kamu. Konsultasi dengan kami untuk dapat rekomendasi tepat.</p>
-    `,
-    category: "Web Development",
-    date: "15 Jul 2026",
-    readTime: "5 min",
-    author: "NurlChl",
-    gradient: "from-accent-100 to-accent-50",
-    coverImage: "https://placehold.co/1200x600/D0603A/FFFFFF?text=Tech+Stack+2026",
-    images: [
-      { url: "https://placehold.co/800x500/78716C/FFFFFF?text=Perbandingan+Tech+Stack", caption: "Perbandingan popularitas tech stack 2026" },
-      { url: "https://placehold.co/800x500/D0603A/FFFFFF?text=Next.js+Architecture", caption: "Arsitektur Next.js yang scalable" },
-    ],
-  },
-  {
-    title: "Cara Otomatisasi CRM dengan n8n",
-    slug: "otomatisasi-crm-n8n",
-    excerpt: "Integrasikan CRM kamu dengan n8n tanpa coding.",
-    content: `
-      <p>n8n adalah workflow automation tool open-source yang powerful. Dengan n8n, kamu bisa menghubungkan berbagai aplikasi tanpa perlu menulis kode rumit.</p>
-      <h2>Apa itu n8n?</h2>
-      <p>n8n (n-eight-n) adalah platform workflow automation yang memungkinkan kamu mengotomatiskan tugas-tugas repetitif dengan visual drag-and-drop interface. Mirip Zapier, tapi self-hosted dan gratis.</p>
-      <h2>Use Case untuk CRM</h2>
-      <p>Salah satu penggunaan paling umum adalah otomatisasi CRM: ketika ada lead baru dari website, n8n otomatis memasukkan data ke CRM, mengirim email notifikasi ke tim sales, dan menambahkan lead ke email marketing list.</p>
-      <h2>Integrasi yang Didukung</h2>
-      <p>n8n mendukung 400+ integrasi termasuk Google Sheets, Gmail, Slack, Notion, Airtable, dan ribuan API lainnya via HTTP Request node.</p>
-    `,
-    category: "Automation",
-    date: "10 Jul 2026",
-    readTime: "7 min",
-    author: "NurlChl",
-    gradient: "from-stone-200 to-stone-100",
-    coverImage: "https://placehold.co/1200x600/78716C/FFFFFF?text=n8n+CRM+Automation",
-    images: [
-      { url: "https://placehold.co/800x500/5C8A7A/FFFFFF?text=Workflow+Automation", caption: "Flow otomatisasi CRM dengan n8n" },
-      { url: "https://placehold.co/800x500/78716C/FFFFFF?text=n8n+Dashboard", caption: "Dashboard monitoring workflow n8n" },
-    ],
-  },
-];
-
-const relatedPosts: Record<string, { title: string; slug: string; gradient: string; pattern: string }[]> = {
-  "memilih-tech-stack-2026": [
-    { title: "Next.js vs WordPress: Pilih Mana di 2026?", slug: "nextjs-vs-wordpress-2026", gradient: "from-accent-100 to-accent-50", pattern: "grid" },
-    { title: "Cara Otomatisasi CRM dengan n8n", slug: "otomatisasi-crm-n8n", gradient: "from-stone-200 to-stone-100", pattern: "dots" },
-  ],
-  "otomatisasi-crm-n8n": [
-    { title: "Cara Memilih Tech Stack yang Tepat di 2026", slug: "memilih-tech-stack-2026", gradient: "from-accent-100 to-accent-50", pattern: "diagonal-lines" },
-    { title: "7 Tips Desain Website Profesional", slug: "tips-desain-website-profesional", gradient: "from-accent-200 to-accent-50", pattern: "grid" },
-  ],
-};
+export interface PostData {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  date: string;
+  readTime: string;
+  author: string;
+  coverImage: string | null;
+  gradient: string;
+  pattern: string;
+  images: { url: string | null; caption: string }[];
+}
 
 function extractTOC(html: string) {
   const headings = html.match(/<h2>(.*?)<\/h2>/g) || [];
@@ -80,7 +26,6 @@ function extractTOC(html: string) {
 }
 
 function ShareButtons({ url, title }: { url: string; title: string }) {
-  const encoded = encodeURIComponent(url);
   const shareUrl = `https://lifistudio.com${url}`;
   return (
     <div className="flex items-center gap-3">
@@ -93,7 +38,7 @@ function ShareButtons({ url, title }: { url: string; title: string }) {
         <Link2 size={16} />
       </button>
       <a
-        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encoded}`}
+        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="p-2 rounded-full bg-stone-50 text-stone-500 hover:bg-stone-100 hover:text-stone-700 transition-all"
@@ -129,14 +74,14 @@ function BackToTop() {
   );
 }
 
-export default function BlogDetailContent() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const post = posts.find((p) => p.slug === slug);
-  if (!post) notFound();
-
+export default function BlogDetailContent({
+  post,
+  relatedPosts,
+}: {
+  post: PostData;
+  relatedPosts: PostData[];
+}) {
   const toc = extractTOC(post.content);
-  const related = relatedPosts[post.slug] || [];
   const paragraphs = post.content.split(/(?=<h2|<h3|<p)/).filter(Boolean);
   const images = post.images || [];
 
@@ -214,10 +159,12 @@ export default function BlogDetailContent() {
               <motion.div className="mt-12 pt-8 border-t border-stone-100 flex items-center gap-4"
                 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.4 }}
               >
-                <div className="w-12 h-12 rounded-full bg-stone-900 flex items-center justify-center text-white font-heading font-semibold text-sm">NC</div>
+                <div className="w-12 h-12 rounded-full bg-stone-900 flex items-center justify-center text-white font-heading font-semibold text-sm">
+                  {post.author.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+                </div>
                 <div>
                   <p className="font-heading font-semibold text-stone-900 text-sm">{post.author}</p>
-                  <p className="text-xs text-stone-400">Founder & Lead Developer</p>
+                  <p className="text-xs text-stone-400">Penulis</p>
                 </div>
               </motion.div>
 
@@ -251,12 +198,12 @@ export default function BlogDetailContent() {
         </div>
       </article>
 
-      {related.length > 0 && (
+      {relatedPosts?.length > 0 && (
         <section className="py-16 lg:py-24 bg-cream">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <h2 className="heading-3 text-stone-900 mb-10">Artikel Terkait</h2>
             <div className="grid md:grid-cols-2 gap-8">
-              {related.map((r, i) => (
+              {relatedPosts.map((r, i) => (
                 <motion.div key={r.slug} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
                 >
