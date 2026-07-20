@@ -73,34 +73,36 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
 
       <section className="py-6 bg-white border-b border-stone-50 sticky top-[72px] z-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex gap-2 overflow-x-auto flex-nowrap scrollbar-hide">
-            {catOptions.map((cat) => (
-              <button key={cat.slug} onClick={() => handleCategoryClick(cat.slug)}
-                className={cn("shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                  activeCategory === cat.slug ? "bg-stone-900 text-white shadow-md" : "bg-stone-50 text-stone-500 hover:bg-stone-100"
-                )}>
-                {cat.name}
-              </button>
-            ))}
-          </div>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="relative flex-1 md:max-w-xs">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
-              <input type="search" placeholder="Cari artikel..."
-                value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-full bg-stone-50 text-sm text-stone-900 placeholder:text-stone-400 border border-stone-100 focus:outline-none focus:border-accent-500/30 focus:ring-2 focus:ring-accent-500/10 transition-all" />
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+            <div className="flex gap-2 overflow-x-auto flex-nowrap scrollbar-hide lg:flex-1">
+              {catOptions.map((cat) => (
+                <button key={cat.slug} onClick={() => handleCategoryClick(cat.slug)}
+                  className={cn("shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
+                    activeCategory === cat.slug ? "bg-stone-900 text-white shadow-md" : "bg-stone-50 text-stone-500 hover:bg-stone-100"
+                  )}>
+                  {cat.name}
+                </button>
+              ))}
             </div>
-            <div className="flex items-center gap-1 bg-stone-50 rounded-lg p-0.5 shrink-0">
-              <button onClick={() => setViewMode('grid')}
-                className={cn("p-2 rounded-md transition-all", viewMode === 'grid' ? "bg-white shadow-sm text-stone-900" : "text-stone-400 hover:text-stone-600")}
-                aria-label="Tampilan grid">
-                <LayoutGrid size={16} />
-              </button>
-              <button onClick={() => setViewMode('list')}
-                className={cn("p-2 rounded-md transition-all", viewMode === 'list' ? "bg-white shadow-sm text-stone-900" : "text-stone-400 hover:text-stone-600")}
-                aria-label="Tampilan list">
-                <List size={16} />
-              </button>
+            <div className="flex items-center gap-3">
+              <div className="relative flex-1 md:max-w-xs">
+                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
+                <input type="search" placeholder="Cari artikel..."
+                  value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 rounded-full bg-stone-50 text-sm text-stone-900 placeholder:text-stone-400 border border-stone-100 focus:outline-none focus:border-accent-500/30 focus:ring-2 focus:ring-accent-500/10 transition-all" />
+              </div>
+              <div className="flex items-center gap-1 bg-stone-50 rounded-lg p-0.5 shrink-0">
+                <button onClick={() => setViewMode('grid')}
+                  className={cn("p-2 rounded-md transition-all", viewMode === 'grid' ? "bg-white shadow-sm text-stone-900" : "text-stone-400 hover:text-stone-600")}
+                  aria-label="Tampilan grid">
+                  <LayoutGrid size={16} />
+                </button>
+                <button onClick={() => setViewMode('list')}
+                  className={cn("p-2 rounded-md transition-all", viewMode === 'list' ? "bg-white shadow-sm text-stone-900" : "text-stone-400 hover:text-stone-600")}
+                  aria-label="Tampilan list">
+                  <List size={16} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
