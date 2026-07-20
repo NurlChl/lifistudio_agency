@@ -146,7 +146,7 @@ export default function Navbar({ settings }: { settings?: any }) {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="fixed inset-0 w-full min-h-dvh bg-white z-50 md:hidden flex flex-col pb-[env(safe-area-inset-bottom)]"
+            className="fixed top-0 left-0 right-0 h-dvh bg-white z-50 md:hidden flex flex-col"
           >
             {/* Overlay Header */}
             <div className="h-18 flex items-center justify-between px-6 border-b border-stone-100/60">
