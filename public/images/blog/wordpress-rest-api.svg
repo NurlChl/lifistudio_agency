@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#2c2a28"/>
+  <!-- document icon -->
+  <g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="470" y="165" width="260" height="330" rx="12"/>
+    <!-- fold corner -->
+    <polyline points="600,165 600,295 730,295"/>
+    <!-- code brackets inside document -->
+    <path d="M540,300 l-20,35 l20,35" stroke-width="4"/>
+    <path d="M660,300 l20,35 l-20,35" stroke-width="4"/>
+    <!-- code line in middle -->
+    <line x1="555" y1="400" x2="645" y2="400" stroke-width="4"/>
+    <line x1="555" y1="425" x2="615" y2="425" stroke-width="4"/>
+    <!-- WP logo dot -->
+    <circle cx="600" cy="480" r="4" fill="#fff" stroke="none"/>
+  </g>
+</svg>
