@@ -7,13 +7,17 @@ export const openApiSpec = {
 
 ## Authentication
 
-Endpoint POST, PUT, DELETE membutuhkan API key.
-Kirim via header: \`x-api-key: <value>\`
+Semua endpoint API membutuhkan autentikasi, salah satu:
+1. **Access Token** — kirim via header \`x-api-key: <token>\` (token dibuat dari CMS Dashboard → API Tokens)
+2. **Superadmin Session** — login ke CMS dashboard, session cookie otomatis terkirim
 
 ## Base URL
 
 \`https://lifistudio.vercel.app/api\`
+
+> Halaman publik (home, blog, portfolio, dll) bisa diakses tanpa autentikasi.
 `,
+
     contact: {
       name: "Lifi Studio",
       url: "https://lifistudio.vercel.app",
@@ -334,7 +338,7 @@ Kirim via header: \`x-api-key: <value>\`
         type: "apiKey",
         in: "header",
         name: "x-api-key",
-        description: "API key untuk akses endpoint tertulis. Dapatkan dari admin Lifi Studio.",
+        description: "API token yang dibuat dari CMS Dashboard → API Tokens. Token bisa di-create, diaktifkan/dinonaktifkan, dan dihapus dari dashboard.",
       },
     },
     schemas: {

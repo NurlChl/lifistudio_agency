@@ -1,19 +1,24 @@
 import { NextRequest } from "next/server";
+import { auth } from "@/lib/auth";
 import { Portfolio } from "@/lib/models";
 import { slugify } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import {
-  requireApiKey,
+  requireApiAccess,
   withDb,
   successResponse,
   errorResponse,
 } from "@/lib/api-helpers";
 
-/* GET /api/portfolio/[slug] — Single portfolio (public) */
+/* GET /api/portfolio/[slug] — Single portfolio (auth: superadmin or token) */
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  const session = await auth();
+  const authErr = await requireApiAccess(_req, session);
+  if (authErr) return authErr;
+
   const { slug } = await params;
   return withDb(async () => {
     const item = await Portfolio.findOne({ slug }).lean();
@@ -22,12 +27,13 @@ export async function GET(
   });
 }
 
-/* PUT /api/portfolio/[slug] — Update portfolio (auth) */
+/* PUT /api/portfolio/[slug] — Update portfolio (auth: superadmin or token) */
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const authErr = requireApiKey(req);
+  const session = await auth();
+  const authErr = await requireApiAccess(req, session);
   if (authErr) return authErr;
 
   const { slug } = await params;
@@ -60,12 +66,13 @@ export async function PUT(
   });
 }
 
-/* DELETE /api/portfolio/[slug] — Delete portfolio (auth) */
+/* DELETE /api/portfolio/[slug] — Delete portfolio (auth: superadmin or token) */
 export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const authErr = requireApiKey(req);
+  const session = await auth();
+  const authErr = await requireApiAccess(req, session);
   if (authErr) return authErr;
 
   const { slug } = await params;

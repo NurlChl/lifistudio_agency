@@ -1,9 +1,10 @@
 import { NextRequest } from "next/server";
+import { auth } from "@/lib/auth";
 import { Portfolio } from "@/lib/models";
 import { slugify } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import {
-  requireApiKey,
+  requireApiAccess,
   withDb,
   successResponse,
   createdResponse,
@@ -12,8 +13,12 @@ import {
   getPagination,
 } from "@/lib/api-helpers";
 
-/* GET /api/portfolio — List portfolio (public) */
+/* GET /api/portfolio — List portfolio (auth: superadmin or token) */
 export async function GET(req: NextRequest) {
+  const session = await auth();
+  const authErr = await requireApiAccess(req, session);
+  if (authErr) return authErr;
+
   return withDb(async () => {
     const { searchParams } = new URL(req.url);
     const { page, limit, skip } = getPagination(searchParams);
@@ -25,11 +30,7 @@ export async function GET(req: NextRequest) {
     if (category) filter.category = category;
 
     const [items, total] = await Promise.all([
-      Portfolio.find(filter)
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
+      Portfolio.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
       Portfolio.countDocuments(filter),
     ]);
 
@@ -37,9 +38,10 @@ export async function GET(req: NextRequest) {
   });
 }
 
-/* POST /api/portfolio — Create portfolio (auth) */
+/* POST /api/portfolio — Create portfolio (auth: superadmin or token) */
 export async function POST(req: NextRequest) {
-  const authErr = requireApiKey(req);
+  const session = await auth();
+  const authErr = await requireApiAccess(req, session);
   if (authErr) return authErr;
 
   return withDb(async () => {

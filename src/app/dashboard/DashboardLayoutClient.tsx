@@ -21,6 +21,7 @@ import {
   Briefcase,
   ChevronDown,
   HelpCircle,
+  Key,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -50,6 +51,7 @@ const sidebarLinks: SidebarLink[] = [
   { href: "/dashboard/contacts", label: "Contacts", icon: MessageSquare },
   { href: "/dashboard/media", label: "Media", icon: Image },
   { href: "/dashboard/users", label: "Users", icon: Users },
+  { href: "/dashboard/api-tokens", label: "API Tokens", icon: Key },
   { href: "/dashboard/roles", label: "Roles", icon: Shield },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];

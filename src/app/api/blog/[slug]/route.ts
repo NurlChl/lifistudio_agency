@@ -1,19 +1,24 @@
 import { NextRequest } from "next/server";
+import { auth } from "@/lib/auth";
 import { Blog } from "@/lib/models";
 import { slugify } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import {
-  requireApiKey,
+  requireApiAccess,
   withDb,
   successResponse,
   errorResponse,
 } from "@/lib/api-helpers";
 
-/* GET /api/blog/[slug] — Single blog (public) */
+/* GET /api/blog/[slug] — Single blog (auth: superadmin or token) */
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  const session = await auth();
+  const authErr = await requireApiAccess(_req, session);
+  if (authErr) return authErr;
+
   const { slug } = await params;
   return withDb(async () => {
     const post = await Blog.findOne({ slug }).lean();
@@ -22,12 +27,13 @@ export async function GET(
   });
 }
 
-/* PUT /api/blog/[slug] — Update blog (auth) */
+/* PUT /api/blog/[slug] — Update blog (auth: superadmin or token) */
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const authErr = requireApiKey(req);
+  const session = await auth();
+  const authErr = await requireApiAccess(req, session);
   if (authErr) return authErr;
 
   const { slug } = await params;
@@ -69,12 +75,13 @@ export async function PUT(
   });
 }
 
-/* DELETE /api/blog/[slug] — Delete blog (auth) */
+/* DELETE /api/blog/[slug] — Delete blog (auth: superadmin or token) */
 export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const authErr = requireApiKey(req);
+  const session = await auth();
+  const authErr = await requireApiAccess(req, session);
   if (authErr) return authErr;
 
   const { slug } = await params;
@@ -94,8 +101,7 @@ async function generateUniqueSlug(title: string, currentSlug?: string): Promise<
   const baseSlug = slugify(title);
   let finalSlug = baseSlug;
   let counter = 1;
-  while (await Blog.findOne({ slug: finalSlug, _id: { $ne: null } }).where("slug").ne(currentSlug)) {
-    // Just check existence properly
+  while (true) {
     const existing = await Blog.findOne({ slug: finalSlug });
     if (!existing || existing.slug === currentSlug) break;
     finalSlug = `${baseSlug}-${counter++}`;

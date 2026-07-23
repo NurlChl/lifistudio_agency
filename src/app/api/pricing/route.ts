@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
+import { auth } from "@/lib/auth";
 import { Pricing } from "@/lib/models";
-import { withDb, successResponse, errorResponse, paginatedResponse } from "@/lib/api-helpers";
+import { withDb, requireApiAccess, successResponse, errorResponse } from "@/lib/api-helpers";
 
 const CATEGORY_LABEL: Record<string, string> = {
   web: "Web Development",
@@ -9,8 +10,12 @@ const CATEGORY_LABEL: Record<string, string> = {
   automation: "Automation",
 };
 
-/* GET /api/pricing — List pricing packages (public) */
+/* GET /api/pricing — List pricing packages (auth: superadmin or token) */
 export async function GET(req: NextRequest) {
+  const session = await auth();
+  const authErr = await requireApiAccess(req, session);
+  if (authErr) return authErr;
+
   return withDb(async () => {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get("category");
@@ -22,7 +27,6 @@ export async function GET(req: NextRequest) {
       .sort({ category: 1, sortOrder: 1 })
       .lean();
 
-    // Group by category
     const grouped: Record<string, typeof items> = {};
     for (const item of items) {
       const label = CATEGORY_LABEL[item.category] || item.category;

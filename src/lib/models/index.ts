@@ -30,3 +30,6 @@ export type { IMedia } from "./Media";
 
 export { Faq } from "./Faq";
 export type { IFaq } from "./Faq";
+
+export { ApiToken, generateApiToken } from "./ApiToken";
+export type { IApiToken } from "./ApiToken";

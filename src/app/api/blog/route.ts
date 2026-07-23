@@ -1,9 +1,10 @@
 import { NextRequest } from "next/server";
+import { auth } from "@/lib/auth";
 import { Blog } from "@/lib/models";
 import { slugify } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import {
-  requireApiKey,
+  requireApiAccess,
   withDb,
   successResponse,
   createdResponse,
@@ -12,8 +13,12 @@ import {
   getPagination,
 } from "@/lib/api-helpers";
 
-/* GET /api/blog — List blog (public) */
+/* GET /api/blog — List blog (auth: superadmin or token) */
 export async function GET(req: NextRequest) {
+  const session = await auth();
+  const authErr = await requireApiAccess(req, session);
+  if (authErr) return authErr;
+
   return withDb(async () => {
     const { searchParams } = new URL(req.url);
     const { page, limit, skip } = getPagination(searchParams);
@@ -31,7 +36,7 @@ export async function GET(req: NextRequest) {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .select("-content") // exclude full content from list
+        .select("-content")
         .lean(),
       Blog.countDocuments(filter),
     ]);
@@ -40,9 +45,10 @@ export async function GET(req: NextRequest) {
   });
 }
 
-/* POST /api/blog — Create blog (auth) */
+/* POST /api/blog — Create blog (auth: superadmin or token) */
 export async function POST(req: NextRequest) {
-  const authErr = requireApiKey(req);
+  const session = await auth();
+  const authErr = await requireApiAccess(req, session);
   if (authErr) return authErr;
 
   return withDb(async () => {
