@@ -28,8 +28,8 @@ export default function ServicesClient({ services }: { services: any[] }) {
               Yang Kami Tawarkan
             </h1>
             <p className="subtitle text-stone-500 max-w-xl">
-              Empat pilar layanan — satu tim. Dari konsep sampai eksekusi, kami
-              handle semuanya.
+              Empat pilar layanan — satu tim yang handle dari konsep sampai
+              eksekusi. <strong>Kamu cukup bilang mau apa, kami urus sisanya.</strong>
             </p>
           </motion.div>
         </div>
@@ -132,10 +132,11 @@ export default function ServicesClient({ services }: { services: any[] }) {
             viewport={{ once: true }}
           >
             <h2 className="heading-2 text-white mb-6">
-              Tertarik dengan salah satu layanan?
+              Ada project yang mau didiskusikan?
             </h2>
             <p className="text-stone-400 max-w-lg mx-auto mb-10 text-lg leading-relaxed">
-              Diskusikan kebutuhan kamu — gratis, tanpa kewajiban.
+            <strong>Konsultasi gratis, tanpa kewajiban.</strong> Ceritain
+            aja kebutuhan kamu, kami siapin solusinya.
             </p>
             <Link
               href="/contact"

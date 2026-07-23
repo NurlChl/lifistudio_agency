@@ -70,9 +70,9 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
               </h1>
 
               <p className="subtitle text-stone-500 max-w-xl mb-10">
-                Web development, UI/UX design, graphic design, dan automation
-                engineering — semua dalam satu tim terintegrasi. Hasil maksimal,
-                tanpa ribet ngurusin banyak vendor.
+                Dari web development, UI/UX, graphic design, sampai automation
+                engineering — <strong>satu tim handle semuanya</strong>. Hasil
+                2x lebih cepat, tanpa ribet koordinasi 3 vendor beda.
               </p>
 
               <div className="flex flex-wrap gap-4">

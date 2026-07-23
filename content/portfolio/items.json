@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Toko Online Bajo Wanita — Full Custom WordPress + Automation",
+    "slug": "toko-online-bajo-wanita",
+    "description": "E-commerce custom dengan integrasi otomatis order-to-WA, stok real-time, dan dashboard admin khusus.",
+    "fullDescription": "<h2>Latar Belakang</h2><p>Klien adalah brand fashion wanita yang butuh toko online cepat, mobile-friendly, dan bisa handle 500+ transaksi per bulan. Platform market place udah nggak cukup karena margin makin tipis dan kontrol terbatas.</p><h2>Solusi</h2><ul><li><strong>WordPress + WooCommerce</strong> — custom theme dari Figma ke HTML/CSS/JS murni, tanpa page builder</li><li><strong>Integrasi WhatsApp API</strong> — order masuk otomatis terkirim notifikasi ke tim sales + konfirmasi ke customer</li><li><strong>n8n Automation</strong> — sinkron stok otomatis dari gudang, invoice otomatis tiap order selesai</li><li><strong>Dashboard Khusus</strong> — admin bisa liat order real-time, export laporan harian, tracking pengiriman</li></ul><h2>Hasil</h2><p>Dalam 3 bulan pertama, toko online ini berhasil mencatatkan <strong>180+ transaksi</strong> dengan rata-rata response time <strong>di bawah 2 menit</strong> untuk chat order.</p>",
+    "category": "Web",
+    "technologies": ["WordPress", "WooCommerce", "n8n", "WhatsApp API", "MySQL"],
+    "images": [],
+    "coverImage": "/placeholder-portfolio.jpg",
+    "liveUrl": "",
+    "clientName": "R集合 Fashion",
+    "featured": true,
+    "status": "draft",
+    "testimonial": {
+      "text": "Akhirnya punya toko online yang beneran tinggal jalan — order masuk, stok update otomatis, customer happy. Nggak perlu manual-manual lagi.",
+      "client": "R集合 Fashion",
+      "role": "Owner"
+    },
+    "results": [
+      { "metric": "Transaksi/bulan", "value": "60+" },
+      { "metric": "Response time order", "value": "< 2 menit" },
+      { "metric": "Pengurangan kerja manual", "value": "80%" }
+    ]
+  }
+]
