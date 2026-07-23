@@ -28,7 +28,7 @@ export function calculateReadTime(content: string): number {
 }
 
 export function getSiteUrl(path: string = ""): string {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL || "http://localhost:3000";
+  const base = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : "") || process.env.SITE_URL || "http://localhost:3000";
   const baseClean = base.endsWith("/") ? base.slice(0, -1) : base;
   if (!path) return baseClean;
   const pathClean = path.startsWith("/") ? path : `/${path}`;
