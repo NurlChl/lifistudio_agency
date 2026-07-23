@@ -1,84 +1,71 @@
-import { NextRequest, NextResponse } from "next/server";
-import { connectDB } from "@/lib/mongodb";
+import { NextRequest } from "next/server";
 import { Blog } from "@/lib/models";
 import { slugify } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
+import {
+  requireApiKey,
+  withDb,
+  successResponse,
+  createdResponse,
+  errorResponse,
+  paginatedResponse,
+  getPagination,
+} from "@/lib/api-helpers";
 
-function checkApiKey(req: NextRequest) {
-  const key = req.headers.get("x-api-key");
-  if (!key || key !== process.env.CONTENT_API_KEY) {
-    return false;
-  }
-  return true;
-}
-
+/* GET /api/blog — List blog (public) */
 export async function GET(req: NextRequest) {
-  try {
-    await connectDB();
+  return withDb(async () => {
     const { searchParams } = new URL(req.url);
+    const { page, limit, skip } = getPagination(searchParams);
     const status = searchParams.get("status");
     const category = searchParams.get("category");
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "20");
+    const search = searchParams.get("search");
 
     const filter: Record<string, unknown> = {};
     if (status) filter.status = status;
     if (category && category !== "all") filter.category = category;
+    if (search) filter.title = { $regex: search, $options: "i" };
 
-    const skip = (page - 1) * limit;
     const [items, total] = await Promise.all([
-      Blog.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      Blog.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .select("-content") // exclude full content from list
+        .lean(),
       Blog.countDocuments(filter),
     ]);
 
-    return NextResponse.json({
-      items: JSON.parse(JSON.stringify(items)),
-      total,
-      page,
-      totalPages: Math.ceil(total / limit),
-    });
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Gagal mengambil blog", detail: (error as Error).message },
-      { status: 500 }
-    );
-  }
+    return paginatedResponse(items, total, page, limit);
+  });
 }
 
+/* POST /api/blog — Create blog (auth) */
 export async function POST(req: NextRequest) {
-  if (!checkApiKey(req)) {
-    return NextResponse.json({ error: "API key tidak valid" }, { status: 401 });
-  }
+  const authErr = requireApiKey(req);
+  if (authErr) return authErr;
 
-  try {
+  return withDb(async () => {
     const body = await req.json();
-    const { title, content, excerpt, category, coverImage, slug, author, status } = body;
+    const { title, content, excerpt, category, coverImage, slug, author, tags, status } = body;
 
-    if (!title || !content || !category) {
-      return NextResponse.json(
-        { error: "Field wajib: title, content, category" },
-        { status: 400 }
-      );
-    }
-
-    await connectDB();
+    if (!title?.trim()) return errorResponse("Field 'title' wajib diisi");
+    if (!content?.trim()) return errorResponse("Field 'content' wajib diisi");
+    if (!category?.trim()) return errorResponse("Field 'category' wajib diisi");
 
     const slugToUse = slug || slugify(title);
-
-    // Generate unique slug
     const existing = await Blog.findOne({ slug: slugToUse });
-    const finalSlug = existing
-      ? `${slugToUse}-${Date.now().toString(36)}`
-      : slugToUse;
+    const finalSlug = existing ? `${slugToUse}-${Date.now().toString(36)}` : slugToUse;
 
     const post = await Blog.create({
-      title,
+      title: title.trim(),
       content,
-      excerpt: excerpt || content.slice(0, 160),
-      category,
+      excerpt: excerpt?.trim() || content.slice(0, 160),
+      category: category.trim(),
       coverImage: coverImage || "",
       slug: finalSlug,
-      author: author || "Lifi Studio",
+      author: author?.trim() || "Lifi Studio",
+      tags: tags || [],
       status: status || "draft",
       readTime: Math.max(1, Math.ceil(content.split(/\s+/).length / 200)),
       publishedAt: status === "published" ? new Date() : undefined,
@@ -87,14 +74,6 @@ export async function POST(req: NextRequest) {
     revalidatePath("/blog");
     revalidatePath("/dashboard/blog");
 
-    return NextResponse.json(
-      { message: "Blog berhasil dibuat", data: JSON.parse(JSON.stringify(post)) },
-      { status: 201 }
-    );
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Gagal membuat blog", detail: (error as Error).message },
-      { status: 500 }
-    );
-  }
+    return createdResponse(post);
+  });
 }
