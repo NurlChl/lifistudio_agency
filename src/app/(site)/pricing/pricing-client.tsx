@@ -77,10 +77,10 @@ export default function PricingClient({
                         ease: [0.16, 1, 0.3, 1],
                       }}
                       className={cn(
-                        "relative rounded-2xl border p-8 flex flex-col transition-all duration-500 hover:shadow-lg",
+                        "relative rounded-2xl p-8 flex flex-col transition-all duration-500 hover:shadow-lg",
                         pkg.recommended
-                          ? "border-accent-500 bg-accent-50/20 shadow-md"
-                          : "border-stone-100 bg-white hover:border-stone-200"
+                          ? "border border-accent-500 bg-accent-50/20 shadow-md"
+                          : "bg-white hover:bg-stone-50"
                       )}
                     >
                       {pkg.recommended && (

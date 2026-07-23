@@ -235,7 +235,7 @@ export default function PortfolioDetailContent({
                   variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } } }}
                 >
                   <Link href={`/portfolio/${rp.slug}`}
-                    className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-lg transition-all duration-500 hover:-translate-y-1"
+                    className="group block rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-all duration-500 hover:-translate-y-1"
                   >
                     <div className="relative aspect-16/10 overflow-hidden">
                       {rp.coverImage ? (

@@ -75,7 +75,7 @@ export default function PortfolioContent({ projects, categories, activeCategory,
                     variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } } }}
                   >
                     <Link href={`/portfolio/${p.slug}`}
-                      className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+                      className="group block rounded-2xl overflow-hidden bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
                     >
                       <div className="relative aspect-16/10 overflow-hidden bg-stone-50">
                         {p.coverImage ? (

@@ -48,7 +48,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
   return (
     <>
       {/* ═══════════════ HERO ═══════════════ */}
-      <section className="relative min-h-screen flex items-center bg-cream overflow-hidden">
+      <section className="relative min-h-[100dvh] flex items-center bg-cream overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-accent-50 via-cream to-transparent opacity-70" />
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-32 lg:py-40 w-full">
@@ -169,7 +169,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="group p-8 lg:p-10 rounded-2xl border border-stone-100 bg-white hover:border-stone-200 hover:shadow-lg transition-all duration-500"
+                className="group p-8 lg:p-10 rounded-2xl bg-white hover:shadow-lg transition-all duration-500"
               >
                 <div className="w-12 h-12 rounded-xl bg-accent-50 flex items-center justify-center mb-6 group-hover:bg-accent-100 transition-colors duration-300">
                   <s.icon size={24} className="text-accent-500" />
@@ -260,7 +260,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
               >
                 <Link
                   href={`/portfolio/${p.slug}`}
-                  className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-lg transition-all duration-500"
+                  className="group block rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-all duration-500"
                 >
                   <div className="aspect-16/10 overflow-hidden bg-stone-50">
                     {p.coverImage ? (

@@ -127,7 +127,7 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
                       transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <Link href={`/blog/${post.slug}`}
-                        className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+                        className="group block rounded-2xl overflow-hidden bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
                       >
                         <div className="relative aspect-video overflow-hidden bg-stone-50">
                           {post.coverImage ? (

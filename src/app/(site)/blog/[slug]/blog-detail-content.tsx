@@ -214,7 +214,7 @@ export default function BlogDetailContent({
       <article className="relative z-10 -mt-40 pb-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-[1fr_280px] gap-12">
           <div className="min-w-0">
-            <div className="bg-white rounded-2xl p-8 lg:p-12 shadow-xl border border-stone-100 min-w-0">
+            <div className="bg-white rounded-2xl p-8 lg:p-12 border border-stone-100 min-w-0">
               <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-stone-400 hover:text-stone-600 transition-colors mb-8">
                 <ArrowLeft size={16} /> Kembali ke Blog
               </Link>
@@ -307,7 +307,7 @@ export default function BlogDetailContent({
                   viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
                 >
                   <Link href={`/blog/${r.slug}`}
-                    className="group block rounded-2xl overflow-hidden border border-stone-100 bg-white hover:shadow-lg transition-all duration-500 hover:-translate-y-1"
+                    className="group block rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-all duration-500 hover:-translate-y-1"
                   >
                     <div className="relative aspect-video overflow-hidden">
                       {r.coverImage ? (
