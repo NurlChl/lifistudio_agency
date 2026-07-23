@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, Eye, Infinity as InfinityIcon, BookOpen } from "lucide-react";
+import { Star, Eye, Infinity as InfinityIcon, BookOpen } from "lucide-react";
 import Counter from "@/components/ui/Counter";
 
 const fadeUp = {
@@ -68,13 +68,13 @@ export default function AboutClient() {
               viewport={{ once: true }}
               className="flex flex-col justify-center"
             >
-              <p className="text-stone-500 leading-relaxed mb-6">
+              <p className="text-stone-600 leading-relaxed mb-6">
                 Halo, saya{" "}
                 <strong className="text-stone-900">Moh Nurul Cholil</strong> —
                 atau yang lebih dikenal sebagai{" "}
                 <strong className="text-stone-900">NurlChl</strong>.
               </p>
-              <p className="text-stone-500 leading-relaxed mb-6">
+              <p className="text-stone-600 leading-relaxed mb-6">
                 Saya memulai Lifi Studio setelah{" "}
                 <strong className="text-stone-900">4+ tahun</strong> berkecimpung
                 di dunia web development dan desain. Dari Mojokerto, Jawa Timur,
@@ -83,7 +83,7 @@ export default function AboutClient() {
                 <strong className="text-stone-900">30+ klien</strong> — mulai
                 dari UKM lokal sampai perusahaan nasional.
               </p>
-              <p className="text-stone-500 leading-relaxed mb-8">
+              <p className="text-stone-600 leading-relaxed mb-8">
                 Kenapa <strong className="text-stone-900">"Lifi"</strong>? Karena
                 kami percaya digital harus{" "}
                 <em className="text-accent-500">hidup</em> — bukan cuma tampil,
@@ -131,9 +131,9 @@ export default function AboutClient() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                title: "Quality First",
+                title: "Quality first",
                 desc: "Setiap proyek dikerjakan dengan standar tinggi. Code yang bersih, desain yang thoughtful.",
-                icon: Sparkles,
+                icon: Star,
               },
               {
                 title: "Transparent",
@@ -146,7 +146,7 @@ export default function AboutClient() {
                 icon: InfinityIcon,
               },
               {
-                title: "Always Learning",
+                title: "Always learning",
                 desc: "Teknologi berubah cepat. Kami selalu update biar solusi yang dikasih selalu relevan.",
                 icon: BookOpen,
               },
@@ -165,7 +165,7 @@ export default function AboutClient() {
                 <h3 className="font-heading text-lg font-semibold text-stone-900 mb-3">
                   {v.title}
                 </h3>
-                <p className="text-sm text-stone-500 leading-relaxed">{v.desc}</p>
+                <p className="text-sm text-stone-600 leading-relaxed">{v.desc}</p>
               </motion.div>
             ))}
           </div>

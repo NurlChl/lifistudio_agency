@@ -38,7 +38,7 @@ export default function PortfolioContent({ projects, categories, activeCategory,
           <h1 className="heading-1 text-stone-900 max-w-2xl mb-6">
             Project yang <span className="text-accent-500 italic">Kami Banggakan</span>
           </h1>
-          <p className="subtitle text-stone-500 max-w-xl">Setiap project punya cerita. Ini beberapa yang paling berkesan.</p>
+          <p className="subtitle text-stone-600 max-w-xl">Setiap project punya cerita. Ini beberapa yang paling berkesan.</p>
         </div>
       </section>
 
@@ -47,8 +47,8 @@ export default function PortfolioContent({ projects, categories, activeCategory,
           <div className="flex gap-2 overflow-x-auto flex-nowrap scrollbar-hide">
             {catOptions.map((cat) => (
               <button key={cat.slug} onClick={() => handleCategoryClick(cat.slug)}
-                className={cn("shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                  activeCategory === cat.slug ? "bg-stone-900 text-white shadow-md" : "bg-stone-50 text-stone-500 hover:bg-stone-100"
+                className={cn("shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500",
+                  activeCategory === cat.slug ? "bg-stone-900 text-white shadow-md active:scale-[0.97]" : "bg-stone-50 text-stone-500 hover:bg-stone-100 active:scale-[0.97]"
                 )}>
                 {cat.name}
               </button>
@@ -75,7 +75,7 @@ export default function PortfolioContent({ projects, categories, activeCategory,
                     variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } } }}
                   >
                     <Link href={`/portfolio/${p.slug}`}
-                      className="group block rounded-2xl overflow-hidden bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+                      className="group block rounded-2xl overflow-hidden bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1 active:scale-[0.98]"
                     >
                       <div className="relative aspect-16/10 overflow-hidden bg-stone-50">
                         {p.coverImage ? (

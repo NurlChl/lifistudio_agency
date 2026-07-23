@@ -27,7 +27,7 @@ export default function ServicesClient({ services }: { services: any[] }) {
             <h1 className="heading-1 text-stone-900 mb-6">
               Yang Kami Tawarkan
             </h1>
-            <p className="subtitle text-stone-500 max-w-xl">
+            <p className="subtitle text-stone-600 max-w-xl">
               Empat pilar layanan — satu tim yang handle dari konsep sampai
               eksekusi. <strong>Kamu cukup bilang mau apa, kami urus sisanya.</strong>
             </p>
@@ -62,7 +62,7 @@ export default function ServicesClient({ services }: { services: any[] }) {
                     <h2 className="heading-2 text-stone-900 mt-4 mb-6">
                       {service.title}
                     </h2>
-                    <p className="text-stone-500 leading-relaxed mb-8">
+                    <p className="text-stone-600 leading-relaxed mb-8">
                       {service.description}
                     </p>
                     <ul className="space-y-3 mb-8">
@@ -80,7 +80,7 @@ export default function ServicesClient({ services }: { services: any[] }) {
                       {service.tech.map((t: string) => (
                         <span
                           key={t}
-                          className="text-xs px-3 py-1.5 rounded-full bg-stone-50 text-stone-500 border border-stone-100"
+                          className="text-xs px-3 py-1.5 rounded-full bg-stone-50 text-stone-600 border border-stone-100"
                         >
                           {t}
                         </span>
@@ -115,7 +115,7 @@ export default function ServicesClient({ services }: { services: any[] }) {
             })}
             {services.length === 0 && (
               <div className="text-center py-20">
-                <p className="text-stone-500">Belum ada layanan yang tersedia saat ini.</p>
+                <p className="text-stone-600">Belum ada layanan yang tersedia saat ini.</p>
               </div>
             )}
           </div>
@@ -140,7 +140,7 @@ export default function ServicesClient({ services }: { services: any[] }) {
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-accent-500 text-white text-sm font-semibold hover:bg-accent-600 transition-all duration-300"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-accent-500 text-white text-sm font-semibold hover:bg-accent-600 active:bg-accent-700 active:scale-[0.97] transition-all duration-300"
             >
               Hubungi Kami
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -171,7 +171,7 @@ export default function ServicesClient({ services }: { services: any[] }) {
               Pricing
             </p>
             <h2 className="heading-2 text-stone-900">Estimasi Harga</h2>
-            <p className="text-sm text-stone-500 mt-4 leading-relaxed">
+            <p className="text-sm text-stone-600 mt-4 leading-relaxed">
               Harga bisa berbeda tergantung kebutuhan spesifik project kamu.
               Ini estimasi untuk referensi awal.
             </p>
@@ -216,7 +216,7 @@ export default function ServicesClient({ services }: { services: any[] }) {
           >
             <Link
               href="/pricing"
-              className="inline-flex items-center gap-2 text-sm font-medium text-accent-500 hover:text-accent-600 transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-medium text-accent-500 hover:text-accent-600 active:opacity-80 transition-colors"
             >
               Lihat detail pricing & FAQ
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

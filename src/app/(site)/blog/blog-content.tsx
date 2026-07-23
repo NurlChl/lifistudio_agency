@@ -65,7 +65,7 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
           <h1 className="heading-1 text-stone-900 max-w-2xl mb-6">
             Artikel & <span className="text-accent-500 italic">Insight</span>
           </h1>
-          <p className="subtitle text-stone-500 max-w-xl">
+          <p className="subtitle text-stone-600 max-w-xl">
             Tips, tutorial, dan pemikiran seputar web development, desain, dan automation dari tim Lifi Studio.
           </p>
         </div>
@@ -77,8 +77,8 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
             <div className="flex gap-2 overflow-x-auto flex-nowrap scrollbar-hide lg:flex-1">
               {catOptions.map((cat) => (
                 <button key={cat.slug} onClick={() => handleCategoryClick(cat.slug)}
-                  className={cn("shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                    activeCategory === cat.slug ? "bg-stone-900 text-white shadow-md" : "bg-stone-50 text-stone-500 hover:bg-stone-100"
+                  className={cn("shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500",
+                    activeCategory === cat.slug ? "bg-stone-900 text-white shadow-md active:scale-[0.97]" : "bg-stone-50 text-stone-500 hover:bg-stone-100 active:scale-[0.97]"
                   )}>
                   {cat.name}
                 </button>
@@ -93,12 +93,12 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
               </div>
               <div className="flex items-center gap-1 bg-stone-50 rounded-lg p-0.5 shrink-0">
                 <button onClick={() => setViewMode('grid')}
-                  className={cn("p-2 rounded-md transition-all", viewMode === 'grid' ? "bg-white shadow-sm text-stone-900" : "text-stone-400 hover:text-stone-600")}
+                  className={cn("p-2 rounded-md transition-all active:scale-[0.97]", viewMode === 'grid' ? "bg-white shadow-sm text-stone-900" : "text-stone-400 hover:text-stone-600")}
                   aria-label="Tampilan grid">
                   <LayoutGrid size={16} />
                 </button>
                 <button onClick={() => setViewMode('list')}
-                  className={cn("p-2 rounded-md transition-all", viewMode === 'list' ? "bg-white shadow-sm text-stone-900" : "text-stone-400 hover:text-stone-600")}
+                  className={cn("p-2 rounded-md transition-all active:scale-[0.97]", viewMode === 'list' ? "bg-white shadow-sm text-stone-900" : "text-stone-400 hover:text-stone-600")}
                   aria-label="Tampilan list">
                   <List size={16} />
                 </button>
@@ -127,7 +127,7 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
                       transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <Link href={`/blog/${post.slug}`}
-                        className="group block rounded-2xl overflow-hidden bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+                        className="group block rounded-2xl overflow-hidden bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-1 active:scale-[0.98]"
                       >
                         <div className="relative aspect-video overflow-hidden bg-stone-50">
                           {post.coverImage ? (
@@ -147,7 +147,7 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
                           <h2 className="font-heading text-lg font-semibold text-stone-900 mb-2 group-hover:text-accent-500 transition-colors">{post.title}</h2>
                           <p className="text-sm text-stone-400 leading-relaxed line-clamp-2 mb-4">{post.excerpt}</p>
                           <div className="flex items-center gap-1.5 text-sm font-medium text-accent-500 group/link">
-                            Baca Selengkapnya
+                            Lanjutkan baca →
                             <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
                           </div>
                         </div>
@@ -164,7 +164,7 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
                 const catName = categories.find((c: any) => c.slug === post.category)?.name || post.category;
                 return (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
-                    className="group flex items-start gap-6 py-6 first:pt-0 last:pb-0 transition-all hover:opacity-70"
+                    className="group flex items-start gap-6 py-6 first:pt-0 last:pb-0 transition-all hover:opacity-70 active:opacity-60 active:scale-[0.99]"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 text-xs text-stone-400 mb-2">
@@ -175,7 +175,7 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
                       <h2 className="font-heading text-lg font-semibold text-stone-900 mb-1.5 group-hover:text-accent-500 transition-colors">{post.title}</h2>
                       <p className="text-sm text-stone-400 leading-relaxed line-clamp-2 mb-3">{post.excerpt}</p>
                       <div className="flex items-center gap-1.5 text-sm font-medium text-accent-500">
-                        Baca Selengkapnya
+                        Lanjutkan baca →
                         <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
                       </div>
                     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import ThreeBackground from "@/components/ThreeBackground";
@@ -7,7 +8,6 @@ import Counter from "@/components/ui/Counter";
 import {
   Monitor,
   Palette,
-  Sparkles,
   Zap,
   ArrowRight,
   Globe,
@@ -45,6 +45,7 @@ interface FeaturedProject {
 }
 
 export default function HomeClient({ faqItems, featuredProjects }: { faqItems: FaqItem[]; featuredProjects: FeaturedProject[] }) {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   return (
     <>
       {/* ═══════════════ HERO ═══════════════ */}
@@ -69,16 +70,16 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                 <span className="text-accent-500 italic">Hidup.</span>
               </h1>
 
-              <p className="subtitle text-stone-500 max-w-xl mb-10">
+              <p className="subtitle text-stone-600 max-w-xl mb-10">
                 Dari web development, UI/UX, graphic design, sampai automation
                 engineering — <strong>satu tim handle semuanya</strong>. Hasil
                 2x lebih cepat, tanpa ribet koordinasi 3 vendor beda.
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col gap-3">
                 <Link
                   href="/contact"
-                  className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-stone-900 text-white text-sm font-semibold hover:bg-stone-700 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-stone-900 text-white text-sm font-semibold hover:bg-stone-700 active:bg-stone-800 active:scale-[0.97] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 w-fit"
                 >
                   Mulai Proyek
                   <ArrowRight
@@ -88,9 +89,9 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                 </Link>
                 <Link
                   href="/portfolio"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-stone-200 text-stone-700 text-sm font-medium hover:border-stone-400 hover:text-stone-900 transition-all duration-300"
+                  className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900 active:text-stone-700 active:opacity-80 transition-colors duration-300 w-fit"
                 >
-                  Lihat Portfolio
+                  Lihat Portfolio →
                 </Link>
               </div>
 
@@ -177,7 +178,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                 <h3 className="font-heading text-xl font-semibold text-stone-900 mb-3">
                   {s.title}
                 </h3>
-                <p className="text-sm text-stone-500 leading-relaxed mb-6">
+                <p className="text-sm text-stone-600 leading-relaxed mb-6">
                   {s.desc}
                 </p>
                 <div className="flex flex-wrap gap-2" role="list" aria-label={`${s.title} technologies`}>
@@ -221,7 +222,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                 <h3 className="font-heading text-lg font-semibold text-stone-900 mb-3">
                   {r.title}
                 </h3>
-                <p className="text-sm text-stone-500 leading-relaxed">
+                <p className="text-sm text-stone-600 leading-relaxed">
                   {r.desc}
                 </p>
               </motion.div>
@@ -242,7 +243,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
             </div>
             <Link
               href="/portfolio"
-              className="group inline-flex items-center gap-2 text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors"
+              className="group inline-flex items-center gap-2 text-sm font-medium text-stone-600 hover:text-stone-900 active:opacity-80 transition-colors"
             >
               Lihat Semua
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
@@ -260,7 +261,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
               >
                 <Link
                   href={`/portfolio/${p.slug}`}
-                  className="group block rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-all duration-500"
+                  className="group block rounded-2xl overflow-hidden bg-white hover:shadow-lg active:scale-[0.97] transition-all duration-500"
                 >
                   <div className="aspect-16/10 overflow-hidden bg-stone-50">
                     {p.coverImage ? (
@@ -310,20 +311,20 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
+                className="border border-stone-50 bg-white rounded-xl transition-all duration-300"
               >
-                <details className="faq-details group">
-                  <summary className="outline-none cursor-pointer list-none select-none">
-                    <div className="flex items-center justify-between font-heading font-medium text-stone-900 p-6">
-                      <span className="text-left">{item.question}</span>
-                      <div className="flex items-center ml-4 shrink-0">
-                        <Plus className="w-5 h-5 text-stone-400 transition-transform duration-300 group-open:rotate-45" />
-                      </div>
-                    </div>
-                  </summary>
-                  <div className="px-6 pb-6 pt-0 text-sm text-stone-500 leading-relaxed">
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between py-5 px-6 text-left font-heading font-medium text-stone-900 hover:text-accent-500 active:opacity-80 active:scale-[0.99] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 rounded-lg"
+                >
+                  {item.question}
+                  <span className={`text-stone-400 text-xl transition-transform duration-300 ${openFaq === i ? 'rotate-45' : ''}`}>+</span>
+                </button>
+                {openFaq === i && (
+                  <div className="px-6 pb-5 pt-0 text-sm text-stone-600 leading-relaxed">
                     {item.answer}
                   </div>
-                </details>
+                )}
               </motion.div>
             ))}
           </div>
@@ -351,7 +352,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
           </p>
           <Link
             href="/contact"
-            className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-accent-500 text-white text-sm font-semibold hover:bg-accent-600 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-300"
+            className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-accent-500 text-white text-sm font-semibold hover:bg-accent-600 active:bg-accent-700 active:scale-[0.97] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-300"
           >
             Hubungi Kami
             <ArrowRight
@@ -380,7 +381,7 @@ const services = [
     tech: ["Figma", "Framer", "Prototyping", "Design System"],
   },
   {
-    icon: Sparkles,
+    icon: Palette,
     title: "Graphic Design",
     desc: "Logo, brand identity, sosial media visuals — identitas visual yang bikin brand langsung dikenal.",
     tech: ["Brand Identity", "Social Media", "Print"],

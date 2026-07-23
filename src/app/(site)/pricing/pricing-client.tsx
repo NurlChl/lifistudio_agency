@@ -39,10 +39,10 @@ export default function PricingClient({
               key={cat}
               onClick={() => setActiveTab(cat)}
               className={cn(
-                "px-5 py-2 rounded-full text-sm font-medium transition-all duration-300",
+                "px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500",
                 activeTab === cat
-                  ? "bg-stone-900 text-white shadow-sm"
-                  : "bg-white text-stone-500 border border-stone-200 hover:border-stone-300 hover:text-stone-700"
+                  ? "bg-stone-900 text-white shadow-sm active:scale-[0.97]"
+                  : "bg-white text-stone-500 border border-stone-200 hover:border-stone-300 hover:text-stone-700 active:scale-[0.97]"
               )}
             >
               {cat}
@@ -64,7 +64,7 @@ export default function PricingClient({
                     {category}
                   </h3>
                 )}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
                   {pkgs.map((pkg, i) => (
                     <motion.div
                       key={pkg.name}
@@ -129,8 +129,8 @@ export default function PricingClient({
                         className={cn(
                           "group inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500",
                           pkg.recommended
-                            ? "bg-accent-500 text-white hover:bg-accent-600"
-                            : "bg-stone-900 text-white hover:bg-stone-700"
+                            ? "bg-accent-500 text-white hover:bg-accent-600 active:bg-accent-700 active:scale-[0.97]"
+                            : "bg-stone-900 text-white hover:bg-stone-700 active:bg-stone-800 active:scale-[0.97]"
                         )}
                       >
                         Konsultasi Gratis
