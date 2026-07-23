@@ -1,23 +1,30 @@
-import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const publicPaths = ["/dashboard/login", "/api/auth/seed"];
+// Edge-compatible session check — reads NextAuth session cookie
+// Full auth/role verification happens in the route handler
+function getSessionCookie(req: NextRequest): string | null {
+  // NextAuth v5 JWT session cookie
+  return req.cookies.get("next-auth.session-token")?.value ||
+         req.cookies.get("__Secure-next-auth.session-token")?.value ||
+         null;
+}
 
-export default auth((req) => {
+const publicPaths = ["/dashboard/login", "/api/auth"];
+
+export default function middleware(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
 
-  // ── Allow public paths ──
+  // Allow public paths
   if (publicPaths.some((p) => pathname.startsWith(p))) return NextResponse.next();
-  if (pathname.startsWith("/api/auth")) return NextResponse.next();
+  if (pathname.startsWith("/_next")) return NextResponse.next();
+  if (pathname === "/favicon.ico") return NextResponse.next();
+
+  const hasSession = !!getSessionCookie(req);
 
   // ── Protect dashboard routes ──
   if (pathname.startsWith("/dashboard")) {
-    if (!req.auth?.user) {
-      // API routes → JSON 401
-      if (pathname.startsWith("/api/dashboard")) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-      }
-      // Pages → redirect to login with callbackUrl
+    if (!hasSession) {
       const loginUrl = new URL("/dashboard/login", req.url);
       const callbackUrl = pathname + (searchParams.toString() ? `?${searchParams}` : "");
       loginUrl.searchParams.set("callbackUrl", callbackUrl);
@@ -25,11 +32,11 @@ export default auth((req) => {
     }
   }
 
-  // ── Protect API docs & OpenAPI spec (superadmin only) ──
+  // ── Protect API docs & OpenAPI spec ──
+  // Role check (superadmin) is done in the route handler
   if (pathname === "/api/docs" || pathname === "/api/openapi") {
-    if (!req.auth?.user || req.auth.user.role !== "superadmin") {
+    if (!hasSession) {
       if (pathname === "/api/docs") {
-        // Return HTML error page for the docs page
         return new NextResponse(
           `<!DOCTYPE html>
 <html lang="en">
@@ -49,35 +56,24 @@ p{color:#888;line-height:1.6;margin-bottom:24px}
 <div class="card">
 <div class="lock">🔒</div>
 <h1>Akses Terbatas</h1>
-<p>Halaman dokumentasi API hanya bisa diakses oleh Superadmin Lifi Studio. Silakan login ke CMS dashboard terlebih dahulu.</p>
+<p>Halaman ini hanya bisa diakses oleh Superadmin Lifi Studio yang sudah login.</p>
 <a href="/dashboard/login" class="btn">Login ke CMS</a>
 </div>
 </body>
 </html>`,
-          {
-            status: 401,
-            headers: {
-              "Content-Type": "text/html; charset=utf-8",
-              "X-Robots-Tag": "noindex, nofollow",
-            },
-          }
+          { status: 401, headers: { "Content-Type": "text/html; charset=utf-8", "X-Robots-Tag": "noindex, nofollow" } }
         );
       }
-      // openapi.json → JSON error
-      return NextResponse.json(
-        { success: false, error: "Unauthorized — superadmin only" },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, error: "Unauthorized — login required" }, { status: 401 });
     }
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: [
     "/dashboard/:path*",
-    "/api/dashboard/:path*",
     "/api/docs",
     "/api/openapi",
   ],
