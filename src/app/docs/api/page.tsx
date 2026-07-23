@@ -1,50 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+
+const ApiReference = dynamic(
+  () => import("@scalar/api-reference").then((mod) => mod.ApiReference),
+  { ssr: false }
+);
 
 export default function ApiDocsPage() {
-  const elRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!elRef.current) return;
-    const div = elRef.current;
-    div.innerHTML = "";
-
-    const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/@scalar/api-reference";
-    script.async = true;
-    script.onload = () => {
-      // @ts-expect-error - Scalar CDN script
-      if (window.Scalar) {
-        // @ts-expect-error
-        window.Scalar.createApiReferenceApp({
-          el: div,
-          spec: {
-            url: "/api/openapi",
-          },
-          configuration: {
-            theme: "purple",
-            layout: "modern",
-            hideDownloadButton: false,
-            hideModels: false,
-            darkMode: true,
-          },
-        });
-      }
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      if (script.parentNode) script.parentNode.removeChild(script);
-    };
-  }, []);
-
   return (
     <div className="min-h-screen bg-[#0a0a0f]">
       <style>{`
         body { margin: 0; background: #0a0a0f; }
-        /* Override Scalar link colors to match brand */
-        .scalar-api-reference a { color: #c9774d !important; }
       `}</style>
       <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-[#0a0a0f]">
         <a
@@ -69,7 +36,15 @@ export default function ApiDocsPage() {
           </a>
         </div>
       </div>
-      <div ref={elRef} id="scalar-api" />
+      <ApiReference
+        configuration={{
+          spec: { url: "/api/openapi" },
+          theme: "purple",
+          layout: "modern",
+          hideDownloadButton: false,
+          darkMode: true,
+        }}
+      />
     </div>
   );
 }
