@@ -76,7 +76,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                 2x lebih cepat, tanpa ribet koordinasi 3 vendor beda.
               </p>
 
-              <div className="flex flex-row gap-3">
+              <div className="flex flex-row flex-wrap gap-3">
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-stone-900 text-white text-sm font-semibold hover:bg-stone-700 active:bg-stone-800 active:scale-[0.97] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 w-fit"
