@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Search, LayoutGrid, List, Calendar, ArrowRight } from "lucide-react";
+import { Search, LayoutGrid, List, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Pagination from "@/components/ui/Pagination";
@@ -148,7 +148,6 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
                           <p className="text-sm text-stone-400 leading-relaxed line-clamp-2 mb-4">{post.excerpt}</p>
                           <div className="flex items-center gap-1.5 text-sm font-medium text-accent-500 group/link">
                             Lanjutkan baca →
-                            <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
                           </div>
                         </div>
                       </Link>
@@ -175,9 +174,8 @@ export default function BlogContent({ posts, categories, activeCategory, totalPa
                       <h2 className="font-heading text-lg font-semibold text-stone-900 mb-1.5 group-hover:text-accent-500 transition-colors">{post.title}</h2>
                       <p className="text-sm text-stone-400 leading-relaxed line-clamp-2 mb-3">{post.excerpt}</p>
                       <div className="flex items-center gap-1.5 text-sm font-medium text-accent-500">
-                        Lanjutkan baca →
-                        <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                      </div>
+                            Lanjutkan baca →
+                          </div>
                     </div>
                   </Link>
                 );

@@ -76,7 +76,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                 2x lebih cepat, tanpa ribet koordinasi 3 vendor beda.
               </p>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-row gap-3">
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-stone-900 text-white text-sm font-semibold hover:bg-stone-700 active:bg-stone-800 active:scale-[0.97] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 w-fit"
@@ -89,7 +89,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
                 </Link>
                 <Link
                   href="/portfolio"
-                  className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900 active:text-stone-700 active:opacity-80 transition-colors duration-300 w-fit"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-stone-300 text-stone-700 text-sm font-semibold hover:bg-stone-100 active:bg-stone-200 active:scale-[0.97] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 w-fit"
                 >
                   Lihat Portfolio →
                 </Link>
