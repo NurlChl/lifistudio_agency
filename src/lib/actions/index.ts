@@ -28,7 +28,7 @@ export async function getBlogs(options?: {
 
   const skip = (page - 1) * limit;
   const [items, total] = await Promise.all([
-    Blog.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+    Blog.find(filter).sort({ publishedAt: -1, createdAt: -1 }).skip(skip).limit(limit).lean(),
     Blog.countDocuments(filter),
   ]);
   return { items: JSON.parse(JSON.stringify(items)), total, page, totalPages: Math.ceil(total / limit) };
