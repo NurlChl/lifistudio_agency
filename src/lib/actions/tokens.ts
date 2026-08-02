@@ -19,7 +19,7 @@ export async function getTokens() {
     .sort({ createdAt: -1 })
     .select("name prefix permissions active lastUsedAt createdAt")
     .lean();
-  return tokens;
+  return JSON.parse(JSON.stringify(tokens));
 }
 
 export async function createToken(name: string) {
