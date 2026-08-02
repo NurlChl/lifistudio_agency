@@ -249,11 +249,11 @@ export default function SettingsPage() {
                 <label className="block text-sm font-medium text-stone-700 mb-2">Logo URL (PNG / SVG / WebP)</label>
                 <div className="flex gap-2 items-center">
                   {form.logo ? (
-                    <div className="h-10 w-10 relative flex-shrink-0 bg-stone-100 rounded-lg border border-stone-200 p-1 flex items-center justify-center overflow-hidden">
+                    <div className="h-10 w-10 relative shrink-0 bg-stone-100 rounded-lg border border-stone-200 p-1 flex items-center justify-center overflow-hidden">
                       <img src={form.logo} alt="Logo preview" className="max-h-full max-w-full object-contain" />
                     </div>
                   ) : (
-                    <div className="h-10 w-10 flex-shrink-0 bg-stone-50 rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-400">
+                    <div className="h-10 w-10 shrink-0 bg-stone-50 rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-400">
                       <ImageIcon size={18} />
                     </div>
                   )}
@@ -267,7 +267,7 @@ export default function SettingsPage() {
                   <button
                     type="button"
                     onClick={() => setPickerTarget("logo")}
-                    className="px-3.5 py-2.5 rounded-lg bg-stone-100 text-stone-700 text-xs font-semibold hover:bg-stone-200 transition-all flex items-center gap-1.5 cursor-pointer flex-shrink-0"
+                    className="px-3.5 py-2.5 rounded-lg bg-stone-100 text-stone-700 text-xs font-semibold hover:bg-stone-200 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
                   >
                     <ImageIcon size={14} /> Pilih Media
                   </button>
@@ -279,11 +279,11 @@ export default function SettingsPage() {
                 <label className="block text-sm font-medium text-stone-700 mb-2">Favicon URL (ICO / PNG / SVG)</label>
                 <div className="flex gap-2 items-center">
                   {form.favicon ? (
-                    <div className="h-10 w-10 relative flex-shrink-0 bg-stone-100 rounded-lg border border-stone-200 p-1 flex items-center justify-center overflow-hidden">
+                    <div className="h-10 w-10 relative shrink-0 bg-stone-100 rounded-lg border border-stone-200 p-1 flex items-center justify-center overflow-hidden">
                       <img src={form.favicon} alt="Favicon preview" className="max-h-full max-w-full object-contain" />
                     </div>
                   ) : (
-                    <div className="h-10 w-10 flex-shrink-0 bg-stone-50 rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-400">
+                    <div className="h-10 w-10 shrink-0 bg-stone-50 rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-400">
                       <ImageIcon size={18} />
                     </div>
                   )}
@@ -297,7 +297,7 @@ export default function SettingsPage() {
                   <button
                     type="button"
                     onClick={() => setPickerTarget("favicon")}
-                    className="px-3.5 py-2.5 rounded-lg bg-stone-100 text-stone-700 text-xs font-semibold hover:bg-stone-200 transition-all flex items-center gap-1.5 cursor-pointer flex-shrink-0"
+                    className="px-3.5 py-2.5 rounded-lg bg-stone-100 text-stone-700 text-xs font-semibold hover:bg-stone-200 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
                   >
                     <ImageIcon size={14} /> Pilih Media
                   </button>
@@ -460,11 +460,11 @@ export default function SettingsPage() {
                 <label className="block text-sm font-medium text-stone-700 mb-2">Default Share OG Image</label>
                 <div className="flex gap-2 items-center">
                   {form.seo.ogImage ? (
-                    <div className="h-10 w-10 relative flex-shrink-0 bg-stone-100 rounded-lg border border-stone-200 p-1 flex items-center justify-center overflow-hidden">
+                    <div className="h-10 w-10 relative shrink-0 bg-stone-100 rounded-lg border border-stone-200 p-1 flex items-center justify-center overflow-hidden">
                       <img src={form.seo.ogImage} alt="OG Image preview" className="max-h-full max-w-full object-contain" />
                     </div>
                   ) : (
-                    <div className="h-10 w-10 flex-shrink-0 bg-stone-50 rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-400">
+                    <div className="h-10 w-10 shrink-0 bg-stone-50 rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-400">
                       <ImageIcon size={18} />
                     </div>
                   )}
@@ -478,7 +478,7 @@ export default function SettingsPage() {
                   <button
                     type="button"
                     onClick={() => setPickerTarget("ogImage")}
-                    className="px-3.5 py-2.5 rounded-lg bg-stone-100 text-stone-700 text-xs font-semibold hover:bg-stone-200 transition-all flex items-center gap-1.5 cursor-pointer flex-shrink-0"
+                    className="px-3.5 py-2.5 rounded-lg bg-stone-100 text-stone-700 text-xs font-semibold hover:bg-stone-200 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
                   >
                     <ImageIcon size={14} /> Pilih Media
                   </button>

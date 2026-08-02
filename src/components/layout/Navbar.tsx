@@ -67,7 +67,7 @@ export default function Navbar({ settings }: { settings?: any }) {
             <img
               src={settings.logo}
               alt={brandName}
-              className="h-8 max-w-[160px] w-auto object-contain"
+              className="h-8 max-w-40 w-auto object-contain"
             />
           ) : (
             <>

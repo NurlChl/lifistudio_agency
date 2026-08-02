@@ -47,7 +47,7 @@ export default function Footer({ settings }: FooterProps) {
                 <img
                   src={settings.logo}
                   alt={settings?.siteName || "Lifi Studio"}
-                  className="h-8 max-w-[180px] w-auto object-contain brightness-0 invert"
+                  className="h-8 max-w-45 w-auto object-contain brightness-0 invert"
                 />
               ) : (
                 <>
