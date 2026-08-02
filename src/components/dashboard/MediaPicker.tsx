@@ -199,7 +199,7 @@ export default function MediaPicker({ onSelect, onClose, multiple = false }: Med
                 <div className="w-full max-w-md bg-white rounded-xl border border-stone-100 p-4 space-y-2 max-h-48 overflow-y-auto">
                   {queue.map(q => (
                     <div key={q.id} className="flex items-center justify-between text-sm">
-                      <span className="truncate max-w-[200px] text-stone-700">{q.file.name}</span>
+                      <span className="truncate max-w-50 text-stone-700">{q.file.name}</span>
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full flex items-center ${
                         q.status === "success" ? "bg-green-50 text-green-600" :
                         q.status === "error" ? "bg-red-50 text-red-600" :

@@ -49,7 +49,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
   return (
     <>
       {/* ═══════════════ HERO ═══════════════ */}
-      <section className="relative min-h-[100dvh] flex items-center bg-cream overflow-hidden">
+      <section className="relative min-h-dvh flex items-center bg-cream overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-accent-50 via-cream to-transparent opacity-70" />
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-32 lg:py-40 w-full">
@@ -126,7 +126,7 @@ export default function HomeClient({ faqItems, featuredProjects }: { faqItems: F
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="hidden lg:block relative h-[500px] w-full"
+              className="hidden lg:block relative h-125 w-full"
             >
               {/* Subtle grid pattern */}
               <div

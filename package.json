@@ -26,9 +26,9 @@
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.25.0",
     "mongoose": "^9.7.4",
-    "next": "16.2.10",
-    "next-auth": "^5.0.0-beta.31",
-    "nodemailer": "^7.0.13",
+    "next": "16.2.12",
+    "next-auth": "^5.0.0-beta.32",
+    "nodemailer": "^9.0.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hot-toast": "^2.6.0",
@@ -43,9 +43,16 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.10",
+    "eslint-config-next": "16.2.12",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "vercel": "^56.5.0"
+    "typescript": "^5"
+  },
+  "overrides": {
+    "nodemailer": "^9.0.3",
+    "sharp": "^0.35.0",
+    "tar": "^7.5.8",
+    "undici": "^6.26.1",
+    "brace-expansion": "^2.0.1",
+    "postcss": "^8.5.3"
   }
 }

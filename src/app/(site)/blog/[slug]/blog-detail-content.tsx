@@ -278,7 +278,7 @@ export default function BlogDetailContent({
                   <h3 className="font-heading text-sm font-semibold text-stone-900 mb-4 uppercase tracking-wider">Daftar Isi</h3>
                   <ul className="space-y-3">
                     {toc.map((item, i) => (
-                      <li key={i} className={item.level === 3 ? "ml-[4px]" : ""}>
+                      <li key={i} className={item.level === 3 ? "ml-1" : ""}>
                         <a href={`#${item.id}`} className={cn("text-stone-500 hover:text-accent-500 transition-colors line-clamp-2", item.level === 3 ? "text-[13px]" : "text-sm")}>
                           {item.text}
                         </a>

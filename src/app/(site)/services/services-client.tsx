@@ -94,7 +94,7 @@ export default function ServicesClient({ services }: { services: any[] }) {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-60px" }}
                     transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                    className={`relative aspect-square lg:aspect-auto lg:h-[500px] rounded-2xl bg-cream overflow-hidden flex items-center justify-center ${
+                    className={`relative aspect-square lg:aspect-auto lg:h-125 rounded-2xl bg-cream overflow-hidden flex items-center justify-center ${
                       !isEven ? "lg:order-1" : ""
                     }`}
                   >
