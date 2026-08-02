@@ -70,8 +70,7 @@ export async function connectDB() {
   const MONGODB_URI = process.env.MONGODB_URI;
 
   if (!MONGODB_URI) {
-    console.warn("MONGODB_URI is not defined in environment variables");
-    return mongoose;
+    throw new Error("MONGODB_URI is not defined in environment variables");
   }
 
   if (cached.conn) return cached.conn;
