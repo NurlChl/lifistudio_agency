@@ -75,8 +75,9 @@ HOSTNAME=0.0.0.0
 MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/lifistudio?retryWrites=true&w=majority
 
 # NextAuth / Auth.js
+AUTH_TRUST_HOST=true
 NEXTAUTH_SECRET=buat-secret-key-acak-yang-kuat-di-sini
-NEXTAUTH_URL=https://domain-anda.com
+NEXTAUTH_URL=https://lifistudio.com
 
 # Site Info
 NEXT_PUBLIC_SITE_URL=https://domain-anda.com
