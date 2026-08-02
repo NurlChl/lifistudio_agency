@@ -60,10 +60,20 @@ export default function Navbar({ settings }: { settings?: any }) {
         {/* Logo */}
         <Link
           href="/"
-          className="font-heading text-xl font-semibold tracking-tight text-stone-900"
+          className="font-heading text-xl font-semibold tracking-tight text-stone-900 flex items-center gap-2"
           aria-label={`${brandName} — Home`}
         >
-          {brandName.toLowerCase()}<span className="text-accent-500">.</span>
+          {settings?.logo ? (
+            <img
+              src={settings.logo}
+              alt={brandName}
+              className="h-8 max-w-[160px] w-auto object-contain"
+            />
+          ) : (
+            <>
+              {brandName.toLowerCase()}<span className="text-accent-500">.</span>
+            </>
+          )}
         </Link>
 
         {/* Desktop Nav */}

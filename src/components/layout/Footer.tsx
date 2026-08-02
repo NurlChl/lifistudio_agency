@@ -40,11 +40,21 @@ export default function Footer({ settings }: FooterProps) {
           <div className="col-span-2 lg:col-span-1">
             <Link
               href="/"
-              className="font-heading text-2xl font-semibold text-white"
+              className="font-heading text-2xl font-semibold text-white inline-flex items-center gap-2"
               aria-label={`${settings?.siteName || "Lifi Studio"} — Home`}
             >
-              {(settings?.siteName || "Lifi Studio").toLowerCase()}
-              <span className="text-accent-400">.</span>
+              {settings?.logo ? (
+                <img
+                  src={settings.logo}
+                  alt={settings?.siteName || "Lifi Studio"}
+                  className="h-8 max-w-[180px] w-auto object-contain brightness-0 invert"
+                />
+              ) : (
+                <>
+                  {(settings?.siteName || "Lifi Studio").toLowerCase()}
+                  <span className="text-accent-400">.</span>
+                </>
+              )}
             </Link>
             <p className="mt-4 text-sm text-stone-400 leading-relaxed max-w-xs">
               {settings?.siteDescription ||

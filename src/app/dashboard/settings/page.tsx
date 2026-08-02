@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { getSiteSettings, updateSiteSettings } from "@/lib/actions/settings";
-import { Info, MapPin, Globe, Loader2, Save } from "lucide-react";
+import { Info, MapPin, Globe, Loader2, Save, ImageIcon } from "lucide-react";
+import MediaPicker from "@/components/dashboard/MediaPicker";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<"general" | "geo" | "seo">("general");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [pickerTarget, setPickerTarget] = useState<"logo" | "favicon" | "ogImage" | null>(null);
 
   const [form, setForm] = useState({
     siteName: "",
@@ -244,24 +246,63 @@ export default function SettingsPage() {
 
             <div className="grid sm:grid-cols-2 gap-5 pt-2">
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">Logo URL</label>
-                <input
-                  type="text"
-                  value={form.logo}
-                  onChange={(e) => setForm({ ...form, logo: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
-                  placeholder="/logo.png"
-                />
+                <label className="block text-sm font-medium text-stone-700 mb-2">Logo URL (PNG / SVG / WebP)</label>
+                <div className="flex gap-2 items-center">
+                  {form.logo ? (
+                    <div className="h-10 w-10 relative flex-shrink-0 bg-stone-100 rounded-lg border border-stone-200 p-1 flex items-center justify-center overflow-hidden">
+                      <img src={form.logo} alt="Logo preview" className="max-h-full max-w-full object-contain" />
+                    </div>
+                  ) : (
+                    <div className="h-10 w-10 flex-shrink-0 bg-stone-50 rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-400">
+                      <ImageIcon size={18} />
+                    </div>
+                  )}
+                  <input
+                    type="text"
+                    value={form.logo}
+                    onChange={(e) => setForm({ ...form, logo: e.target.value })}
+                    className="flex-1 px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800 min-w-0"
+                    placeholder="/logo.png"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPickerTarget("logo")}
+                    className="px-3.5 py-2.5 rounded-lg bg-stone-100 text-stone-700 text-xs font-semibold hover:bg-stone-200 transition-all flex items-center gap-1.5 cursor-pointer flex-shrink-0"
+                  >
+                    <ImageIcon size={14} /> Pilih Media
+                  </button>
+                </div>
+                <p className="text-[11px] text-stone-400 mt-1">Logo gambar yang tampil di Navbar, Footer, dan metadata situs. Kosongkan jika ingin memakai logo teks (lifi.).</p>
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">Favicon URL</label>
-                <input
-                  type="text"
-                  value={form.favicon}
-                  onChange={(e) => setForm({ ...form, favicon: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
-                  placeholder="/favicon.ico"
-                />
+                <label className="block text-sm font-medium text-stone-700 mb-2">Favicon URL (ICO / PNG / SVG)</label>
+                <div className="flex gap-2 items-center">
+                  {form.favicon ? (
+                    <div className="h-10 w-10 relative flex-shrink-0 bg-stone-100 rounded-lg border border-stone-200 p-1 flex items-center justify-center overflow-hidden">
+                      <img src={form.favicon} alt="Favicon preview" className="max-h-full max-w-full object-contain" />
+                    </div>
+                  ) : (
+                    <div className="h-10 w-10 flex-shrink-0 bg-stone-50 rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-400">
+                      <ImageIcon size={18} />
+                    </div>
+                  )}
+                  <input
+                    type="text"
+                    value={form.favicon}
+                    onChange={(e) => setForm({ ...form, favicon: e.target.value })}
+                    className="flex-1 px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800 min-w-0"
+                    placeholder="/favicon.ico"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPickerTarget("favicon")}
+                    className="px-3.5 py-2.5 rounded-lg bg-stone-100 text-stone-700 text-xs font-semibold hover:bg-stone-200 transition-all flex items-center gap-1.5 cursor-pointer flex-shrink-0"
+                  >
+                    <ImageIcon size={14} /> Pilih Media
+                  </button>
+                </div>
+                <p className="text-[11px] text-stone-400 mt-1">Ikon yang tampil di tab browser.</p>
               </div>
             </div>
           </div>
@@ -416,14 +457,32 @@ export default function SettingsPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">Default Share OG Image URL</label>
-                <input
-                  type="text"
-                  value={form.seo.ogImage}
-                  onChange={(e) => setForm({ ...form, seo: { ...form.seo, ogImage: e.target.value } })}
-                  className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800"
-                  placeholder="/og-image.png"
-                />
+                <label className="block text-sm font-medium text-stone-700 mb-2">Default Share OG Image</label>
+                <div className="flex gap-2 items-center">
+                  {form.seo.ogImage ? (
+                    <div className="h-10 w-10 relative flex-shrink-0 bg-stone-100 rounded-lg border border-stone-200 p-1 flex items-center justify-center overflow-hidden">
+                      <img src={form.seo.ogImage} alt="OG Image preview" className="max-h-full max-w-full object-contain" />
+                    </div>
+                  ) : (
+                    <div className="h-10 w-10 flex-shrink-0 bg-stone-50 rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-400">
+                      <ImageIcon size={18} />
+                    </div>
+                  )}
+                  <input
+                    type="text"
+                    value={form.seo.ogImage}
+                    onChange={(e) => setForm({ ...form, seo: { ...form.seo, ogImage: e.target.value } })}
+                    className="flex-1 px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/20 text-stone-800 min-w-0"
+                    placeholder="/og-image.png"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPickerTarget("ogImage")}
+                    className="px-3.5 py-2.5 rounded-lg bg-stone-100 text-stone-700 text-xs font-semibold hover:bg-stone-200 transition-all flex items-center gap-1.5 cursor-pointer flex-shrink-0"
+                  >
+                    <ImageIcon size={14} /> Pilih Media
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -530,6 +589,23 @@ export default function SettingsPage() {
           </button>
         </div>
       </form>
+
+      {pickerTarget && (
+        <MediaPicker
+          onSelect={(url) => {
+            const selectedUrl = Array.isArray(url) ? url[0] : url;
+            if (pickerTarget === "logo") {
+              setForm((f) => ({ ...f, logo: selectedUrl }));
+            } else if (pickerTarget === "favicon") {
+              setForm((f) => ({ ...f, favicon: selectedUrl }));
+            } else if (pickerTarget === "ogImage") {
+              setForm((f) => ({ ...f, seo: { ...f.seo, ogImage: selectedUrl } }));
+            }
+            setPickerTarget(null);
+          }}
+          onClose={() => setPickerTarget(null)}
+        />
+      )}
     </div>
   );
 }
