@@ -73,16 +73,21 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     icons: {
       icon: [
+        ...(settings?.favicon ? [{ url: settings.favicon }] : []),
+        { url: "/favicon/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+        { url: "/favicon/favicon.svg", type: "image/svg+xml" },
+        { url: "/favicon/favicon.ico" },
         { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
         { url: "/favicon.svg", type: "image/svg+xml" },
         { url: "/favicon.ico" },
       ],
-      shortcut: ["/favicon.ico"],
+      shortcut: [settings?.favicon || "/favicon/favicon.ico"],
       apple: [
+        { url: "/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
         { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
       ],
     },
-    manifest: "/site.webmanifest",
+    manifest: "/favicon/site.webmanifest",
     alternates: {
       canonical: siteUrl,
     },
@@ -102,11 +107,17 @@ export default async function RootLayout({
       className={`${dmSans.variable} ${outfit.variable} h-full antialiased`}
     >
       <head>
-        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
+        {settings?.favicon ? (
+          <link rel="icon" href={settings.favicon} />
+        ) : (
+          <>
+            <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+            <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+            <link rel="shortcut icon" href="/favicon/favicon.ico" />
+            <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+            <link rel="manifest" href="/favicon/site.webmanifest" />
+          </>
+        )}
 
         {/* JSON-LD Structured Data */}
         <script
