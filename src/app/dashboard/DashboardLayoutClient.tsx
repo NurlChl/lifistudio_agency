@@ -141,13 +141,15 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
         <div className="h-16 flex items-center px-4 border-b border-stone-800">
           <Link
             href="/dashboard"
-            className={cn("font-heading text-lg font-semibold text-white", collapsed && "hidden")}
+            className={cn("font-heading text-lg font-semibold text-white flex items-center gap-2.5", collapsed && "hidden")}
           >
-            lifi<span className="text-accent-400">.</span>
-            <span className="text-xs text-stone-500 ml-2 font-body font-normal">CMS</span>
+            <img src="/lifi_white.svg" alt="Lifi Studio" className="h-6 w-auto object-contain" />
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-accent-500/20 text-accent-400 border border-accent-500/30">CMS</span>
           </Link>
           {collapsed && (
-            <Link href="/dashboard" className="font-heading text-lg font-semibold text-white mx-auto">L</Link>
+            <Link href="/dashboard" className="flex items-center justify-center mx-auto">
+              <img src="/favicon/favicon.svg" alt="Lifi Studio" className="h-7 w-7 object-contain" />
+            </Link>
           )}
         </div>
 

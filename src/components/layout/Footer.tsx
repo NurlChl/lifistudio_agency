@@ -50,10 +50,11 @@ export default function Footer({ settings }: FooterProps) {
                   className="h-8 max-w-45 w-auto object-contain brightness-0 invert"
                 />
               ) : (
-                <>
-                  {(settings?.siteName || "Lifi Studio").toLowerCase()}
-                  <span className="text-accent-400">.</span>
-                </>
+                <img
+                  src="/lifi_white.svg"
+                  alt={settings?.siteName || "Lifi Studio"}
+                  className="h-7 max-w-45 w-auto object-contain"
+                />
               )}
             </Link>
             <p className="mt-4 text-sm text-stone-400 leading-relaxed max-w-xs">

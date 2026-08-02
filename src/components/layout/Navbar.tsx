@@ -70,9 +70,11 @@ export default function Navbar({ settings }: { settings?: any }) {
               className="h-8 max-w-40 w-auto object-contain"
             />
           ) : (
-            <>
-              {brandName.toLowerCase()}<span className="text-accent-500">.</span>
-            </>
+            <img
+              src="/lifi_black.svg"
+              alt={brandName}
+              className="h-7 max-w-40 w-auto object-contain"
+            />
           )}
         </Link>
 
@@ -163,9 +165,21 @@ export default function Navbar({ settings }: { settings?: any }) {
               <Link
                 href="/"
                 onClick={() => setIsOpen(false)}
-                className="font-heading text-xl font-semibold tracking-tight text-stone-900"
+                className="font-heading text-xl font-semibold tracking-tight text-stone-900 flex items-center gap-2"
               >
-                lifi<span className="text-accent-500">.</span>
+                {settings?.logo ? (
+                  <img
+                    src={settings.logo}
+                    alt={brandName}
+                    className="h-8 max-w-40 w-auto object-contain"
+                  />
+                ) : (
+                  <img
+                    src="/lifi_black.svg"
+                    alt={brandName}
+                    className="h-7 max-w-40 w-auto object-contain"
+                  />
+                )}
               </Link>
               <button
                 type="button"
