@@ -26,7 +26,11 @@ function LoginForm() {
   }
 
   if (status === "authenticated") {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-cream p-6">
+        <div className="animate-pulse text-stone-400">Mengalihkan ke dashboard...</div>
+      </div>
+    );
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

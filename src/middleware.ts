@@ -4,6 +4,8 @@ import type { NextRequest } from "next/server";
 // Edge-compatible pre-check — actual DB validation happens in route handlers
 function getSessionCookie(req: NextRequest): string | null {
   return (
+    req.cookies.get("authjs.session-token")?.value ||
+    req.cookies.get("__Secure-authjs.session-token")?.value ||
     req.cookies.get("next-auth.session-token")?.value ||
     req.cookies.get("__Secure-next-auth.session-token")?.value ||
     null
@@ -13,7 +15,7 @@ function getSessionCookie(req: NextRequest): string | null {
 const publicPaths = ["/dashboard/login", "/api/auth"];
 const publicPages = ["/", "/blog", "/portfolio", "/pricing", "/services", "/about", "/contact"];
 
-export default function proxy(req: NextRequest) {
+export function middleware(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
 
   // ── Always allow static assets and Next.js internals ──
