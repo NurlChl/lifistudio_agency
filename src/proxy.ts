@@ -13,7 +13,7 @@ function getSessionCookie(req: NextRequest): string | null {
 const publicPaths = ["/dashboard/login", "/api/auth"];
 const publicPages = ["/", "/blog", "/portfolio", "/pricing", "/services", "/about", "/contact"];
 
-export default function middleware(req: NextRequest) {
+export default function proxy(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
 
   // ── Always allow static assets and Next.js internals ──

@@ -17,12 +17,6 @@ function configureDNS() {
 
 configureDNS();
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable");
-}
-
 // Fallback resolver for Windows environments where Node's C-Ares fails querySrv on loopback
 async function getResolvedConnectionString(uri: string): Promise<string> {
   if (!uri.startsWith("mongodb+srv://")) return uri;
@@ -73,13 +67,20 @@ if (!global.mongooseCache) {
 }
 
 export async function connectDB() {
+  const MONGODB_URI = process.env.MONGODB_URI;
+
+  if (!MONGODB_URI) {
+    console.warn("MONGODB_URI is not defined in environment variables");
+    return mongoose;
+  }
+
   if (cached.conn) return cached.conn;
 
   configureDNS();
 
   if (!cached.promise) {
     cached.promise = (async () => {
-      const finalUri = await getResolvedConnectionString(MONGODB_URI!);
+      const finalUri = await getResolvedConnectionString(MONGODB_URI);
       return mongoose.connect(finalUri, {
         bufferCommands: false,
       });
