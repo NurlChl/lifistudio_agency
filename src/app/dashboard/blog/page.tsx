@@ -33,8 +33,6 @@ export default function DashboardBlog() {
 
   useEffect(() => { loadBlogs(); }, [statusFilter]);
 
-  useEffect(() => { loadBlogs(); }, [statusFilter]);
-
   async function handleDelete(id: string) {
     if (!(await confirm("Hapus blog ini?"))) return;
     try {
@@ -92,7 +90,7 @@ export default function DashboardBlog() {
                     <td className="px-6 py-4">
                       <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${statusColors[post.status] || "bg-stone-50 text-stone-500"}`}>{post.status}</span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-stone-400">{new Date(post.createdAt).toLocaleDateString("id-ID")}</td>
+                    <td className="px-6 py-4 text-sm text-stone-400">{new Date(post.publishedAt || post.createdAt).toLocaleDateString("id-ID")}</td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <Link href={`/blog/${post.slug}`} target="_blank" className="p-2 rounded-lg hover:bg-stone-100 text-stone-400 transition-all" title="View">

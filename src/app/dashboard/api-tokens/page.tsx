@@ -57,7 +57,10 @@ export default function DashboardApiTokens() {
   }
 
   async function handleDelete(id: string, tokenName: string) {
-    const ok = await confirm(`Hapus token "${tokenName}"?`, "Token tidak bisa digunakan lagi setelah dihapus.");
+    const ok = await confirm({
+      message: `Hapus token "${tokenName}"?`,
+      confirmText: "Ya, Hapus",
+    });
     if (!ok) return;
     try {
       await deleteToken(id);
