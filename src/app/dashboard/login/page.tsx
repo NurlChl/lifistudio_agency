@@ -86,7 +86,7 @@ function LoginForm() {
               <input
                 type="email" id="email" name="email" required
                 className="w-full px-4 py-3 rounded-lg border border-stone-200 bg-white text-stone-900 focus:outline-none focus:ring-2 focus:ring-accent-500 transition-all text-sm"
-                placeholder="admin@lifistudio.com"
+                placeholder="email@lifistudio.com"
               />
             </div>
 
@@ -108,10 +108,6 @@ function LoginForm() {
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
-
-          <p className="text-xs text-stone-400 text-center mt-6">
-            Default: admin@lifistudio.com / admin123
-          </p>
         </div>
       </div>
     </div>
