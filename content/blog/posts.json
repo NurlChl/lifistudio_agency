@@ -293,5 +293,24 @@
     "status": "published",
     "readTime": 2,
     "publishedAt": "2026-08-10T01:04:11.431Z"
+  },
+  {
+    "title": "Strategi AI untuk Bisnis: Belajar dari OpenAI, Meta, dan Google",
+    "slug": "strategi-ai-untuk-bisnis-belajar-dari-openai-meta-dan-google",
+    "excerpt": "Perkembangan OpenAI, Meta, dan Google menunjukkan bahwa strategi AI untuk bisnis harus praktis, aman, dan terukur — bukan sekadar ikut tren.",
+    "content": "<p>Perkembangan AI terbaru menunjukkan satu hal penting: bisnis tidak bisa lagi melihat artificial intelligence sebagai tren sementara. OpenAI terus memperkuat posisinya dengan investasi besar dan model keamanan siber, Meta mendorong strategi open AI, sementara Google mulai menyesuaikan ekosistem aplikasinya setelah tekanan regulasi.</p><h2>Strategi AI harus praktis, aman, dan terukur</h2><p>Bagi bisnis, pelajarannya sederhana: strategi AI harus praktis, aman, dan terukur. Menggunakan AI hanya karena sedang populer bukan strategi. Perusahaan perlu menentukan area yang benar-benar memberi dampak, seperti otomatisasi layanan pelanggan, analisis data, pembuatan konten, deteksi risiko, atau optimasi operasional.</p><p>Lifi Studio membantu bisnis membangun solusi digital dan implementasi AI yang relevan dengan kebutuhan nyata. Mulai dari website SEO-friendly, workflow automation, chatbot AI, hingga integrasi data, pendekatannya harus fokus pada hasil: efisiensi, pengalaman pengguna, dan pertumbuhan organik.</p><p>Keyword seperti “jasa AI untuk bisnis”, “website berbasis AI”, dan “otomatisasi bisnis dengan AI” kini makin penting dalam strategi SEO. Namun konten tetap harus natural dan bermanfaat. AI yang baik bukan menggantikan arah bisnis, tetapi mempercepat eksekusi keputusan yang sudah jelas.</p><blockquote>Ada rencana implementasi AI automation yang aman dan relevan buat bisnis kamu? Yuk, diskusi gratis bareng Lifi Studio.</blockquote>",
+    "category": "automation",
+    "tags": [
+      "AI",
+      "OpenAI",
+      "Meta",
+      "Google",
+      "automation"
+    ],
+    "coverImage": "https://res.cloudinary.com/drz3ys6ha/image/upload/v1784765831/lifistudio/blog/automation-workflow.svg",
+    "author": "Lifi Studio",
+    "status": "published",
+    "readTime": 2,
+    "publishedAt": "2026-08-11T02:05:09Z"
   }
 ]
