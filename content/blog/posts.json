@@ -312,5 +312,24 @@
     "status": "published",
     "readTime": 2,
     "publishedAt": "2026-08-11T02:05:09Z"
+  },
+  {
+    "title": "Strategi Bisnis Menghadapi Era AI: Dari ChatGPT, Gemini, sampai Keamanan Digital",
+    "slug": "strategi-bisnis-era-ai-chatgpt-gemini-keamanan-digital",
+    "excerpt": "ChatGPT dan Gemini sudah menembus 1 miliar pengguna. Ini sinyal bahwa bisnis perlu strategi AI yang praktis: mulai dari workflow berulang, otomasi, sampai keamanan akun dan data.",
+    "content": "<h2>AI Sudah Jadi Produk Massal, Bukan Eksperimen</h2><p>AI bukan lagi tren sementara. Ketika ChatGPT dan Google Gemini sama-sama menembus 1 miliar pengguna, sinyalnya jelas: bisnis yang ingin bertahan harus mulai memikirkan strategi AI secara praktis. Bukan sekadar ikut hype, tetapi mencari titik di mana teknologi AI bisa menghemat waktu, meningkatkan layanan, dan membuka peluang baru.</p><h2>Mulai dari Proses yang Berulang</h2><p>Untuk bisnis kecil dan menengah, langkah paling masuk akal adalah mulai dari proses yang berulang: pembuatan konten, customer support, analisis data pelanggan, sampai otomasi laporan. Dengan pendekatan ini, implementasi AI tidak perlu mahal atau rumit. Yang penting adalah memilih workflow yang benar-benar memberi dampak.</p><h2>Keamanan Digital Wajib Ikut Naik Kelas</h2><p>Namun, adopsi AI juga harus dibarengi keamanan digital. Berita terbaru tentang peningkatan proteksi Chrome terhadap pembajakan akun menunjukkan bahwa ancaman siber makin serius. Jika bisnis memakai AI untuk mengelola data pelanggan, email, atau dokumen internal, maka keamanan akun, autentikasi, dan kontrol akses wajib diperkuat.</p><h2>Strategi yang Realistis untuk Bisnis</h2><p>Lifi Studio membantu brand membangun strategi digital yang relevan di era AI: mulai dari website, SEO, konten, hingga otomasi pemasaran. Dengan kombinasi kreativitas, teknologi, dan keamanan, bisnis bisa memanfaatkan AI tanpa kehilangan arah. Kuncinya sederhana: mulai kecil, ukur hasilnya, lalu kembangkan yang terbukti bekerja.</p><blockquote><p>Ada rencana implementasi AI automation yang aman dan tetap realistis buat bisnismu? Yuk, diskusi gratis dengan Lifi Studio.</p></blockquote>",
+    "category": "ai",
+    "tags": [
+      "AI",
+      "ChatGPT",
+      "Gemini",
+      "automation",
+      "keamanan digital"
+    ],
+    "coverImage": "https://res.cloudinary.com/drz3ys6ha/image/upload/v1784765831/lifistudio/blog/automation-workflow.svg",
+    "author": "Lifi Studio",
+    "status": "published",
+    "readTime": 1,
+    "publishedAt": "2026-08-12T00:00:00.000Z"
   }
 ]
