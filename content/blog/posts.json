@@ -1,5 +1,24 @@
 [
   {
+    "title": "AI Masuk Ruang Kelas & Ruang DPR: Apa yang Bisnis Perlu Siapkan Sekarang",
+    "slug": "ai-masuk-ruang-kelas-ruang-dpr-apa-yang-bisnis-perlu-siapkan-sekarang",
+    "excerpt": "Harvard pakai avatar AI untuk latihan siswa, OpenAI mendukung regulasi AI safety, dan laboratorium AI masih belum punya rencana menahan model liar. Tiga sinyal yang menunjukkan AI sudah masuk fase baru — dan bisnis harus bersiap.",
+    "content": "<h2>AI Tidak Lagi Cuma untuk Lab Riset</h2>\n<p>Minggu ini, dua berita besar tentang AI muncul dari dua dunia yang sangat berbeda — kampus dan lembaga legislatif. Harvard meluncurkan program bootcamp senilai $699 yang pakai avatar AI sebagai instruktur. Sementara itu, OpenAI tiba-tiba mendukung regulasi AI safety di California yang sebelumnya mereka tolak. Dua sinyal yang sama: AI sudah terlalu besar untuk dibiarkan tanpa arah.</p>\n<h2>Harvard dan Avatar AI: Pendidikan Berubah Permanen</h2>\n<p>Harvard Business School Foundry memperkenalkan program di mana mahasiswa latihan presentasi dan rapat dewan di depan avatar AI yang memberi feedback secara real-time. Ini bukan sekadar gimmick teknologi — ini pergeseran fundamental dalam cara institusi paling elit di dunia memandang AI: bukan ancaman, tapi alat untuk mempercepat pembelajaran.</p>\n<p>Buat bisnis Indonesia, ini sinyal penting. Kalau Harvard sudah pakai AI untuk melatih karyawan baru, pertanyaannya bukan \"apakah kita butuh AI?\" tapi \"di bagian mana workflow kita yang paling siap diotomasi?\" Training onboarding, simulasi customer service, atau draft proposal — semua ini bisa dimulai dengan skala kecil tanpa investasi besar.</p>\n<h2>Regulasi AI: OpenAI Berubah Haluan</h2>\n<p>Yang lebih menarik datang dari Sacramento. OpenAI — yang selama ini dikenal menentang regulasi ketat — kini justru mendukung penguatan SB 53, undang-undang AI safety California. Dalam waktu bersamaan, sebuah studi baru mengungkap bahwa laboratorium AI terbesar di dunia masih belum punya rencana publik tentang bagaimana mereka akan menahan model AI yang \"liar\" atau di luar kendali.</p>\n<p>Kombinasi ini menciptakan gambaran yang jelas: industri AI sendiri mulai sadar bahwa pertumbuhan tanpa batasan punya biaya. Bagi bisnis yang mengadopsi AI, ini berarti standar keamanan dan tata kelola bukan lagi opsional — ia akan menjadi persyaratan pasar.</p>\n<h2>3 Hal yang Bisa Langsung Dilakukan Bisnis Anda</h2>\n<ul>\n<li><strong>Mulai dari satu workflow spesifik.</strong> Tidak perlu transformasi digital besar-besaran. Pilih satu area — misalnya draft email, ringkasan dokumen, atau survei kompetitor — dan uji AI di sana dulu. Harvard mulai dari satu program bootcamp, bukan seluruh kampus.</li>\n<li><strong>Siapkan aturan internal untuk penggunaan AI.</strong> Sebelum regulasi pemerintah datang, buat kebijakan sendiri: data apa yang boleh dimasukkan ke AI, siapa yang approve penggunaan agen AI, dan bagaimana audit keputusan AI. Bisnis yang sudah punya framework ini akan lebih mudah beradaptasi saat regulasi resmi berlaku.</li>\n<li><strong>Pilih partner yang paham risiko, bukan cuma fitur.</strong> Banyak vendor AI menjanjikan kemampuan tanpa membahas keamanan. Pilih yang bisa jelaskan bagaimana mereka menangani data sensitif, bagaimana model mereka di-deploy, dan apa yang terjadi kalau ada insiden. Keamanan AI bukan fitur tambahan — ia fondasi.</li>\n</ul>\n<blockquote><p>AI sudah masuk ruang kelas Harvard dan ruang sidang senat. Pertanyaannya bukan apakah bisnis Anda akan terdampak, tapi kapan dan seberapa siap Anda. Di Lifi Studio, kami membantu bisnis membangun automasi AI yang bermanfaat sekaligus aman — mulai dari masalah bisnis yang nyata, bukan dari hype teknologinya.</p></blockquote>",
+    "category": "ai",
+    "tags": [
+      "AI",
+      "Harvard",
+      "Regulasi",
+      "AI Safety",
+      "Automasi Bisnis"
+    ],
+    "coverImage": "",
+    "author": "Lifi Studio",
+    "status": "published",
+    "readTime": 4,
+    "publishedAt": "2026-08-23T01:00:00.000Z"
+  },
+  {
     "title": "Automasi Workflow Klien Pakai n8n + AI: Dari Form sampai Follow-Up",
     "slug": "automasi-workflow-n8n-ai",
     "excerpt": "Gimana mengotomatiskan alur kerja klien dari form pendaftaran sampai follow-up otomatis pakai n8n dan AI — tanpa ribet ngoding manual.",
