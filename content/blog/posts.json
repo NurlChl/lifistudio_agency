@@ -1,5 +1,27 @@
 [
   {
+    "title": "Robotics Startup Generalist Capai $3B & OpenAI Kehilangan Eksekutif Kunci: Apa Artinya untuk Bisnis?",
+    "slug": "robotics-generalist-3b-openai-exec-departures-2026",
+    "excerpt": "Startup robotics Generalist raih valuasi $3 miliar dalam hitungan bulan, sementara OpenAI terus kehilangan eksekutif senior. Dua sinyal yang menunjukkan industri AI sedang mengalami pergeseran besar.",
+    "content": "<h2>Dua Berita Besar di Hari yang Sama</h2>\n<p>Tanggal 25 Agustus 2026 menjadi hari yang menarik bagi dunia teknologi. Dua berita besar muncul bersamaan: <strong>Generalist</strong>, startup physical AI, berhasil mencapai valuasi $3 miliar — naik dari $2 miliar hanya dalam hitungan bulan. Di saat yang sama, <strong>OpenAI kehilangan eksekutif data center senior</strong> mereka, menambah daftar panjang kepergian tokoh-tokoh kunci dari perusahaan AI terbesar di dunia.</p>\n<p>Dua peristiwa ini mungkin terlihat tidak berhubungan, tapi sebenarnya saling melengkapi: mereka menunjukkan bahwa industri AI sedang bergerak dari fase <em>hype</em> menuju fase <em>konsolidasi dan spesialisasi</em>.</p>\n<h2>Generalist: Robot yang Bukan Sekadar Prototipe</h2>\n<p>Generalist adalah startup yang fokus membangun <strong>physical AI</strong> — AI yang tidak hanya berpikir di dunia digital, tapi juga berinteraksi dengan dunia fisik. Dengan valuasi $3 miliar dan tambahan pendanaan $200 juta, mereka sudah menjadi salah satu startup robotics terbesar di dunia.</p>\n<p>Yang membuat Generalist menarik bukan hanya angkanya, tapi juga kecepatannya. Dari $2 miliar ke $3 miliar dalam waktu singkat menunjukkan bahwa investor semakin yakin bahwa <strong>AI tidak akan berhenti di chatbot</strong>. Masa depan ada di robot yang bisa bekerja di gudang, pabrik, rumah sakit, dan bahkan jalanan.</p>\n<blockquote>\n<p>Bagi bisnis di Indonesia, ini sinyal penting: teknologi yang saat ini terasa jauh (robot industri) akan segera menjadi kenyataan. Persiapkan fondasi digital Anda sekarang.</p>\n</blockquote>\n<h2>OpenAI: Brain Drain yang Terus Berlanjut</h2>\n<p>Di sisi lain, OpenAI terus mengalami kehilangan eksekutif. Yang terbaru adalah eksekutif data center yang meninggalkan perusahaan, menambah daftar panjang kepergian tokoh-tokoh penting seperti CTO, VP Research, dan beberapa pendiri yang sudah hengkang sebelumnya.</p>\n<p>Ada dua cara membaca situasi ini:</p>\n<ul>\n<li><strong>Pandangan optimis:</strong> OpenAI sudah cukup besar dan mapan sehingga pergantian eksekutif adalah hal normal. Mereka punya pipeline produk yang kuat dan pendanaan yang melimpah.</li>\n<li><strong>Pandangan realistis:</strong> Ketegangan internal tentang arah perusahaan — antara misi safety dan tekanan profitabilitas — terus memakan korban. Ketika orang-orang terbaik pergi, itu biasanya karena mereka melihat sesuatu yang orang lain belum lihat.</li>\n</ul>\n<h2>Apa Artinya untuk Bisnis Anda?</h2>\n<h3>1. AI Bukan Lagi Hanya Software</h3>\n<p>Investasi besar di physical AI (Generalist, Figure, Tesla Optimus) menunjukkan bahwa AI akan segera menyentuh operasional fisik bisnis — dari logistik, gudang, sampai customer experience. Bisnis yang sudah punya fondasi digital akan lebih mudah beradaptasi.</p>\n<h3>2. Vendor Lock-in Semakin Berisiko</h3>\n<p>Ketidakstabilan di OpenAI — meskipun produknya masih kuat — mengingatkan kita untuk tidak bergantung pada satu vendor AI. Multi-model strategy bukan lagi opsional, tapi strategi bertahan hidup.</p>\n<h3>3. Keamanan dan Tata Kelola AI Makin Krusial</h3>\n<p>Perubahan organisasi di perusahaan AI terbesar sekalipun menunjukkan bahwa governance AI adalah masalah nyata. Bisnis yang mengadopsi AI perlu punya kebijakan internal yang jelas — bukan hanya mengandalkan vendor.</p>\n<blockquote>\n<p>Mau strategi AI yang tidak bergantung pada satu vendor dan siap menghadapi perubahan industri? Yuk, diskusi bareng Lifi Studio.</p>\n</blockquote>",
+    "category": "ai",
+    "tags": [
+      "AI",
+      "Robotics",
+      "Generalist",
+      "OpenAI",
+      "Physical AI",
+      "AI Strategy",
+      "Automasi Bisnis",
+      "Investasi AI"
+    ],
+    "coverImage": "https://res.cloudinary.com/drz3ys6ha/image/upload/v1787629726/lifistudio/blog/ai-agent-2026.svg",
+    "author": "Lifi Studio",
+    "status": "published",
+    "readTime": 4,
+    "publishedAt": "2026-08-26T02:07:10.308Z"
+  },
+  {
     "title": "Situational Awareness, Star AI Hedge Fund yang Hampir Bangkrut, Sekarang Diselidiki SEC",
     "slug": "situational-awareness-ai-hedge-fund-sec-probe",
     "excerpt": "Dana hedging AI yang dulu jadi pembicaraan Wall Street kini jadi sasaran subpoena federal. Kasus Situational Awareness mengungkap risiko automasi keuangan tanpa pengawasan — pelajaran kritis buat bisnis yang adoptasi AI.",
@@ -34,7 +56,7 @@
       "Model AI",
       "Automasi Bisnis"
     ],
-    "coverImage": "",
+    "coverImage": "https://res.cloudinary.com/drz3ys6ha/image/upload/v1787630344/lifistudio/blog/ai-ox-alpha.svg",
     "author": "Lifi Studio",
     "status": "published",
     "readTime": 4,
@@ -53,7 +75,7 @@
       "AI Safety",
       "Automasi Bisnis"
     ],
-    "coverImage": "",
+    "coverImage": "https://res.cloudinary.com/drz3ys6ha/image/upload/v1787630344/lifistudio/blog/ai-harvard-dpr.svg",
     "author": "Lifi Studio",
     "status": "published",
     "readTime": 4,
@@ -110,7 +132,7 @@
       "Business Automation",
       "Workflow"
     ],
-    "coverImage": "",
+    "coverImage": "https://res.cloudinary.com/drz3ys6ha/image/upload/v1787629726/lifistudio/blog/ai-agent-2026.svg",
     "author": "Lifi Studio",
     "status": "published",
     "readTime": 7,
@@ -132,7 +154,7 @@
       "Risk Management",
       "Artificial Intelligence"
     ],
-    "coverImage": "",
+    "coverImage": "https://res.cloudinary.com/drz3ys6ha/image/upload/v1787630344/lifistudio/blog/ai-agent-rogue-openai.svg",
     "author": "Lifi Studio",
     "status": "published",
     "readTime": 6,
@@ -153,7 +175,7 @@
       "Cloud Computing",
       "Artificial Intelligence"
     ],
-    "coverImage": "",
+    "coverImage": "https://res.cloudinary.com/drz3ys6ha/image/upload/v1787629726/lifistudio/blog/ai-google-q2-ukm.svg",
     "author": "Lifi Studio",
     "status": "published",
     "readTime": 5,
@@ -176,7 +198,7 @@
       "UKM Indonesia",
       "Artificial Intelligence"
     ],
-    "coverImage": "",
+    "coverImage": "https://res.cloudinary.com/drz3ys6ha/image/upload/v1787629726/lifistudio/blog/ai-china-deepseek-qwen.svg",
     "author": "Lifi Studio",
     "status": "draft",
     "readTime": 6,
@@ -198,7 +220,7 @@
       "WordPress",
       "Content Strategy"
     ],
-    "coverImage": "",
+    "coverImage": "https://res.cloudinary.com/drz3ys6ha/image/upload/v1787629726/lifistudio/blog/ai-google-search-default.svg",
     "author": "Lifi Studio",
     "status": "draft",
     "readTime": 5,
